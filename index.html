@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -224,6 +225,7 @@ const firebaseConfig = {
 const ADMIN_UID = "UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 const PAYMENT_FORM_URL = "https://forms.gle/7dnzHW8AopbkGpJL9";
 const PAYMENT_QR_URL = "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png";
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -261,6 +263,7 @@ window.showAdminLogin = () => {
   $("adminLoginPanel").classList.remove("hidden");
 };
 
+/* CUSTOMER REGISTRATION */
 window.registerCustomer = async () => {
   const name = $("regName").value.trim();
   const phone = $("regPhone").value.trim();
@@ -295,6 +298,7 @@ window.registerCustomer = async () => {
   }
 };
 
+/* CUSTOMER LOGIN */
 window.loginCustomer = async () => {
   $("loginMessage").textContent = "";
   try {
@@ -306,6 +310,7 @@ window.loginCustomer = async () => {
   }
 };
 
+/* ADMIN LOGIN */
 window.loginAdmin = async () => {
   $("adminLoginMessage").textContent = "";
   const email = $("adminEmail").value.trim();
@@ -349,8 +354,8 @@ window.logoutUser = async () => {
   }
 };
 
-/* WHATSAPP AUTO-FILL */
-window.sendBookingWhatsApp = () => {
+/* WHATSAPP AUTO-FILL - FIXED */
+window.sendBookingWhatsApp = async () => {
   const user = auth.currentUser;
 
   if(!user || user.uid === ADMIN_UID) {
@@ -358,9 +363,7 @@ window.sendBookingWhatsApp = () => {
     return;
   }
 
-  const name = $("customerName").textContent.trim();
-  const mobile = $("customerPhone").textContent.trim();
-  const service = $("serviceName").value;
+  const service = $("serviceName").value.trim();
   const address = $("bookingAddress").value.trim();
   const date = $("bookingDate").value;
 
@@ -374,12 +377,19 @@ window.sendBookingWhatsApp = () => {
     return;
   }
 
-  if(!mobile || mobile === "Not available") {
-    alert("Mobile number not found. Please check your profile.");
-    return;
-  }
+  try {
+    const profile = await getDoc(doc(db,"users",user.uid));
+    const data = profile.exists() ? profile.data() : {};
 
-  const message =
+    const name = data.name || user.displayName || "Customer";
+    const mobile = data.phone || "";
+
+    if(!mobile) {
+      alert("Mobile number not found. Please check your customer profile.");
+      return;
+    }
+
+    const message =
 `Hello PS POWER SERVICE, I want to book a service.
 
 Name: ${name}
@@ -393,10 +403,15 @@ Payment QR: ${PAYMENT_QR_URL}
 
 Payment will be verified by Admin.`;
 
-  const whatsappURL =
-    "https://wa.me/918144722094?text=" + encodeURIComponent(message);
+    const whatsappURL =
+      "https://wa.me/918144722094?text=" +
+      encodeURIComponent(message);
 
-  window.open(whatsappURL,"_blank");
+    window.location.href = whatsappURL;
+
+  } catch(error) {
+    alert("Could not load customer details: " + error.message);
+  }
 };
 
 /* ADMIN WHATSAPP BOOKING ENTRY */
@@ -489,11 +504,13 @@ $("bookingForm").addEventListener("submit",async event => {
   $("paymentProofPanel").classList.add("hidden");
 
   try {
+    const profile = await getDoc(doc(db,"users",user.uid));
+    const data = profile.exists() ? profile.data() : {};
+
     const bookingRef = await addDoc(collection(db,"bookings"),{
       userId:user.uid,
-      customerName:user.displayName || "Customer",
-      customerPhone:$("customerPhone").textContent === "Not available"
-        ? "" : $("customerPhone").textContent,
+      customerName:data.name || user.displayName || "Customer",
+      customerPhone:data.phone || "",
       customerEmail:user.email || "",
       service,
       address,
@@ -508,8 +525,8 @@ $("bookingForm").addEventListener("submit",async event => {
       "Booking submitted successfully. Your Booking ID is shown below.";
     $("latestBookingId").textContent = bookingRef.id;
     $("paymentProofPanel").classList.remove("hidden");
-    $("bookingForm").reset();
-    $("bookingDate").min = today();
+
+    // Keep form values so WhatsApp can also use them.
     await loadBookings();
   } catch(error) {
     $("bookingMessage").textContent = "Booking failed: " + error.message;
@@ -877,8 +894,13 @@ onAuthStateChanged(auth,async user => {
 
   try {
     const snap = await getDoc(doc(db,"users",user.uid));
+    const profile = snap.exists() ? snap.data() : {};
+
+    $("customerName").textContent =
+      profile.name || user.displayName || "Customer";
+
     $("customerPhone").textContent =
-      snap.exists() ? (snap.data().phone || "Not available") : "Not available";
+      profile.phone || "Not available";
   } catch(error) {
     $("customerPhone").textContent = "Not available";
   }
