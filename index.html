@@ -359,4 +359,37 @@ window.loadAdminBookings = async () => {
         if(b.paymentStatus==="paid"){$("adminMessage").textContent="Payment is already marked paid.";return;}
         if(confirm("Have you checked the actual PhonePe payment and confirmed ₹20 was received?"))updateBooking(item.id,{paymentStatus:"paid"});
       };
-      card.append(title,id,details,address,date,fee,status,payment,confirmBtn,cancelBtn,c
+      card.append(title,id,details,address,date,fee,status,payment,confirmBtn,cancelBtn,completeBtn,paidBtn);
+      if(b.paymentStatus === "paid"){
+        const receiptBtn=document.createElement("button");
+        receiptBtn.className="btn";
+        receiptBtn.textContent="Download Receipt / PDF";
+        receiptBtn.onclick=()=>window.printReceipt(item.id,b);
+        card.append(receiptBtn);
+      }
+      list.append(card);
+    });
+  }catch(error){$("adminMessage").textContent="Error loading bookings: "+error.message;}
+};
+async function updateBooking(id,changes){
+  if(!auth.currentUser||auth.currentUser.uid!==ADMIN_UID)return;
+  try{await updateDoc(doc(db,"bookings",id),changes);$("adminMessage").textContent="Booking updated successfully.";await loadAdminBookings();}
+  catch(error){$("adminMessage").textContent="Update failed: "+error.message;}
+}
+
+onAuthStateChanged(auth,async user=>{
+  hideAllPanels();
+  if(!user){$("registerPanel").classList.remove("hidden");return;}
+  if(user.uid===ADMIN_UID){$("adminDashboard").classList.remove("hidden");await loadAdminBookings();return;}
+  $("dashboard").classList.remove("hidden");
+  $("customerName").textContent=user.displayName||"Customer";
+  $("customerEmail").textContent=user.email||"";
+  try{const snap=await getDoc(doc(db,"users",user.uid));$("customerPhone").textContent=snap.exists()?(snap.data().phone||"Not available"):"Not available";}
+  catch(error){$("customerPhone").textContent="Not available";}
+  await loadBookings();
+});
+</script>
+</body>
+</html>
+
+                  
