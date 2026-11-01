@@ -4,140 +4,290 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PS POWER SERVICE</title>
+
 <style>
-:root{--yellow:#ffd500;--ink:#171717;--paper:#fff;--soft:#fff9dc;--line:#e5e5e5}
+:root{
+  --yellow:#ffd500;
+  --ink:#171717;
+  --paper:#fff;
+  --soft:#fff9dc;
+  --line:#e5e5e5;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#222}
-header{background:var(--ink);color:white;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#fff;
+  color:#222;
+}
+header{
+  background:var(--ink);
+  color:white;
+  padding:16px 5%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
 .logo{font-size:21px;font-weight:bold;color:var(--yellow)}
 nav a{color:white;text-decoration:none;margin:7px}
-.hero{background:linear-gradient(120deg,#171717,#393939);color:white;text-align:center;padding:64px 15px}
+.hero{
+  background:linear-gradient(120deg,#171717,#393939);
+  color:white;
+  text-align:center;
+  padding:64px 15px;
+}
 .hero h1{font-size:clamp(28px,5vw,42px);color:var(--yellow)}
-.btn{border:0;background:var(--yellow);color:var(--ink);padding:11px 17px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px}
+.btn{
+  border:0;
+  background:var(--yellow);
+  color:var(--ink);
+  padding:11px 17px;
+  border-radius:6px;
+  font-weight:bold;
+  cursor:pointer;
+  margin:5px;
+}
 .btn.dark{background:var(--ink);color:var(--yellow)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 section{padding:28px 5%;text-align:center}
-.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
-.service{padding:22px;background:var(--soft);border:1px solid #f1df85;border-radius:10px;font-weight:bold}
-.panel{max-width:1100px;margin:15px auto;background:white;padding:20px;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 12px #00000010}
+.services{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(170px,1fr));
+  gap:14px;
+}
+.service{
+  padding:22px;
+  background:var(--soft);
+  border:1px solid #f1df85;
+  border-radius:10px;
+  font-weight:bold;
+}
+.panel{
+  max-width:1100px;
+  margin:15px auto;
+  background:white;
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  box-shadow:0 2px 12px #00000010;
+}
 .auth-panel{max-width:600px}
-input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:6px;font:inherit}
+input,select,textarea{
+  width:100%;
+  padding:12px;
+  margin:7px 0;
+  border:1px solid #ccc;
+  border-radius:6px;
+  font:inherit;
+}
 textarea{min-height:80px}
 .hidden{display:none!important}
-.message{font-size:14px;color:#a00018;min-height:20px;overflow-wrap:anywhere}
-.booking{border:1px solid var(--line);border-radius:8px;padding:14px;margin:12px 0;text-align:left;background:#fffdf4;overflow-wrap:anywhere}
+.message{
+  font-size:14px;
+  color:#a00018;
+  min-height:20px;
+  overflow-wrap:anywhere;
+}
+.booking{
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:14px;
+  margin:12px 0;
+  text-align:left;
+  background:#fffdf4;
+  overflow-wrap:anywhere;
+}
 .price{font-size:22px;font-weight:bold;color:#927000}
-.payment-box{background:var(--soft);border:1px solid #f0d45c;border-radius:12px;padding:16px;margin:16px 0;text-align:center}
-.payment-box img{width:210px;max-width:100%;display:block;margin:12px auto;border:1px solid #ddd;border-radius:8px;background:white;padding:5px}
+.payment-box{
+  background:var(--soft);
+  border:1px solid #f0d45c;
+  border-radius:12px;
+  padding:16px;
+  margin:16px 0;
+  text-align:center;
+}
+.payment-box img{
+  width:210px;
+  max-width:100%;
+  display:block;
+  margin:12px auto;
+  border:1px solid #ddd;
+  border-radius:8px;
+  background:white;
+  padding:5px;
+}
 .payment-note{font-size:14px;color:#555;line-height:1.5}
-.payment-upload-btn{display:inline-block;background:var(--ink);color:var(--yellow);text-decoration:none;padding:12px 18px;border-radius:6px;font-weight:bold;margin:10px auto}
-.booking-id{font-weight:bold;overflow-wrap:anywhere;color:var(--ink);background:var(--soft);padding:10px;border-radius:6px}
-.notification{border-left:5px solid var(--yellow);background:var(--soft);padding:12px;margin:10px 0;border-radius:8px;text-align:left}
+.payment-upload-btn{
+  display:inline-block;
+  background:var(--ink);
+  color:var(--yellow);
+  text-decoration:none;
+  padding:12px 18px;
+  border-radius:6px;
+  font-weight:bold;
+  margin:10px auto;
+}
+.booking-id{
+  font-weight:bold;
+  overflow-wrap:anywhere;
+  color:var(--ink);
+  background:var(--soft);
+  padding:10px;
+  border-radius:6px;
+}
+.notification{
+  border-left:5px solid var(--yellow);
+  background:var(--soft);
+  padding:12px;
+  margin:10px 0;
+  border-radius:8px;
+  text-align:left;
+}
 .notification strong{display:block;margin-bottom:5px}
-.notification.read{opacity:.7;background:#f3f3f3;border-left-color:#999}
-.notification-tools{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.notification.read{
+  opacity:.7;
+  background:#f3f3f3;
+  border-left-color:#999;
+}
+.notification-tools{
+  display:flex;
+  gap:8px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
 .notification-status{font-size:13px;color:#555}
-.table-wrap{width:100%;overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:8px}
-table{border-collapse:collapse;width:100%;min-width:850px;text-align:left;background:white}
+.table-wrap{
+  width:100%;
+  overflow-x:auto;
+  margin:14px 0;
+  border:1px solid var(--line);
+  border-radius:8px;
+}
+table{
+  border-collapse:collapse;
+  width:100%;
+  min-width:850px;
+  text-align:left;
+  background:white;
+}
 th,td{
   padding:11px 10px;
   border:1px solid #d8bd32;
   vertical-align:top;
   font-size:14px;
-            }
+}
 th{background:var(--ink);color:var(--yellow);position:sticky;top:0}
 tr:nth-child(even) td{background:#fffdf2}
-.status{font-weight:bold;text-transform:capitalize}
-footer{background:var(--ink);color:white;text-align:center;padding:20px}
+footer{
+  background:var(--ink);
+  color:white;
+  text-align:center;
+  padding:20px;
+}
 .small-note{font-size:13px;color:#666}
-@media(max-width:600px){header{justify-content:center;text-align:center}.hero{padding:45px 12px}section{padding:22px 12px}.panel{padding:14px}}
+
 /* IMAGE SLIDER */
-.slider {
-  max-width: 1100px;
-  height: 320px;
-  margin: 20px auto;
-  position: relative;
-  overflow: hidden;
-  border-radius: 14px;
-  background: #171717;
+.slider{
+  max-width:1100px;
+  height:320px;
+  margin:20px auto;
+  position:relative;
+  overflow:hidden;
+  border-radius:14px;
+  background:#171717;
+}
+.slide{display:none;width:100%;height:100%;position:relative}
+.slide.active{display:block}
+.slide img{width:100%;height:100%;object-fit:cover}
+.slide-caption{
+  position:absolute;
+  bottom:0;
+  width:100%;
+  padding:25px 12px;
+  color:white;
+  text-align:center;
+  background:linear-gradient(transparent,#000);
+}
+.slide-caption h2{color:#ffd500}
+.slider-dots{text-align:center;padding:10px}
+.slider-dots button{
+  width:12px;
+  height:12px;
+  border:0;
+  border-radius:50%;
+  margin:5px;
+  background:#bbb;
+}
+.slider-dots button.active{background:#ffd500}
+
+/* HOUSE DESIGN GALLERY */
+.design-gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:15px;
+  margin:20px 0;
+}
+.design-card{
+  border:1px solid #e5e5e5;
+  border-radius:10px;
+  padding:12px;
+  background:#fffdf2;
+  text-align:center;
+}
+.design-card img{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:8px;
+}
+.design-card h3{font-size:17px}
+.design-categories{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:5px;
+}
+.design-request-status{
+  font-weight:bold;
+  color:#806500;
 }
 
-.slide {
-  display: none;
-  width: 100%;
-  height: 100%;
-  position: relative;
+@media(max-width:600px){
+  header{justify-content:center;text-align:center}
+  .hero{padding:45px 12px}
+  section{padding:22px 12px}
+  .panel{padding:14px}
+  .slider{height:230px;margin:15px 10px}
 }
-
-.slide.active {
-  display: block;
-}
-
-.slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.slide-caption {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: 25px 12px;
-  color: white;
-  text-align: center;
-  background: linear-gradient(transparent, #000);
-}
-
-.slide-caption h2 {
-  color: #ffd500;
-}
-
-.slider-dots {
-  text-align: center;
-  padding: 10px;
-}
-
-.slider-dots button {
-  width: 12px;
-  height: 12px;
-  border: 0;
-  border-radius: 50%;
-  margin: 5px;
-  background: #bbb;
-}
-
-.slider-dots button.active {
-  background: #ffd500;
-}
-
-@media(max-width:600px) {
-  .slider {
-    height: 230px;
-    margin: 15px 10px;
-  }
-  }
 </style>
 </head>
+
 <body>
+
 <header>
   <div class="logo">⚡ PS POWER SERVICE</div>
   <nav>
-  <a href="#home">Home</a>
-  <a href="#services">Services</a>
-  <a href="#account">Account</a>
-  <a href="#contact">Contact</a>
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+    <a href="#design-gallery">Designs</a>
+    <a href="#account">Account</a>
+    <a href="#contact">Contact</a>
   </nav>
 </header>
+
 <div class="hero" id="home">
-  <h1>PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p>
+  <h1>PS POWER SERVICE</h1>
+  <p>Powering Your Home, Safely.</p>
   <p>Electrical Work • Home Wiring • Lenter Piping • Repair</p>
   <button class="btn" onclick="showLogin()">Customer Login</button>
   <button class="btn" onclick="showRegister()">Customer Register</button>
   <button class="btn dark" onclick="showAdminLogin()">Admin Login</button>
-</div><!-- HOME IMAGE SLIDER -->
-<div class="slider" id="homeSlider">
+</div>
 
+<!-- HOME IMAGE SLIDER -->
+<div class="slider" id="homeSlider">
   <div class="slide active">
     <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=1400&q=80" alt="Electrical Work">
     <div class="slide-caption">
@@ -161,7 +311,6 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
       <p>Quality Piping Work</p>
     </div>
   </div>
-
 </div>
 
 <div class="slider-dots" id="sliderDots">
@@ -169,329 +318,1113 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
   <button type="button" aria-label="Slide 2"></button>
   <button type="button" aria-label="Slide 3"></button>
 </div>
-<section id="services"><h2>Our Services</h2><div class="services">
-  <div class="service">⚡ Electrical Work</div><div class="service">🏠 Home Wiring</div>
-  <div class="service">🔧 Repair & Maintenance</div><div class="service">💡 Lenter Piping</div>
-</div></section>
-  <!-- HOUSE DESIGN GALLERY -->
-<section id="design-gallery" class="section">
-  <div class="container">
-    <h2>House Designs Gallery</h2>
-    <p>Choose your favourite home design.</p>
 
-    <div class="design-categories">
-      <button class="btn" onclick="filterDesigns('All')">All</button>
-      <button class="btn" onclick="filterDesigns('House Wiring Design')">House Wiring</button>
-      <button class="btn" onclick="filterDesigns('TV Unit Design')">TV Unit</button>
-      <button class="btn" onclick="filterDesigns('Ceiling Design')">Ceiling</button>
-      <button class="btn" onclick="filterDesigns('Kitchen Design')">Kitchen</button>
-      <button class="btn" onclick="filterDesigns('Wardrobe Design')">Wardrobe</button>
-      <button class="btn" onclick="filterDesigns('Switch Board Design')">Switch Board</button>
-    </div>
-
-    <div id="designGalleryList" class="design-gallery-grid">
-      <p>Designs loading...</p>
-    </div>
-
-    <!-- ADMIN UPLOAD PANEL -->
-    <div id="adminDesignUpload" class="panel hidden">
-      <h3>Admin — Add New Design</h3>
-
-      <label>Design Name</label>
-      <input id="designName" type="text" placeholder="Enter design name">
-
-      <label>Design Category</label>
-      <select id="designCategory">
-        <option value="House Wiring Design">House Wiring Design</option>
-        <option value="TV Unit Design">TV Unit Design</option>
-        <option value="Ceiling Design">Ceiling Design</option>
-        <option value="Kitchen Design">Kitchen Design</option>
-        <option value="Wardrobe Design">Wardrobe Design</option>
-        <option value="Switch Board Design">Switch Board Design</option>
-      </select>
-
-      <label>Select Design Photo</label>
-      <input id="designPhoto" type="file" accept="image/*">
-
-      <button class="btn" id="uploadDesignBtn" onclick="uploadNewDesign()">
-        Upload Design
-      </button>
-      <p id="designUploadMessage"></p>
-    </div>
+<section id="services">
+  <h2>Our Services</h2>
+  <div class="services">
+    <div class="service">⚡ Electrical Work</div>
+    <div class="service">🏠 Home Wiring</div>
+    <div class="service">🔧 Repair & Maintenance</div>
+    <div class="service">💡 Lenter Piping</div>
   </div>
 </section>
-<section id="account"><h2>Account</h2>
-<div class="panel auth-panel" id="registerPanel">
-  <h3>Customer Registration</h3>
-  <input id="regName" placeholder="Full Name" autocomplete="name">
-  <input id="regPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric">
-  <input id="regEmail" type="email" placeholder="Email Address" autocomplete="email">
-  <input id="regPassword" type="password" placeholder="Create Password" autocomplete="new-password">
-  <button class="btn" onclick="registerCustomer()">Register</button>
-  <p>Already have an account?</p><button class="btn dark" onclick="showLogin()">Login</button>
-  <div class="message" id="regMessage" aria-live="polite"></div>
-</div>
-<div class="panel auth-panel hidden" id="loginPanel">
-  <h3>Customer Login</h3><input id="loginEmail" type="email" placeholder="Email Address">
-  <input id="loginPassword" type="password" placeholder="Password">
-  <button class="btn" onclick="loginCustomer()">Login</button>
-  <button class="btn dark" onclick="resetPassword()">Forgot Password?</button>
-  <button class="btn" onclick="showRegister()">Create Account</button>
-  <div class="message" id="loginMessage"></div>
-</div>
-<div class="panel auth-panel hidden" id="adminLoginPanel">
-  <h3>🔐 Admin Login</h3><input id="adminEmail" type="email" placeholder="Admin Email">
-  <input id="adminPassword" type="password" placeholder="Admin Password">
-  <button class="btn" onclick="loginAdmin()">Admin Login</button>
-  <button class="btn dark" onclick="showRegister()">Back</button>
-  <div class="message" id="adminLoginMessage"></div>
-</div>
-<div class="panel hidden" id="dashboard">
-  <h3>Welcome, <span id="customerName"></span>!</h3>
-  <p>Email: <span id="customerEmail"></span> | Mobile: <span id="customerPhone"></span></p><hr>
-  <h3>⚡ Book a Service</h3>
-  <form id="bookingForm">
-    <label>Choose Service</label><select id="serviceName" required>
-      <option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option>
+
+<!-- HOUSE DESIGN GALLERY -->
+<section id="design-gallery">
+  <h2>House Designs Gallery</h2>
+  <p>Choose your favourite home design.</p>
+
+  <div class="design-categories">
+    <button class="btn" onclick="filterDesigns('All')">All</button>
+    <button class="btn" onclick="filterDesigns('House Wiring Design')">House Wiring</button>
+    <button class="btn" onclick="filterDesigns('TV Unit Design')">TV Unit</button>
+    <button class="btn" onclick="filterDesigns('Ceiling Design')">Ceiling</button>
+    <button class="btn" onclick="filterDesigns('Kitchen Design')">Kitchen</button>
+    <button class="btn" onclick="filterDesigns('Wardrobe Design')">Wardrobe</button>
+    <button class="btn" onclick="filterDesigns('Switch Board Design')">Switch Board</button>
+  </div>
+
+  <div id="designGalleryList" class="design-gallery-grid">
+    <p>Designs loading...</p>
+  </div>
+
+  <!-- ADMIN DESIGN PANEL -->
+  <div id="adminDesignUpload" class="panel hidden">
+    <h3>Admin — Add New Design</h3>
+
+    <label>Design Name</label>
+    <input id="designName" type="text" placeholder="Enter design name">
+
+    <label>Design Category</label>
+    <select id="designCategory">
+      <option value="House Wiring Design">House Wiring Design</option>
+      <option value="TV Unit Design">TV Unit Design</option>
+      <option value="Ceiling Design">Ceiling Design</option>
+      <option value="Kitchen Design">Kitchen Design</option>
+      <option value="Wardrobe Design">Wardrobe Design</option>
+      <option value="Switch Board Design">Switch Board Design</option>
     </select>
-    <label>Full Address</label><textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
-    <label>Booking Date</label><input id="bookingDate" type="date" required>
-    <p>Booking Fee</p><div class="price">₹20 Fixed</div>
-    <div class="payment-box"><h3>📱 Pay ₹20 via PhonePe</h3>
-      <img src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png" alt="PS POWER SERVICE PhonePe QR Code">
-      <p><strong>Scan the QR code and pay ₹20 booking fee.</strong></p>
-      <p class="payment-note">After submitting your booking, use the Booking ID to upload your payment screenshot. Payment stays Pending until Admin verifies it.</p>
-    </div>
-    <button class="btn" type="submit" id="bookingButton">Submit Booking</button>
-    <button class="btn dark" type="button" onclick="sendBookingWhatsApp()">WhatsApp Booking</button>
-  </form>
-  <div class="message" id="bookingMessage" aria-live="polite"></div>
-  <div class="booking hidden" id="paymentProofPanel"><h3>Upload Payment Screenshot</h3>
-    <p>Your Booking ID:</p><p class="booking-id" id="latestBookingId"></p>
-    <p class="payment-note">Copy this ID and enter it in the Google Form with your payment screenshot.</p>
-    <a class="payment-upload-btn" href="https://forms.gle/7dnzHW8AopbkGpJL9" target="_blank" rel="noopener noreferrer">Upload Payment Screenshot</a>
+
+    <label>Design Photo URL</label>
+    <input id="designPhoto" type="url" placeholder="Paste Design Photo URL" required>
+
+    <button class="btn" id="uploadDesignBtn" onclick="uploadNewDesign()">Add Design</button>
+    <p id="designUploadMessage" class="message"></p>
   </div>
-  <hr><h3>🔔 Notifications <span id="unreadNotificationCount" class="notification-status">(0 unread)</span></h3>
-  <div class="notification-tools"><button class="btn" type="button" onclick="markAllNotificationsRead()">Mark All as Read</button></div>
-  <div id="customerNotifications">Your booking updates will appear here.</div>
-  <h3>📋 My Booking History</h3><p class="small-note">Booking status updates automatically when Admin changes it.</p>
-  <button class="btn" onclick="loadBookings()">Refresh Bookings</button>
-  <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Service</th><th>Date</th><th>Address</th><th>Fee</th><th>Payment</th><th>Booking Status</th><th>Receipt</th></tr></thead><tbody id="customerBookingRows"><tr><td colspan="8">No bookings yet.</td></tr></tbody></table></div>
-  <button class="btn dark" onclick="logoutUser()">Logout</button>
-</div>
-<div class="panel hidden" id="adminDashboard">
-  <h2>⚡ Admin Dashboard</h2><p>Welcome, Administrator</p>
-  <div class="booking"><h3>📱 Add WhatsApp Booking</h3>
-    <form id="whatsappBookingForm">
-      <input id="waCustomerName" placeholder="Customer Name" required>
-      <input id="waCustomerPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric" required>
-      <select id="waService" required><option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option></select>
-      <textarea id="waAddress" placeholder="Customer Full Address" required></textarea>
-      <input id="waBookingDate" type="date" required><p class="price">Booking Fee: ₹20</p>
-      <p class="payment-note">Payment remains Pending until Admin verifies the payment.</p>
-      <button class="btn" type="submit" id="waSaveButton">Save WhatsApp Booking</button>
+</section>
+
+<section id="account">
+  <h2>Account</h2>
+
+  <div class="panel auth-panel" id="registerPanel">
+    <h3>Customer Registration</h3>
+    <input id="regName" placeholder="Full Name" autocomplete="name">
+    <input id="regPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric">
+    <input id="regEmail" type="email" placeholder="Email Address" autocomplete="email">
+    <input id="regPassword" type="password" placeholder="Create Password" autocomplete="new-password">
+    <button class="btn" onclick="registerCustomer()">Register</button>
+    <p>Already have an account?</p>
+    <button class="btn dark" onclick="showLogin()">Login</button>
+    <div class="message" id="regMessage" aria-live="polite"></div>
+  </div>
+
+  <div class="panel auth-panel hidden" id="loginPanel">
+    <h3>Customer Login</h3>
+    <input id="loginEmail" type="email" placeholder="Email Address">
+    <input id="loginPassword" type="password" placeholder="Password">
+    <button class="btn" onclick="loginCustomer()">Login</button>
+    <button class="btn dark" onclick="resetPassword()">Forgot Password?</button>
+    <button class="btn" onclick="showRegister()">Create Account</button>
+    <div class="message" id="loginMessage"></div>
+  </div>
+
+  <div class="panel auth-panel hidden" id="adminLoginPanel">
+    <h3>🔐 Admin Login</h3>
+    <input id="adminEmail" type="email" placeholder="Admin Email">
+    <input id="adminPassword" type="password" placeholder="Admin Password">
+    <button class="btn" onclick="loginAdmin()">Admin Login</button>
+    <button class="btn dark" onclick="showRegister()">Back</button>
+    <div class="message" id="adminLoginMessage"></div>
+  </div>
+
+  <!-- CUSTOMER DASHBOARD -->
+  <div class="panel hidden" id="dashboard">
+    <h3>Welcome, <span id="customerName"></span>!</h3>
+    <p>Email: <span id="customerEmail"></span> | Mobile: <span id="customerPhone"></span></p>
+    <hr>
+
+    <h3>⚡ Book a Service</h3>
+    <form id="bookingForm">
+      <label>Choose Service</label>
+      <select id="serviceName" required>
+        <option value="">Select Service</option>
+        <option>Electrical Work</option>
+        <option>Home Wiring</option>
+        <option>Lenter Piping</option>
+        <option>Repair & Maintenance</option>
+      </select>
+
+      <label>Full Address</label>
+      <textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
+
+      <label>Booking Date</label>
+      <input id="bookingDate" type="date" required>
+
+      <p>Booking Fee</p>
+      <div class="price">₹20 Fixed</div>
+
+      <div class="payment-box">
+        <h3>📱 Pay ₹20 via PhonePe</h3>
+        <img src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png" alt="PS POWER SERVICE PhonePe QR Code">
+        <p><strong>Scan the QR code and pay ₹20 booking fee.</strong></p>
+        <p class="payment-note">After submitting your booking, use the Booking ID to upload your payment screenshot. Payment stays Pending until Admin verifies it.</p>
+      </div>
+
+      <button class="btn" type="submit" id="bookingButton">Submit Booking</button>
+      <button class="btn dark" type="button" onclick="sendBookingWhatsApp()">WhatsApp Booking</button>
     </form>
+
+    <div class="message" id="bookingMessage" aria-live="polite"></div>
+
+    <div class="booking hidden" id="paymentProofPanel">
+      <h3>Upload Payment Screenshot</h3>
+      <p>Your Booking ID:</p>
+      <p class="booking-id" id="latestBookingId"></p>
+      <p class="payment-note">Copy this ID and enter it in the Google Form with your payment screenshot.</p>
+      <a class="payment-upload-btn" href="https://forms.gle/7dnzHW8AopbkGpJL9" target="_blank" rel="noopener noreferrer">Upload Payment Screenshot</a>
+    </div>
+
+    <hr>
+    <h3>🔔 Notifications <span id="unreadNotificationCount" class="notification-status">(0 unread)</span></h3>
+    <div class="notification-tools">
+      <button class="btn" type="button" onclick="markAllNotificationsRead()">Mark All as Read</button>
+    </div>
+    <div id="customerNotifications">Your booking updates will appear here.</div>
+
+    <h3>📋 My Booking History</h3>
+    <p class="small-note">Booking status updates automatically when Admin changes it.</p>
+    <button class="btn" onclick="loadBookings()">Refresh Bookings</button>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Booking ID</th><th>Service</th><th>Date</th><th>Address</th>
+            <th>Fee</th><th>Payment</th><th>Booking Status</th><th>Receipt</th>
+          </tr>
+        </thead>
+        <tbody id="customerBookingRows">
+          <tr><td colspan="8">No bookings yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="btn dark" onclick="logoutUser()">Logout</button>
   </div>
-  <h3>All Customer Bookings</h3><p class="small-note">Live table: new bookings and status changes appear automatically.</p>
-  <button class="btn" onclick="loadAdminBookings()">Refresh All Bookings</button>
-  <div id="adminMessage" class="message" aria-live="polite"></div>
-  <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Customer</th><th>Mobile</th><th>Email</th><th>Service</th><th>Address</th><th>Date</th><th>Source</th><th>Fee</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adminBookingRows"><tr><td colspan="12">Loading bookings...</td></tr></tbody></table></div>
-  <button class="btn dark" onclick="logoutUser()">Admin Logout</button>
-</div>
-</section><section id="contact">
+
+  <!-- ADMIN DASHBOARD -->
+  <div class="panel hidden" id="adminDashboard">
+    <h2>⚡ Admin Dashboard</h2>
+    <p>Welcome, Administrator</p>
+
+    <div class="booking">
+      <h3>📱 Add WhatsApp Booking</h3>
+      <form id="whatsappBookingForm">
+        <input id="waCustomerName" placeholder="Customer Name" required>
+        <input id="waCustomerPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric" required>
+        <select id="waService" required>
+          <option value="">Select Service</option>
+          <option>Electrical Work</option>
+          <option>Home Wiring</option>
+          <option>Lenter Piping</option>
+          <option>Repair & Maintenance</option>
+        </select>
+        <textarea id="waAddress" placeholder="Customer Full Address" required></textarea>
+        <input id="waBookingDate" type="date" required>
+        <p class="price">Booking Fee: ₹20</p>
+        <p class="payment-note">Payment remains Pending until Admin verifies the payment.</p>
+        <button class="btn" type="submit" id="waSaveButton">Save WhatsApp Booking</button>
+      </form>
+    </div>
+
+    <hr>
+    <h3>🏠 Customer Design Requests</h3>
+    <div id="adminDesignRequests">Loading design requests...</div>
+
+    <h3>All Customer Bookings</h3>
+    <p class="small-note">Live table: new bookings and status changes appear automatically.</p>
+    <button class="btn" onclick="loadAdminBookings()">Refresh All Bookings</button>
+    <div id="adminMessage" class="message" aria-live="polite"></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Booking ID</th><th>Customer</th><th>Mobile</th><th>Email</th>
+            <th>Service</th><th>Address</th><th>Date</th><th>Source</th>
+            <th>Fee</th><th>Payment</th><th>Status</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="adminBookingRows">
+          <tr><td colspan="12">Loading bookings...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button class="btn dark" onclick="logoutUser()">Admin Logout</button>
+  </div>
+</section>
+
+<section id="contact">
   <h2>📞 Contact Us</h2>
   <div class="panel">
     <h3>⚡ PS POWER SERVICE</h3>
     <p>📱 Mobile: 8144722094</p>
     <p>📧 Email: sidharthhuika099@gmail.com</p>
-    <p>📍 Location:Dakuluguda</p>
+    <p>📍 Location: Dakuluguda</p>
     <a class="btn" href="tel:8144722094">Call Now</a>
-    <a class="btn dark"
-       href="https://wa.me/918144722094">
-       WhatsApp Us
-    </a>
+    <a class="btn dark" href="https://wa.me/918144722094">WhatsApp Us</a>
   </div>
 </section>
-<footer><p>PS POWER SERVICE</p><p>Powering Your Home, Safely.</p></footer>
+
+<footer>
+  <p>PS POWER SERVICE</p>
+  <p>Powering Your Home, Safely.</p>
+</footer>
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,sendPasswordResetEmail,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {getFirestore,doc,setDoc,getDoc,collection,addDoc,query,where,getDocs,updateDoc,serverTimestamp,onSnapshot} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import {initializeApp}
+from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
-const firebaseConfig={apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",authDomain:"ps-power-service-68007.firebaseapp.com",projectId:"ps-power-service-68007",storageBucket:"ps-power-service-68007.firebasestorage.app",messagingSenderId:"647095348680",appId:"1:647095348680:web:51b3833ce08d767e9d64fd"};
-const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
-const PAYMENT_FORM_URL="https://forms.gle/7dnzHW8AopbkGpJL9";
-const PAYMENT_QR_URL="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png";
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getFirestore(app);
-const $=id=>document.getElementById(id);
-let stopCustomerListener=null,stopAdminListener=null,lastCustomerBookings=[];
-function hideAllPanels(){["registerPanel","loginPanel","adminLoginPanel","dashboard","adminDashboard"].forEach(id=>$(id).classList.add("hidden"))}
-function today(){const d=new Date(),offset=d.getTimezoneOffset();return new Date(d.getTime()-offset*60000).toISOString().slice(0,10)}
-$("bookingDate").min=today();$("waBookingDate").min=today();
-function stopListeners(){if(stopCustomerListener){stopCustomerListener();stopCustomerListener=null}if(stopAdminListener){stopAdminListener();stopAdminListener=null}}
-function showError(el,error){$(el).textContent=error?.message||String(error)}
-window.showRegister=()=>{if(auth.currentUser)return;hideAllPanels();$("registerPanel").classList.remove("hidden")};
-window.showLogin=()=>{if(auth.currentUser)return;hideAllPanels();$("loginPanel").classList.remove("hidden")};
-window.showAdminLogin=()=>{if(auth.currentUser)return;hideAllPanels();$("adminLoginPanel").classList.remove("hidden")};
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signOut
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-window.registerCustomer=async()=>{
- const name=$("regName").value.trim(),phone=$("regPhone").value.trim(),email=$("regEmail").value.trim(),password=$("regPassword").value;
- $("regMessage").textContent="";
- if(!name||!phone||!email||!password){$("regMessage").textContent="Please fill all fields.";return}
- if(!/^[0-9]{10}$/.test(phone)){$("regMessage").textContent="Enter a valid 10-digit mobile number.";return}
- if(password.length<6){$("regMessage").textContent="Password must be at least 6 characters.";return}
- try{const result=await createUserWithEmailAndPassword(auth,email,password);await updateProfile(result.user,{displayName:name});await setDoc(doc(db,"users",result.user.uid),{name,phone,email,role:"customer",createdAt:serverTimestamp()})}
- catch(error){showError("regMessage",error)}
-};
-window.loginCustomer=async()=>{ $("loginMessage").textContent="";try{await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),$("loginPassword").value)}catch(error){showError("loginMessage",error)}};
-window.loginAdmin=async()=>{
- $("adminLoginMessage").textContent="";const email=$("adminEmail").value.trim(),password=$("adminPassword").value;
- if(!email||!password){$("adminLoginMessage").textContent="Enter Admin email and password.";return}
- try{const result=await signInWithEmailAndPassword(auth,email,password);if(result.user.uid!==ADMIN_UID){await signOut(auth);$("adminLoginMessage").textContent="Not authorized as Admin."}}
- catch(error){showError("adminLoginMessage",error)}
-};
-window.resetPassword=async()=>{const email=$("loginEmail").value.trim();if(!email){$("loginMessage").textContent="Enter your email address first.";return}try{await sendPasswordResetEmail(auth,email);$("loginMessage").textContent="Password reset email sent."}catch(error){showError("loginMessage",error)}};
-window.logoutUser=async()=>{try{stopListeners();await signOut(auth)}catch(error){alert(error.message)}};
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  serverTimestamp,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-window.sendBookingWhatsApp=async()=>{
- const user=auth.currentUser;if(!user||user.uid===ADMIN_UID){alert("Please login as a customer first.");return}
- const service=$("serviceName").value.trim(),address=$("bookingAddress").value.trim(),date=$("bookingDate").value;
- if(!service||!address||!date){alert("Please fill Service, Address and Booking Date.");return}
- if(date<today()){alert("Please choose today or a future date.");return}
- try{const profile=await getDoc(doc(db,"users",user.uid)),data=profile.exists()?profile.data():{},name=data.name||user.displayName||"Customer",mobile=data.phone||"";
- if(!mobile){alert("Mobile number not found. Please check your customer profile.");return}
- const message=`Hello PS POWER SERVICE, I want to book a service.\n\nName: ${name}\nMobile: ${mobile}\nService: ${service}\nAddress: ${address}\nBooking Date: ${date}\n\nBooking Fee: Rs.20\nPayment QR: ${PAYMENT_QR_URL}\n\nPayment will be verified by Admin.`;
- window.open("https://wa.me/918144722094?text="+encodeURIComponent(message),"_blank","noopener,noreferrer");
- }catch(error){alert("Could not load customer details: "+error.message)}
+/* FIREBASE CONFIG */
+const firebaseConfig = {
+  apiKey: "AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",
+  authDomain: "ps-power-service-68007.firebaseapp.com",
+  projectId: "ps-power-service-68007",
+  storageBucket: "ps-power-service-68007.firebasestorage.app",
+  messagingSenderId: "647095348680",
+  appId: "1:647095348680:web:51b3833ce08d767e9d64fd"
 };
 
-$("whatsappBookingForm").addEventListener("submit",async event=>{
- event.preventDefault();const user=auth.currentUser;if(!user||user.uid!==ADMIN_UID){$("adminMessage").textContent="Admin access required.";return}
- const customerName=$("waCustomerName").value.trim(),customerPhone=$("waCustomerPhone").value.trim(),service=$("waService").value,address=$("waAddress").value.trim(),bookingDate=$("waBookingDate").value,button=$("waSaveButton");
- if(!/^[0-9]{10}$/.test(customerPhone)){$("adminMessage").textContent="Enter a valid 10-digit mobile number.";return}
- if(!customerName||!service||!address||!bookingDate){$("adminMessage").textContent="Please fill all fields.";return}
- if(bookingDate<today()){$("adminMessage").textContent="Choose today or a future date.";return}
- button.disabled=true;$("adminMessage").textContent="Saving WhatsApp booking...";
- try{const ref=await addDoc(collection(db,"bookings"),{userId:user.uid,customerName,customerPhone,customerEmail:"",service,address,bookingDate,bookingFee:20,bookingSource:"whatsapp",paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});$("whatsappBookingForm").reset();$("waBookingDate").min=today();$("adminMessage").textContent="WhatsApp booking saved. ID: "+ref.id}
- catch(error){showError("adminMessage",error)}finally{button.disabled=false}
-});
+const ADMIN_UID = "UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 
-$("bookingForm").addEventListener("submit",async event=>{
- event.preventDefault();const user=auth.currentUser;if(!user||user.uid===ADMIN_UID)return;
- const service=$("serviceName").value,address=$("bookingAddress").value.trim(),date=$("bookingDate").value,button=$("bookingButton");
- if(!service||!address||!date){$("bookingMessage").textContent="Please complete all booking details.";return}
- if(date<today()){$("bookingMessage").textContent="Choose today or a future date.";return}
- button.disabled=true;$("bookingMessage").textContent="Submitting booking...";$("paymentProofPanel").classList.add("hidden");
- try{const profile=await getDoc(doc(db,"users",user.uid)),data=profile.exists()?profile.data():{};
- const ref=await addDoc(collection(db,"bookings"),{userId:user.uid,customerName:data.name||user.displayName||"Customer",customerPhone:data.phone||"",customerEmail:user.email||"",service,address,bookingDate:date,bookingFee:20,paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});
- $("bookingMessage").textContent="Booking submitted successfully."; $("latestBookingId").textContent=ref.id;$("paymentProofPanel").classList.remove("hidden");
- }catch(error){showError("bookingMessage",error)}finally{button.disabled=false}
-});
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const $ = id => document.getElementById(id);
 
-function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-window.printReceipt=(id,b)=>{
- if(!b||b.paymentStatus!=="paid"){alert("Receipt is available after payment is verified by Admin.");return}
- const fields={customer:esc(b.customerName||"Customer"),email:esc(b.customerEmail||""),service:esc(b.service||"Service"),address:esc(b.address||""),date:esc(b.bookingDate||""),id:esc(id),receiptDate:esc(new Date().toLocaleDateString("en-IN"))};
- const w=window.open("","_blank","width=760,height=850");if(!w){alert("Please allow pop-ups for this website.");return}
- w.document.open();w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>PS POWER SERVICE Receipt</title><style>body{font-family:Arial;padding:25px;max-width:760px;margin:auto}.receipt{border:2px solid #171717;padding:22px;border-radius:10px}header{text-align:center;border-bottom:3px solid #ffd500;padding-bottom:12px}table{width:100%;border-collapse:collapse;margin-top:20px}td{padding:11px;border-bottom:1px solid #ddd}td:first-child{font-weight:bold;width:38%}.total{text-align:right;font-size:21px;font-weight:bold;margin-top:20px}.actions{text-align:center;margin:18px}button{padding:12px;background:#171717;color:#ffd500;border:0}@media print{.actions{display:none}}</style></head><body><div class="actions"><button onclick="window.print()">Save / Print PDF</button></div><div class="receipt"><header><h1>⚡ PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p><h2>PAYMENT RECEIPT</h2><b>PAYMENT PAID</b></header><table><tr><td>Receipt Date</td><td>${fields.receiptDate}</td></tr><tr><td>Booking ID</td><td>${fields.id}</td></tr><tr><td>Customer</td><td>${fields.customer}</td></tr><tr><td>Email</td><td>${fields.email||"—"}</td></tr><tr><td>Service</td><td>${fields.service}</td></tr><tr><td>Address</td><td>${fields.address}</td></tr><tr><td>Booking Date</td><td>${fields.date}</td></tr><tr><td>Payment</td><td>PAID</td></tr></table><div class="total">Amount Received: ₹20</div><p>This receipt confirms that Admin marked the booking fee as paid.</p></div></body></html>`);w.document.close();w.focus();
-};
+let currentUser = null;
+let currentCustomer = null;
+let designUnsubscribe = null;
+let requestUnsubscribe = null;
+let bookingUnsubscribe = null;
+let customerBookingUnsubscribe = null;
+let notificationUnsubscribe = null;
+let selectedDesignCategory = "All";
+let currentBookings = [];
+let currentNotifications = [];
 
-/* Customer notification read-state is stored only in this browser. */
-function readKey(uid){return "psps_read_notifications_"+uid}
-function getReadIds(uid){try{return new Set(JSON.parse(localStorage.getItem(readKey(uid))||"[]"))}catch{return new Set()}}
-function saveReadIds(uid,ids){try{localStorage.setItem(readKey(uid),JSON.stringify([...ids]))}catch(e){console.warn(e)}}
-window.markNotificationRead=id=>{const u=auth.currentUser;if(!u)return;const ids=getReadIds(u.uid);ids.add(id);saveReadIds(u.uid,ids);renderCustomerBookings(lastCustomerBookings,u.uid)};
-window.markAllNotificationsRead=()=>{const u=auth.currentUser;if(!u)return;const ids=getReadIds(u.uid);lastCustomerBookings.forEach(x=>ids.add(x.id));saveReadIds(u.uid,ids);renderCustomerBookings(lastCustomerBookings,u.uid)};
-
-function addCell(row,value){const td=document.createElement("td");td.textContent=String(value??"—");row.append(td);return td}
-function renderCustomerBookings(items,uid){
- lastCustomerBookings=items;const tbody=$("customerBookingRows"),notices=$("customerNotifications");tbody.replaceChildren();notices.replaceChildren();
- if(!items.length){const tr=document.createElement("tr");const td=addCell(tr,"No bookings yet.");td.colSpan=8;tbody.append(tr);notices.textContent="No booking notifications yet.";$("unreadNotificationCount").textContent="(0 unread)";return}
- const readIds=getReadIds(uid);let unread=0;
- items.forEach(({id,b})=>{
-  const tr=document.createElement("tr");addCell(tr,id);addCell(tr,b.service||"Service");addCell(tr,b.bookingDate||"");addCell(tr,b.address||"");addCell(tr,"₹"+(b.bookingFee??20));addCell(tr,b.paymentStatus||"pending");addCell(tr,b.bookingStatus||"pending");
-  const receiptCell=document.createElement("td");if(b.paymentStatus==="paid"){const btn=document.createElement("button");btn.className="btn";btn.textContent="Receipt PDF";btn.onclick=()=>window.printReceipt(id,b);receiptCell.append(btn)}else receiptCell.textContent="After payment verification";tr.append(receiptCell);tbody.append(tr);
-  const state=(b.bookingStatus||"pending").toLowerCase(),messages={pending:["Booking received","Your booking is waiting for Admin confirmation."],confirmed:["Booking confirmed","Your service booking has been confirmed."],completed:["Work completed","Your service booking has been marked completed."],cancelled:["Booking cancelled","Please contact PS POWER SERVICE if you need help."]};
-  const info=messages[state];if(info){const isRead=readIds.has(id);if(!isRead)unread++;const box=document.createElement("div");box.className="notification"+(isRead?" read":"");const h=document.createElement("strong");h.textContent=info[0];const p=document.createElement("p");p.textContent=info[1];const small=document.createElement("small");small.textContent="Booking ID: "+id+" • "+(isRead?"Read":"Unread");box.append(h,p,small);if(!isRead){const btn=document.createElement("button");btn.className="btn";btn.textContent="Mark as Read";btn.onclick=()=>window.markNotificationRead(id);box.append(btn)}notices.append(box)}
- });
- $("unreadNotificationCount").textContent="("+unread+" unread)";
- if(!notices.childElementCount)notices.textContent="No booking notifications yet.";
-}
-function startCustomerListener(uid){
- if(stopCustomerListener)stopCustomerListener();
- $("customerBookingRows").innerHTML='<tr><td colspan="8">Loading bookings...</td></tr>';
- const q=query(collection(db,"bookings"),where("userId","==",uid));
- stopCustomerListener=onSnapshot(q,snap=>{
-  const items=snap.docs.map(d=>({id:d.id,b:d.data()})).sort((a,b)=>(b.b.createdAt?.seconds||0)-(a.b.createdAt?.seconds||0));
-  renderCustomerBookings(items,uid);
- },error=>{$("bookingMessage").textContent="Could not load live bookings: "+error.message});
-}
-window.loadBookings=()=>{const u=auth.currentUser;if(u&&u.uid!==ADMIN_UID)startCustomerListener(u.uid)};
-
-function renderAdminBookings(snapshot){
- const tbody=$("adminBookingRows");tbody.replaceChildren();
- if(snapshot.empty){const tr=document.createElement("tr"),td=addCell(tr,"No bookings found.");td.colSpan=12;tbody.append(tr);$("adminMessage").textContent="Total bookings: 0";return}
- const docs=snapshot.docs.slice().sort((a,b)=>(b.data().createdAt?.seconds||0)-(a.data().createdAt?.seconds||0));
- $("adminMessage").textContent="Total bookings: "+docs.length+" • Live updates active";
- docs.forEach(item=>{
-  const b=item.data(),tr=document.createElement("tr");addCell(tr,item.id);addCell(tr,b.customerName||"N/A");addCell(tr,b.customerPhone||"N/A");addCell(tr,b.customerEmail||"N/A");addCell(tr,b.service||"N/A");addCell(tr,b.address||"N/A");addCell(tr,b.bookingDate||"N/A");addCell(tr,b.bookingSource==="whatsapp"?"WhatsApp":"Website");addCell(tr,"₹"+(b.bookingFee??20));addCell(tr,b.paymentStatus||"pending");addCell(tr,b.bookingStatus||"pending");
-  const actions=document.createElement("td");
-  [["Confirm",{bookingStatus:"confirmed"}],["Cancel",{bookingStatus:"cancelled"}],["Complete",{bookingStatus:"completed"}]].forEach(([label,change])=>{const btn=document.createElement("button");btn.className="btn";btn.textContent=label;btn.onclick=()=>updateBooking(item.id,change);actions.append(btn)});
-  const paid=document.createElement("button");paid.className="btn dark";paid.textContent="Mark Paid";paid.disabled=b.paymentStatus==="paid";paid.onclick=()=>{if(confirm("Have you checked the actual PhonePe payment and confirmed ₹20 was received?"))updateBooking(item.id,{paymentStatus:"paid"})};actions.append(paid);
-  if(b.paymentStatus==="paid"){const receipt=document.createElement("button");receipt.className="btn";receipt.textContent="Receipt";receipt.onclick=()=>window.printReceipt(item.id,b);actions.append(receipt)}
-  tr.append(actions);tbody.append(tr);
- });
-}
-function startAdminListener(){
- if(stopAdminListener)stopAdminListener();
- $("adminBookingRows").innerHTML='<tr><td colspan="12">Loading bookings...</td></tr>';
- stopAdminListener=onSnapshot(collection(db,"bookings"),renderAdminBookings,error=>{$("adminMessage").textContent="Error loading bookings: "+error.message});
-}
-window.loadAdminBookings=()=>{if(auth.currentUser?.uid===ADMIN_UID)startAdminListener()};
-async function updateBooking(id,changes){
- if(auth.currentUser?.uid!==ADMIN_UID)return;
- try{await updateDoc(doc(db,"bookings",id),changes);$("adminMessage").textContent="Booking update saved. Live table is refreshing."}
- catch(error){$("adminMessage").textContent="Update failed: "+error.message}
+/* COMMON HELPERS */
+function showMessage(id, message, error = false) {
+  const el = $(id);
+  if (!el) return;
+  el.textContent = message;
+  el.style.color = error ? "#b00020" : "#167a35";
 }
 
-onAuthStateChanged(auth,async user=>{
- stopListeners();hideAllPanels();
- if(!user){$("registerPanel").classList.remove("hidden");return}
- if(user.uid===ADMIN_UID){$("adminDashboard").classList.remove("hidden");startAdminListener();return}
- $("dashboard").classList.remove("hidden");$("customerName").textContent=user.displayName||"Customer";$("customerEmail").textContent=user.email||"";
- try{const snap=await getDoc(doc(db,"users",user.uid)),profile=snap.exists()?snap.data():{};$("customerName").textContent=profile.name||user.displayName||"Customer";$("customerPhone").textContent=profile.phone||"Not available"}
- catch{$("customerPhone").textContent="Not available"}
- startCustomerListener(user.uid);
-});// HOME IMAGE SLIDER
-const slider = document.getElementById("homeSlider");
+function cleanText(value) {
+  return String(value || "").trim();
+}
 
-if (slider) {
-  const slides = [...slider.querySelectorAll(".slide")];
-  const dots = [...document.querySelectorAll("#sliderDots button")];
-  let currentSlide = 0;
-
-  function showSlide(index) {
-    currentSlide = (index + slides.length) % slides.length;
-
-    slides.forEach((slide, i) => {
-      slide.classList.toggle("active", i === currentSlide);
-    });
-
-    dots.forEach((dot, i) => {
-      dot.classList.toggle("active", i === currentSlide);
-    });
+function validPhotoURL(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "https:" || url.protocol === "http:";
+  } catch {
+    return false;
   }
+}
 
-  dots.forEach((dot, i) => {
-    dot.addEventListener("click", () => showSlide(i));
+function makeCell(value) {
+  const td = document.createElement("td");
+  td.textContent = value || "-";
+  return td;
+}
+
+function stopListeners() {
+  [
+    designUnsubscribe,
+    requestUnsubscribe,
+    bookingUnsubscribe,
+    customerBookingUnsubscribe,
+    notificationUnsubscribe
+  ].forEach(fn => {
+    if (typeof fn === "function") fn();
   });
 
-  setInterval(() => {
-    showSlide(currentSlide + 1);
-  }, 4000);
+  designUnsubscribe = null;
+  requestUnsubscribe = null;
+  bookingUnsubscribe = null;
+  customerBookingUnsubscribe = null;
+  notificationUnsubscribe = null;
 }
+
+/* ACCOUNT PANEL */
+window.showLogin = function() {
+  $("registerPanel").classList.add("hidden");
+  $("adminLoginPanel").classList.add("hidden");
+  $("loginPanel").classList.remove("hidden");
+  $("account").scrollIntoView({behavior:"smooth"});
+};
+
+window.showRegister = function() {
+  $("loginPanel").classList.add("hidden");
+  $("adminLoginPanel").classList.add("hidden");
+  $("registerPanel").classList.remove("hidden");
+  $("account").scrollIntoView({behavior:"smooth"});
+};
+
+window.showAdminLogin = function() {
+  $("registerPanel").classList.add("hidden");
+  $("loginPanel").classList.add("hidden");
+  $("adminLoginPanel").classList.remove("hidden");
+  $("account").scrollIntoView({behavior:"smooth"});
+};
+
+/* CUSTOMER REGISTER */
+window.registerCustomer = async function() {
+  const name = cleanText($("regName").value);
+  const phone = cleanText($("regPhone").value);
+  const email = cleanText($("regEmail").value);
+  const password = $("regPassword").value;
+
+  if (!name || !email || password.length < 6) {
+    showMessage("regMessage", "Name, email ଓ 6-character password ଦିଅ।", true);
+    return;
+  }
+
+  if (!/^[0-9]{10}$/.test(phone)) {
+    showMessage("regMessage", "10 digit mobile number ଦିଅ।", true);
+    return;
+  }
+
+  try {
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+
+    await updateProfile(result.user, {displayName:name});
+
+    await setDoc(doc(db, "users", result.user.uid), {
+      name,
+      phone,
+      email,
+      createdAt: serverTimestamp()
+    });
+
+    showMessage("regMessage", "Registration successful!");
+  } catch (error) {
+    showMessage("regMessage", error.message, true);
+  }
+};
+
+/* CUSTOMER LOGIN */
+window.loginCustomer = async function() {
+  try {
+    await signInWithEmailAndPassword(
+      auth,
+      cleanText($("loginEmail").value),
+      $("loginPassword").value
+    );
+  } catch (error) {
+    showMessage("loginMessage", error.message, true);
+  }
+};
+
+/* ADMIN LOGIN */
+window.loginAdmin = async function() {
+  try {
+    const result = await signInWithEmailAndPassword(
+      auth,
+      cleanText($("adminEmail").value),
+      $("adminPassword").value
+    );
+
+    if (result.user.uid !== ADMIN_UID) {
+      await signOut(auth);
+      showMessage("adminLoginMessage", "Admin account ନୁହେଁ।", true);
+    }
+  } catch (error) {
+    showMessage("adminLoginMessage", error.message, true);
+  }
+};
+
+/* PASSWORD RESET */
+window.resetPassword = async function() {
+  const email = cleanText($("loginEmail").value);
+
+  if (!email) {
+    showMessage("loginMessage", "ପ୍ରଥମେ email ଦିଅ।", true);
+    return;
+  }
+
+  try {
+    await sendPasswordResetEmail(auth, email);
+    showMessage("loginMessage", "Password reset email ପଠାଯାଇଛି।");
+  } catch (error) {
+    showMessage("loginMessage", error.message, true);
+  }
+};
+
+/* LOGOUT */
+window.logoutUser = async function() {
+  stopListeners();
+  await signOut(auth);
+  location.reload();
+};
+
+/* CUSTOMER PROFILE */
+async function loadCustomerProfile(user) {
+  const snap = await getDoc(doc(db, "users", user.uid));
+
+  currentCustomer = snap.exists() ? snap.data() : {
+    name: user.displayName || "Customer",
+    phone: "",
+    email: user.email || ""
+  };
+
+  $("customerName").textContent = currentCustomer.name || "Customer";
+  $("customerEmail").textContent = currentCustomer.email || user.email || "";
+  $("customerPhone").textContent = currentCustomer.phone || "Not provided";
+}
+
+/* DESIGN GALLERY */
+function startDesignListener() {
+  if (designUnsubscribe) designUnsubscribe();
+
+  designUnsubscribe = onSnapshot(
+    collection(db, "designs"),
+    snapshot => {
+      const designs = [];
+
+      snapshot.forEach(item => {
+        const data = item.data();
+        if (data.active !== false) {
+          designs.push({id:item.id, ...data});
+        }
+      });
+
+      renderDesigns(designs);
+    },
+    error => {
+      $("designGalleryList").textContent =
+        "Gallery loading error: " + error.message;
+    }
+  );
+}
+
+function renderDesigns(designs) {
+  const container = $("designGalleryList");
+  container.replaceChildren();
+
+  const filtered = selectedDesignCategory === "All"
+    ? designs
+    : designs.filter(d => d.category === selectedDesignCategory);
+
+  if (!filtered.length) {
+    container.textContent = "ଏହି Category ରେ ଏବେ କୌଣସି Design ନାହିଁ।";
+    return;
+  }
+
+  filtered.forEach(design => {
+    const card = document.createElement("div");
+    card.className = "design-card";
+
+    const img = document.createElement("img");
+    img.src = validPhotoURL(design.imageUrl) ? design.imageUrl : "";
+    img.alt = design.name || "House Design";
+    img.loading = "lazy";
+
+    const title = document.createElement("h3");
+    title.textContent = design.name || "Design";
+
+    const category = document.createElement("p");
+    category.textContent = design.category || "";
+
+    const button = document.createElement("button");
+    button.className = "btn";
+    button.textContent = "Select Design";
+    button.onclick = () => selectDesign(design);
+
+    card.append(img, title, category, button);
+    container.appendChild(card);
+  });
+}
+
+window.filterDesigns = function(category) {
+  selectedDesignCategory = category;
+  startDesignListener();
+};
+
+/* ADMIN ADD DESIGN */
+window.uploadNewDesign = async function() {
+  if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) {
+    showMessage("designUploadMessage", "Admin login required.", true);
+    return;
+  }
+
+  const name = cleanText($("designName").value);
+  const category = $("designCategory").value;
+  const imageUrl = cleanText($("designPhoto").value);
+
+  if (!name || !validPhotoURL(imageUrl)) {
+    showMessage("designUploadMessage", "Design name ଓ valid photo URL ଦିଅ।", true);
+    return;
+  }
+
+  const button = $("uploadDesignBtn");
+  button.disabled = true;
+
+  try {
+    await addDoc(collection(db, "designs"), {
+      name,
+      category,
+      imageUrl,
+      active: true,
+      createdBy: auth.currentUser.uid,
+      createdAt: serverTimestamp()
+    });
+
+    $("designName").value = "";
+    $("designPhoto").value = "";
+    showMessage("designUploadMessage", "Design successfully added!");
+  } catch (error) {
+    showMessage("designUploadMessage", error.message, true);
+  } finally {
+    button.disabled = false;
+  }
+};
+
+/* CUSTOMER SELECT DESIGN */
+async function selectDesign(design) {
+  if (!auth.currentUser) {
+    alert("Design select କରିବା ପାଇଁ Customer Login କର।");
+    showLogin();
+    return;
+  }
+
+  if (auth.currentUser.uid === ADMIN_UID) {
+    alert("Admin account ରୁ customer request କରିହେବ ନାହିଁ।");
+    return;
+  }
+
+  const confirmed = confirm(
+    "ଏହି Design ପାଇଁ Request ପଠାଇବାକୁ ଚାହୁଁଛ?"
+  );
+
+  if (!confirmed) return;
+
+  try {
+    await addDoc(collection(db, "designRequests"), {
+      designId: design.id,
+      designName: design.name || "",
+      category: design.category || "",
+      imageUrl: design.imageUrl || "",
+      userId: auth.currentUser.uid,
+      customerName: currentCustomer?.name || auth.currentUser.displayName || "",
+      customerPhone: currentCustomer?.phone || "",
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+
+    alert("Design Request ପଠାଯାଇଛି!");
+  } catch (error) {
+    alert("Request Error: " + error.message);
+  }
+}
+
+/* ADMIN DESIGN REQUESTS */
+function startDesignRequestListener() {
+  if (requestUnsubscribe) requestUnsubscribe();
+
+  requestUnsubscribe = onSnapshot(
+    collection(db, "designRequests"),
+    snapshot => {
+      const container = $("adminDesignRequests");
+      container.replaceChildren();
+
+      if (snapshot.empty) {
+        container.textContent = "No customer design requests yet.";
+        return;
+      }
+
+      snapshot.forEach(item => {
+        const data = item.data();
+
+        const card = document.createElement("div");
+        card.className = "booking";
+
+        const heading = document.createElement("h3");
+        heading.textContent = data.designName || "Selected Design";
+
+        const details = document.createElement("p");
+        details.textContent =
+          "Category: " + (data.category || "-") +
+          " | Customer: " + (data.customerName || "-") +
+          " | Mobile: " + (data.customerPhone || "-");
+
+        const status = document.createElement("p");
+        status.textContent = "Status: " + (data.status || "pending");
+
+        const image = document.createElement("img");
+        if (validPhotoURL(data.imageUrl)) {
+          image.src = data.imageUrl;
+          image.alt = data.designName || "Selected design";
+          image.style.width = "150px";
+          image.style.borderRadius = "8px";
+        }
+
+        card.append(heading, details, status);
+        if (image.src) card.appendChild(image);
+        container.appendChild(card);
+      });
+    },
+    error => {
+      $("adminDesignRequests").textContent = error.message;
+    }
+  );
+}
+
+/* CREATE BOOKING */
+$("bookingForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (!auth.currentUser || auth.currentUser.uid === ADMIN_UID) return;
+
+  const service = $("serviceName").value;
+  const address = cleanText($("bookingAddress").value);
+  const date = $("bookingDate").value;
+
+  if (!service || !address || !date) {
+    showMessage("bookingMessage", "ସବୁ details ପୂରଣ କର।", true);
+    return;
+  }
+
+  $("bookingButton").disabled = true;
+
+  try {
+    const result = await addDoc(collection(db, "bookings"), {
+      userId: auth.currentUser.uid,
+      customerName: currentCustomer?.name || "",
+      customerPhone: currentCustomer?.phone || "",
+      customerEmail: auth.currentUser.email || "",
+      service,
+      address,
+      date,
+      source: "Website",
+      fee: 20,
+      paymentStatus: "pending",
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+
+    $("latestBookingId").textContent = result.id;
+    $("paymentProofPanel").classList.remove("hidden");
+
+    showMessage("bookingMessage", "Booking submitted successfully!");
+    $("bookingForm").reset();
+  } catch (error) {
+    showMessage("bookingMessage", error.message, true);
+  } finally {
+    $("bookingButton").disabled = false;
+  }
+});
+
+/* CUSTOMER BOOKING HISTORY */
+function startCustomerBookingListener(user) {
+  if (customerBookingUnsubscribe) customerBookingUnsubscribe();
+
+  const q = query(
+    collection(db, "bookings"),
+    where("userId", "==", user.uid)
+  );
+
+  customerBookingUnsubscribe = onSnapshot(q, snapshot => {
+    currentBookings = [];
+    snapshot.forEach(item => {
+      currentBookings.push({id:item.id, ...item.data()});
+    });
+
+    renderCustomerBookings();
+  });
+}
+
+function renderCustomerBookings() {
+  const tbody = $("customerBookingRows");
+  tbody.replaceChildren();
+
+  if (!currentBookings.length) {
+    const row = document.createElement("tr");
+    const cell = makeCell("No bookings yet.");
+    cell.colSpan = 8;
+    row.appendChild(cell);
+    tbody.appendChild(row);
+    return;
+  }
+
+  currentBookings.forEach(b => {
+    const row = document.createElement("tr");
+
+    row.append(
+      makeCell(b.id),
+      makeCell(b.service),
+      makeCell(b.date),
+      makeCell(b.address),
+      makeCell("₹" + (b.fee || 20)),
+      makeCell(b.paymentStatus || "pending"),
+      makeCell(b.status || "pending")
+    );
+
+    const receipt = document.createElement("td");
+
+    if (b.paymentStatus === "paid") {
+      const button = document.createElement("button");
+      button.className = "btn";
+      button.textContent = "Print Receipt";
+      button.onclick = () => printReceipt(b);
+      receipt.appendChild(button);
+    } else {
+      receipt.textContent = "Payment verification pending";
+    }
+
+    row.appendChild(receipt);
+    tbody.appendChild(row);
+  });
+}
+
+window.loadBookings = function() {
+  if (auth.currentUser) startCustomerBookingListener(auth.currentUser);
+};
+
+/* PRINT RECEIPT */
+function printReceipt(b) {
+  const w = window.open("", "_blank");
+
+  if (!w) {
+    alert("Receipt ପାଇଁ browser popup allow କର।");
+    return;
+  }
+
+  w.document.write(`
+    <html>
+    <head><title>PS POWER SERVICE Receipt</title></head>
+    <body style="font-family:Arial;padding:25px">
+      <h2>⚡ PS POWER SERVICE</h2>
+      <h3>Payment Receipt</h3>
+      <p>Booking ID: ${escapeHTML(b.id)}</p>
+      <p>Service: ${escapeHTML(b.service)}</p>
+      <p>Date: ${escapeHTML(b.date)}</p>
+      <p>Fee Paid: ₹${Number(b.fee || 20)}</p>
+      <p>Payment Status: PAID</p>
+      <p>Thank you!</p>
+      <script>window.onload=()=>window.print();<\/script>
+    </body>
+    </html>
+  `);
+
+  w.document.close();
+}
+
+function escapeHTML(value) {
+  return String(value || "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
+  })[char]);
+}
+
+/* ADMIN BOOKINGS */
+function startAdminListener() {
+  if (bookingUnsubscribe) bookingUnsubscribe();
+
+  bookingUnsubscribe = onSnapshot(
+    collection(db, "bookings"),
+    snapshot => {
+      currentBookings = [];
+      snapshot.forEach(item => {
+        currentBookings.push({id:item.id, ...item.data()});
+      });
+      renderAdminBookings();
+    },
+    error => showMessage("adminMessage", error.message, true)
+  );
+}
+
+function renderAdminBookings() {
+  const tbody = $("adminBookingRows");
+  tbody.replaceChildren();
+
+  if (!currentBookings.length) {
+    const row = document.createElement("tr");
+    const cell = makeCell("No bookings found.");
+    cell.colSpan = 12;
+    row.appendChild(cell);
+    tbody.appendChild(row);
+    return;
+  }
+
+  currentBookings.forEach(b => {
+    const row = document.createElement("tr");
+
+    row.append(
+      makeCell(b.id),
+      makeCell(b.customerName),
+      makeCell(b.customerPhone),
+      makeCell(b.customerEmail),
+      makeCell(b.service),
+      makeCell(b.address),
+      makeCell(b.date),
+      makeCell(b.source || "Website"),
+      makeCell("₹" + (b.fee || 20))
+    );
+
+    const paymentCell = document.createElement("td");
+    const paymentSelect = document.createElement("select");
+
+    ["pending","paid"].forEach(value => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      paymentSelect.appendChild(option);
+    });
+
+    paymentSelect.value = b.paymentStatus || "pending";
+
+    const paymentButton = document.createElement("button");
+    paymentButton.className = "btn";
+    paymentButton.textContent = "Save Payment";
+    paymentButton.onclick = () => updateBooking(b.id, {
+      paymentStatus: paymentSelect.value
+    });
+
+    paymentCell.append(paymentSelect, paymentButton);
+
+    const statusCell = document.createElement("td");
+    const statusSelect = document.createElement("select");
+
+    ["pending","confirmed","completed","cancelled"].forEach(value => {
+      const option = document.createElement("option");
+      option.value = value;
+      option.textContent = value;
+      statusSelect.appendChild(option);
+    });
+
+    statusSelect.value = b.status || "pending";
+
+    const statusButton = document.createElement("button");
+    statusButton.className = "btn";
+    statusButton.textContent = "Save Status";
+    statusButton.onclick = () => updateBooking(b.id, {
+      status: statusSelect.value
+    });
+
+    statusCell.append(statusSelect, statusButton);
+
+    const actionCell = document.createElement("td");
+    actionCell.append(paymentCell, statusCell);
+
+    row.append(
+      paymentCell,
+      makeCell(b.status || "pending"),
+      actionCell
+    );
+
+    tbody.appendChild(row);
+  });
+}
+
+async function updateBooking(id, changes) {
+  if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) return;
+
+  try {
+    await updateDoc(doc(db, "bookings", id), changes);
+    showMessage("adminMessage", "Booking updated.");
+  } catch (error) {
+    showMessage("adminMessage", error.message, true);
+  }
+}
+
+window.loadAdminBookings = function() {
+  if (auth.currentUser?.uid === ADMIN_UID) startAdminListener();
+};
+
+/* ADMIN WHATSAPP BOOKING */
+$("whatsappBookingForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  if (!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) return;
+
+  const customerName = cleanText($("waCustomerName").value);
+  const customerPhone = cleanText($("waCustomerPhone").value);
+
+  if (!/^[0-9]{10}$/.test(customerPhone)) {
+    showMessage("adminMessage", "10 digit mobile number ଦିଅ।", true);
+    return;
+  }
+
+  try {
+    await addDoc(collection(db, "bookings"), {
+      userId: "",
+      customerName,
+      customerPhone,
+      customerEmail: "",
+      service: $("waService").value,
+      address: cleanText($("waAddress").value),
+      date: $("waBookingDate").value,
+      source: "WhatsApp",
+      fee: 20,
+      paymentStatus: "pending",
+      status: "pending",
+      createdAt: serverTimestamp()
+    });
+
+    $("whatsappBookingForm").reset();
+    showMessage("adminMessage", "WhatsApp booking saved.");
+  } catch (error) {
+    showMessage("adminMessage", error.message, true);
+  }
+});
+
+/* WHATSAPP CUSTOMER BOOKING */
+window.sendBookingWhatsApp = function() {
+  const service = $("serviceName").value;
+  const address = cleanText($("bookingAddress").value);
+  const date = $("bookingDate").value;
+
+  if (!service || !address || !date) {
+    showMessage("bookingMessage", "Service, address ଓ date ପୂରଣ କର।", true);
+    return;
+  }
+
+  const message =
+    "PS POWER SERVICE Booking Request\n" +
+    "Name: " + (currentCustomer?.name || "") + "\n" +
+    "Phone: " + (currentCustomer?.phone || "") + "\n" +
+    "Service: " + service + "\n" +
+    "Address: " + address + "\n" +
+    "Date: " + date;
+
+  window.open(
+    "https://wa.me/918144722094?text=" + encodeURIComponent(message),
+    "_blank"
+  );
+};
+
+/* CUSTOMER NOTIFICATIONS */
+function startNotificationListener(user) {
+  if (notificationUnsubscribe) notificationUnsubscribe();
+
+  const q = query(
+    collection(db, "notifications"),
+    where("userId", "==", user.uid)
+  );
+
+  notificationUnsubscribe = onSnapshot(q, snapshot => {
+    currentNotifications = [];
+
+    snapshot.forEach(item => {
+      currentNotifications.push({id:item.id, ...item.data()});
+    });
+
+    renderNotifications();
+  }, error => {
+    $("customerNotifications").textContent = error.message;
+  });
+}
+
+function renderNotifications() {
+  const container = $("customerNotifications");
+  container.replaceChildren();
+
+  const unread = currentNotifications.filter(n => !n.read).length;
+  $("unreadNotificationCount").textContent = `(${unread} unread)`;
+
+  if (!currentNotifications.length) {
+    container.textContent = "No notifications yet.";
+    return;
+  }
+
+  currentNotifications.forEach(n => {
+    const item = document.createElement("div");
+    item.className = "notification" + (n.read ? " read" : "");
+
+    const heading = document.createElement("strong");
+    heading.textContent = n.title || "Booking Update";
+
+    const message = document.createElement("p");
+    message.textContent = n.message || "";
+
+    item.append(heading, message);
+    container.appendChild(item);
+  });
+}
+
+window.markAllNotificationsRead = async function() {
+  alert("Notifications read status update ପାଇଁ Firestore Rules ଓ admin notification setup ଆବଶ୍ୟକ।");
+};
+
+/* LOGIN STATE */
+onAuthStateChanged(auth, async user => {
+  stopListeners();
+  currentUser = user;
+  currentCustomer = null;
+
+  $("dashboard").classList.add("hidden");
+  $("adminDashboard").classList.add("hidden");
+  $("adminDesignUpload").classList.add("hidden");
+
+  if (!user) {
+    $("registerPanel").classList.remove("hidden");
+    return;
+  }
+
+  $("registerPanel").classList.add("hidden");
+  $("loginPanel").classList.add("hidden");
+  $("adminLoginPanel").classList.add("hidden");
+
+  if (user.uid === ADMIN_UID) {
+    $("adminDashboard").classList.remove("hidden");
+    $("adminDesignUpload").classList.remove("hidden");
+
+    startAdminListener();
+    startDesignRequestListener();
+    return;
+  }
+
+  $("dashboard").classList.remove("hidden");
+
+  try {
+    await loadCustomerProfile(user);
+    startCustomerBookingListener(user);
+    startNotificationListener(user);
+  } catch (error) {
+    showMessage("bookingMessage", error.message, true);
+  }
+});
+
+/* START PUBLIC DESIGN GALLERY */
+startDesignListener();
+
+/* HOME SLIDER */
+const slides = [...document.querySelectorAll(".slide")];
+const dots = [...document.querySelectorAll("#sliderDots button")];
+let slideIndex = 0;
+
+function showSlide(index) {
+  slides.forEach((slide, i) => {
+    slide.classList.toggle("active", i === index);
+  });
+
+  dots.forEach((dot, i) => {
+    dot.classList.toggle("active", i === index);
+  });
+
+  slideIndex = index;
+}
+
+dots.forEach((dot, index) => {
+  dot.addEventListener("click", () => showSlide(index));
+});
+
+setInterval(() => {
+  showSlide((slideIndex + 1) % slides.length);
+}, 4500);
+
 </script>
+
 </body>
 </html>
