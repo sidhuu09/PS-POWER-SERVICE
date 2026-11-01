@@ -31,6 +31,9 @@ textarea{min-height:85px}
 .payment-upload-btn{display:inline-block;background:#171717;color:#ffd500;text-decoration:none;padding:12px 20px;border-radius:6px;font-weight:bold;margin:10px auto}
 .payment-upload-btn:hover{background:#333}
 .booking-id{font-weight:bold;overflow-wrap:anywhere;color:#171717;background:#fff8d6;padding:10px;border-radius:6px}
+.notification{border-left:5px solid #ffd500;background:#fff8d6;padding:12px 14px;margin:10px 0;border-radius:8px;text-align:left}
+.notification strong{display:block;margin-bottom:5px;color:#171717}
+.notification small{color:#555}
 footer{background:#171717;color:white;text-align:center;padding:20px}
 </style>
 </head>
@@ -129,6 +132,8 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
     <a class="payment-upload-btn" href="https://forms.gle/7dnzHW8AopbkGpJL9" target="_blank" rel="noopener noreferrer">Upload Payment Screenshot</a>
   </div>
   <hr>
+  <h3>🔔 Notifications</h3>
+  <div id="customerNotifications" aria-live="polite"><p class="payment-note">Your booking updates will appear here.</p></div>
   <h3>📋 My Booking History</h3>
   <button class="btn" onclick="loadBookings()">Refresh Bookings</button>
   <div id="bookingHistory">No bookings yet.</div>
@@ -314,9 +319,25 @@ window.loadBookings = async () => {
   try{
     const result=await getDocs(query(collection(db,"bookings"),where("userId","==",user.uid)));
     history.replaceChildren();
-    if(result.empty){history.textContent="No bookings yet.";return;}
+    const notifications=$("customerNotifications");
+    notifications.replaceChildren();
+    if(result.empty){
+      history.textContent="No bookings yet.";
+      notifications.textContent="No booking notifications yet.";
+      return;
+    }
+    const notificationItems=[];
     result.forEach(item=>{
-      const b=item.data(),card=document.createElement("div"); card.className="booking";
+      const b=item.data();
+      const state=(b.bookingStatus||"pending").toLowerCase();
+      const messages={
+        pending:["Booking received","Your service booking has been received and is waiting for Admin confirmation."],
+        confirmed:["Booking confirmed","Good news! Your service booking has been confirmed."],
+        completed:["Work completed","Your service booking has been marked as completed."],
+        cancelled:["Booking cancelled","Your service booking has been cancelled. Please contact PS POWER SERVICE if you need help."]
+      };
+      if(messages[state]) notificationItems.push({id:item.id,title:messages[state][0],message:messages[state][1]});
+      const card=document.createElement("div"); card.className="booking";
       const title=document.createElement("strong"); title.textContent=b.service||"Service";
       const id=document.createElement("p"); id.textContent="Booking ID: "+item.id;
       const details=document.createElement("p"); details.textContent="Date: "+(b.bookingDate||"")+" | Fee: ₹"+(b.bookingFee??20);
@@ -332,7 +353,18 @@ window.loadBookings = async () => {
       }
       history.append(card);
     });
-  }catch(error){history.textContent="Could not load bookings: "+error.message;}
+    if(notificationItems.length===0){
+      notifications.textContent="No new booking notifications.";
+    } else {
+      notificationItems.reverse().forEach(item=>{
+        const notice=document.createElement("div"); notice.className="notification";
+        const heading=document.createElement("strong"); heading.textContent=item.title;
+        const message=document.createElement("p"); message.textContent=item.message;
+        const reference=document.createElement("small"); reference.textContent="Booking ID: "+item.id;
+        notice.append(heading,message,reference); notifications.append(notice);
+      });
+    }
+  }catch(error){history.textContent="Could not load bookings: "+error.message;$("customerNotifications").textContent="Could not load notifications.";}
 };
 
 window.loadAdminBookings = async () => {
@@ -343,7 +375,7 @@ window.loadAdminBookings = async () => {
     if(snapshot.empty){$("adminMessage").textContent="No bookings found.";return;}
     $("adminMessage").textContent="Total bookings: "+snapshot.size;
     snapshot.forEach(item=>{
-      const b=item.data(),card=document.createElement("div"); card.className="booking";
+    const b=item.data(),card=document.createElement("div"); card.className="booking";
       const title=document.createElement("h3"); title.textContent=b.service||"Service";
       const id=document.createElement("p"); id.textContent="Booking ID: "+item.id;
       const details=document.createElement("p"); details.textContent="Customer: "+(b.customerName||"N/A")+" | Email: "+(b.customerEmail||"N/A");
@@ -391,5 +423,3 @@ onAuthStateChanged(auth,async user=>{
 </script>
 </body>
 </html>
-
-                  
