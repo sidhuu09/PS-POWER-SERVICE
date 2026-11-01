@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,906 +5,295 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PS POWER SERVICE</title>
 <style>
+:root{--yellow:#ffd500;--ink:#171717;--paper:#fff;--soft:#fff9dc;--line:#e5e5e5}
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#222}
-header{background:#171717;color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
-.logo{font-size:22px;font-weight:bold;color:#ffd500}
-nav a{color:white;text-decoration:none;margin:8px}
-.hero{background:linear-gradient(120deg,#171717,#393939);color:white;text-align:center;padding:65px 15px}
-.hero h1{font-size:36px;color:#ffd500}
-.btn{border:0;background:#ffd500;color:#171717;padding:12px 20px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px}
+header{background:var(--ink);color:white;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{font-size:21px;font-weight:bold;color:var(--yellow)}
+nav a{color:white;text-decoration:none;margin:7px}
+.hero{background:linear-gradient(120deg,#171717,#393939);color:white;text-align:center;padding:64px 15px}
+.hero h1{font-size:clamp(28px,5vw,42px);color:var(--yellow)}
+.btn{border:0;background:var(--yellow);color:var(--ink);padding:11px 17px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px}
+.btn.dark{background:var(--ink);color:var(--yellow)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-section{padding:30px 6%;text-align:center}
-.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px}
-.service{padding:22px;background:#fff8d6;border-radius:10px;font-weight:bold}
-.panel{max-width:600px;margin:15px auto;background:white;padding:22px;border-radius:12px;box-shadow:0 2px 12px #ddd}
-input,select,textarea{width:100%;padding:13px;margin:8px 0;border:1px solid #ccc;border-radius:6px;font:inherit}
-textarea{min-height:85px}
-.panel button{margin:7px 0}
+section{padding:28px 5%;text-align:center}
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.service{padding:22px;background:var(--soft);border:1px solid #f1df85;border-radius:10px;font-weight:bold}
+.panel{max-width:1100px;margin:15px auto;background:white;padding:20px;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 12px #00000010}
+.auth-panel{max-width:600px}
+input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:6px;font:inherit}
+textarea{min-height:80px}
 .hidden{display:none!important}
-.message{font-size:14px;color:#b00020;min-height:20px;overflow-wrap:anywhere}
-.booking{border:1px solid #ddd;border-radius:8px;padding:14px;margin:12px 0;text-align:left;background:#fffdf4;overflow-wrap:anywhere}
-.price{font-size:22px;font-weight:bold;color:#a47d00}
-.payment-box{background:#fff8d6;border:1px solid #f0d45c;border-radius:12px;padding:18px;margin:18px 0;text-align:center}
-.payment-box img{width:220px;max-width:100%;height:auto;display:block;margin:15px auto;border:1px solid #ddd;border-radius:8px;background:white;padding:5px}
+.message{font-size:14px;color:#a00018;min-height:20px;overflow-wrap:anywhere}
+.booking{border:1px solid var(--line);border-radius:8px;padding:14px;margin:12px 0;text-align:left;background:#fffdf4;overflow-wrap:anywhere}
+.price{font-size:22px;font-weight:bold;color:#927000}
+.payment-box{background:var(--soft);border:1px solid #f0d45c;border-radius:12px;padding:16px;margin:16px 0;text-align:center}
+.payment-box img{width:210px;max-width:100%;display:block;margin:12px auto;border:1px solid #ddd;border-radius:8px;background:white;padding:5px}
 .payment-note{font-size:14px;color:#555;line-height:1.5}
-.payment-upload-btn{display:inline-block;background:#171717;color:#ffd500;text-decoration:none;padding:12px 20px;border-radius:6px;font-weight:bold;margin:10px auto}
-.booking-id{font-weight:bold;overflow-wrap:anywhere;color:#171717;background:#fff8d6;padding:10px;border-radius:6px}
-.notification{border-left:5px solid #ffd500;background:#fff8d6;padding:12px 14px;margin:10px 0;border-radius:8px;text-align:left}
-.notification strong{display:block;margin-bottom:5px;color:#171717}
-.notification small{color:#555}
-.notification.read{opacity:.68;background:#f3f3f3;border-left-color:#999}
-.notification-tools{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin:10px 0}
-.notification-status{font-size:13px;font-weight:bold;color:#555}
-footer{background:#171717;color:white;text-align:center;padding:20px}
+.payment-upload-btn{display:inline-block;background:var(--ink);color:var(--yellow);text-decoration:none;padding:12px 18px;border-radius:6px;font-weight:bold;margin:10px auto}
+.booking-id{font-weight:bold;overflow-wrap:anywhere;color:var(--ink);background:var(--soft);padding:10px;border-radius:6px}
+.notification{border-left:5px solid var(--yellow);background:var(--soft);padding:12px;margin:10px 0;border-radius:8px;text-align:left}
+.notification strong{display:block;margin-bottom:5px}
+.notification.read{opacity:.7;background:#f3f3f3;border-left-color:#999}
+.notification-tools{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.notification-status{font-size:13px;color:#555}
+.table-wrap{width:100%;overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:850px;text-align:left;background:white}
+th,td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}
+th{background:var(--ink);color:var(--yellow);position:sticky;top:0}
+tr:nth-child(even) td{background:#fffdf2}
+.status{font-weight:bold;text-transform:capitalize}
+footer{background:var(--ink);color:white;text-align:center;padding:20px}
+.small-note{font-size:13px;color:#666}
+@media(max-width:600px){header{justify-content:center;text-align:center}.hero{padding:45px 12px}section{padding:22px 12px}.panel{padding:14px}}
 </style>
 </head>
 <body>
-
 <header>
   <div class="logo">⚡ PS POWER SERVICE</div>
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#services">Services</a>
-    <a href="#account">Account</a>
-  </nav>
+  <nav><a href="#home">Home</a><a href="#services">Services</a><a href="#account">Account</a></nav>
 </header>
-
 <div class="hero" id="home">
-  <h1>PS POWER SERVICE</h1>
-  <p>Powering Your Home, Safely.</p>
+  <h1>PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p>
   <p>Electrical Work • Home Wiring • Lenter Piping • Repair</p>
   <button class="btn" onclick="showLogin()">Customer Login</button>
   <button class="btn" onclick="showRegister()">Customer Register</button>
-  <button class="btn" onclick="showAdminLogin()">Admin Login</button>
+  <button class="btn dark" onclick="showAdminLogin()">Admin Login</button>
 </div>
-
-<section id="services">
-  <h2>Our Services</h2>
-  <div class="services">
-    <div class="service">⚡ Electrical Work</div>
-    <div class="service">🏠 Home Wiring</div>
-    <div class="service">🔧 Repair & Maintenance</div>
-    <div class="service">💡 Lenter Piping</div>
-  </div>
-</section>
-
-<section id="account">
-<h2>Account</h2>
-
-<div class="panel" id="registerPanel">
+<section id="services"><h2>Our Services</h2><div class="services">
+  <div class="service">⚡ Electrical Work</div><div class="service">🏠 Home Wiring</div>
+  <div class="service">🔧 Repair & Maintenance</div><div class="service">💡 Lenter Piping</div>
+</div></section>
+<section id="account"><h2>Account</h2>
+<div class="panel auth-panel" id="registerPanel">
   <h3>Customer Registration</h3>
   <input id="regName" placeholder="Full Name" autocomplete="name">
   <input id="regPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric">
   <input id="regEmail" type="email" placeholder="Email Address" autocomplete="email">
   <input id="regPassword" type="password" placeholder="Create Password" autocomplete="new-password">
   <button class="btn" onclick="registerCustomer()">Register</button>
-  <p>Already have an account?</p>
-  <button class="btn" onclick="showLogin()">Login</button>
-  <div class="message" id="regMessage"></div>
+  <p>Already have an account?</p><button class="btn dark" onclick="showLogin()">Login</button>
+  <div class="message" id="regMessage" aria-live="polite"></div>
 </div>
-
-<div class="panel hidden" id="loginPanel">
-  <h3>Customer Login</h3>
-  <input id="loginEmail" type="email" placeholder="Email Address">
+<div class="panel auth-panel hidden" id="loginPanel">
+  <h3>Customer Login</h3><input id="loginEmail" type="email" placeholder="Email Address">
   <input id="loginPassword" type="password" placeholder="Password">
   <button class="btn" onclick="loginCustomer()">Login</button>
-  <button class="btn" onclick="resetPassword()">Forgot Password?</button>
+  <button class="btn dark" onclick="resetPassword()">Forgot Password?</button>
   <button class="btn" onclick="showRegister()">Create Account</button>
   <div class="message" id="loginMessage"></div>
 </div>
-
-<div class="panel hidden" id="adminLoginPanel">
-  <h3>🔐 Admin Login</h3>
-  <input id="adminEmail" type="email" placeholder="Admin Email">
+<div class="panel auth-panel hidden" id="adminLoginPanel">
+  <h3>🔐 Admin Login</h3><input id="adminEmail" type="email" placeholder="Admin Email">
   <input id="adminPassword" type="password" placeholder="Admin Password">
   <button class="btn" onclick="loginAdmin()">Admin Login</button>
-  <button class="btn" onclick="showRegister()">Back to Home</button>
+  <button class="btn dark" onclick="showRegister()">Back</button>
   <div class="message" id="adminLoginMessage"></div>
 </div>
-
 <div class="panel hidden" id="dashboard">
   <h3>Welcome, <span id="customerName"></span>!</h3>
-  <p>Email: <span id="customerEmail"></span></p>
-  <p>Mobile: <span id="customerPhone"></span></p>
-  <hr>
-
+  <p>Email: <span id="customerEmail"></span> | Mobile: <span id="customerPhone"></span></p><hr>
   <h3>⚡ Book a Service</h3>
   <form id="bookingForm">
-    <label for="serviceName">Choose Service</label>
-    <select id="serviceName" required>
-      <option value="">Select Service</option>
-      <option>Electrical Work</option>
-      <option>Home Wiring</option>
-      <option>Lenter Piping</option>
-      <option>Repair & Maintenance</option>
+    <label>Choose Service</label><select id="serviceName" required>
+      <option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option>
     </select>
-
-    <label for="bookingAddress">Full Address</label>
-    <textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
-
-    <label for="bookingDate">Booking Date</label>
-    <input id="bookingDate" type="date" required>
-
-    <p>Booking Fee</p>
-    <div class="price">₹20 Fixed</div>
-
-    <div class="payment-box">
-      <h3>📱 Pay ₹20 via PhonePe</h3>
+    <label>Full Address</label><textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
+    <label>Booking Date</label><input id="bookingDate" type="date" required>
+    <p>Booking Fee</p><div class="price">₹20 Fixed</div>
+    <div class="payment-box"><h3>📱 Pay ₹20 via PhonePe</h3>
       <img src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png" alt="PS POWER SERVICE PhonePe QR Code">
       <p><strong>Scan the QR code and pay ₹20 booking fee.</strong></p>
-      <p class="payment-note">After submitting your booking, use the Booking ID to upload your payment screenshot.</p>
-      <p class="payment-note">Payment remains Pending until Admin verifies it.</p>
+      <p class="payment-note">After submitting your booking, use the Booking ID to upload your payment screenshot. Payment stays Pending until Admin verifies it.</p>
     </div>
-
     <button class="btn" type="submit" id="bookingButton">Submit Booking</button>
-    <button class="btn" type="button" onclick="sendBookingWhatsApp()">WhatsApp Booking</button>
+    <button class="btn dark" type="button" onclick="sendBookingWhatsApp()">WhatsApp Booking</button>
   </form>
-
   <div class="message" id="bookingMessage" aria-live="polite"></div>
-
-  <div class="booking hidden" id="paymentProofPanel">
-    <h3>Upload Payment Screenshot</h3>
-    <p>Your Booking ID:</p>
-    <p class="booking-id" id="latestBookingId"></p>
-    <p class="payment-note">Copy this ID and enter it in the Google Form along with your payment screenshot.</p>
+  <div class="booking hidden" id="paymentProofPanel"><h3>Upload Payment Screenshot</h3>
+    <p>Your Booking ID:</p><p class="booking-id" id="latestBookingId"></p>
+    <p class="payment-note">Copy this ID and enter it in the Google Form with your payment screenshot.</p>
     <a class="payment-upload-btn" href="https://forms.gle/7dnzHW8AopbkGpJL9" target="_blank" rel="noopener noreferrer">Upload Payment Screenshot</a>
   </div>
-
-  <hr>
-  <h3>🔔 Notifications <span id="unreadNotificationCount" class="notification-status">(0 unread)</span></h3>
-  <div class="notification-tools">
-    <button class="btn" type="button" onclick="markAllNotificationsRead()">Mark All as Read</button>
-  </div>
+  <hr><h3>🔔 Notifications <span id="unreadNotificationCount" class="notification-status">(0 unread)</span></h3>
+  <div class="notification-tools"><button class="btn" type="button" onclick="markAllNotificationsRead()">Mark All as Read</button></div>
   <div id="customerNotifications">Your booking updates will appear here.</div>
-
-  <h3>📋 My Booking History</h3>
+  <h3>📋 My Booking History</h3><p class="small-note">Booking status updates automatically when Admin changes it.</p>
   <button class="btn" onclick="loadBookings()">Refresh Bookings</button>
-  <div id="bookingHistory">No bookings yet.</div>
-  <button class="btn" onclick="logoutUser()">Logout</button>
+  <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Service</th><th>Date</th><th>Address</th><th>Fee</th><th>Payment</th><th>Booking Status</th><th>Receipt</th></tr></thead><tbody id="customerBookingRows"><tr><td colspan="8">No bookings yet.</td></tr></tbody></table></div>
+  <button class="btn dark" onclick="logoutUser()">Logout</button>
 </div>
-
 <div class="panel hidden" id="adminDashboard">
-  <h2>⚡ Admin Dashboard</h2>
-  <p>Welcome, Administrator</p>
-
-  <div class="booking">
-    <h3>📱 Add WhatsApp Booking</h3>
+  <h2>⚡ Admin Dashboard</h2><p>Welcome, Administrator</p>
+  <div class="booking"><h3>📱 Add WhatsApp Booking</h3>
     <form id="whatsappBookingForm">
       <input id="waCustomerName" placeholder="Customer Name" required>
       <input id="waCustomerPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric" required>
-      <select id="waService" required>
-        <option value="">Select Service</option>
-        <option>Electrical Work</option>
-        <option>Home Wiring</option>
-        <option>Lenter Piping</option>
-        <option>Repair & Maintenance</option>
-      </select>
+      <select id="waService" required><option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option></select>
       <textarea id="waAddress" placeholder="Customer Full Address" required></textarea>
-      <input id="waBookingDate" type="date" required>
-      <p class="price">Booking Fee: ₹20</p>
-      <p class="payment-note">Payment Status: Pending. Admin must verify payment before marking Paid.</p>
+      <input id="waBookingDate" type="date" required><p class="price">Booking Fee: ₹20</p>
+      <p class="payment-note">Payment remains Pending until Admin verifies the payment.</p>
       <button class="btn" type="submit" id="waSaveButton">Save WhatsApp Booking</button>
     </form>
   </div>
-
+  <h3>All Customer Bookings</h3><p class="small-note">Live table: new bookings and status changes appear automatically.</p>
   <button class="btn" onclick="loadAdminBookings()">Refresh All Bookings</button>
-  <div id="adminMessage" class="message"></div>
-  <div id="adminBookings">Loading bookings...</div>
-  <button class="btn" onclick="logoutUser()">Admin Logout</button>
+  <div id="adminMessage" class="message" aria-live="polite"></div>
+  <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Customer</th><th>Mobile</th><th>Email</th><th>Service</th><th>Address</th><th>Date</th><th>Source</th><th>Fee</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adminBookingRows"><tr><td colspan="12">Loading bookings...</td></tr></tbody></table></div>
+  <button class="btn dark" onclick="logoutUser()">Admin Logout</button>
 </div>
 </section>
-
-<footer>
-  <p>PS POWER SERVICE</p>
-  <p>Powering Your Home, Safely.</p>
-</footer>
-
+<footer><p>PS POWER SERVICE</p><p>Powering Your Home, Safely.</p></footer>
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import {
-  getAuth, createUserWithEmailAndPassword,
-  signInWithEmailAndPassword, updateProfile,
-  onAuthStateChanged, sendPasswordResetEmail, signOut
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {
-  getFirestore, doc, setDoc, getDoc, collection,
-  addDoc, query, where, getDocs, updateDoc, serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,sendPasswordResetEmail,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {getFirestore,doc,setDoc,getDoc,collection,addDoc,query,where,getDocs,updateDoc,serverTimestamp,onSnapshot} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",
-  authDomain: "ps-power-service-68007.firebaseapp.com",
-  projectId: "ps-power-service-68007",
-  storageBucket: "ps-power-service-68007.firebasestorage.app",
-  messagingSenderId: "647095348680",
-  appId: "1:647095348680:web:51b3833ce08d767e9d64fd"
+const firebaseConfig={apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",authDomain:"ps-power-service-68007.firebaseapp.com",projectId:"ps-power-service-68007",storageBucket:"ps-power-service-68007.firebasestorage.app",messagingSenderId:"647095348680",appId:"1:647095348680:web:51b3833ce08d767e9d64fd"};
+const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
+const PAYMENT_FORM_URL="https://forms.gle/7dnzHW8AopbkGpJL9";
+const PAYMENT_QR_URL="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png";
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);
+let stopCustomerListener=null,stopAdminListener=null,lastCustomerBookings=[];
+
+function hideAllPanels(){["registerPanel","loginPanel","adminLoginPanel","dashboard","adminDashboard"].forEach(id=>$(id).classList.add("hidden"))}
+function today(){const d=new Date(),offset=d.getTimezoneOffset();return new Date(d.getTime()-offset*60000).toISOString().slice(0,10)}
+$("bookingDate").min=today();$("waBookingDate").min=today();
+function stopListeners(){if(stopCustomerListener){stopCustomerListener();stopCustomerListener=null}if(stopAdminListener){stopAdminListener();stopAdminListener=null}}
+function showError(el,error){$(el).textContent=error?.message||String(error)}
+window.showRegister=()=>{if(auth.currentUser)return;hideAllPanels();$("registerPanel").classList.remove("hidden")};
+window.showLogin=()=>{if(auth.currentUser)return;hideAllPanels();$("loginPanel").classList.remove("hidden")};
+window.showAdminLogin=()=>{if(auth.currentUser)return;hideAllPanels();$("adminLoginPanel").classList.remove("hidden")};
+
+window.registerCustomer=async()=>{
+ const name=$("regName").value.trim(),phone=$("regPhone").value.trim(),email=$("regEmail").value.trim(),password=$("regPassword").value;
+ $("regMessage").textContent="";
+ if(!name||!phone||!email||!password){$("regMessage").textContent="Please fill all fields.";return}
+ if(!/^[0-9]{10}$/.test(phone)){$("regMessage").textContent="Enter a valid 10-digit mobile number.";return}
+ if(password.length<6){$("regMessage").textContent="Password must be at least 6 characters.";return}
+ try{const result=await createUserWithEmailAndPassword(auth,email,password);await updateProfile(result.user,{displayName:name});await setDoc(doc(db,"users",result.user.uid),{name,phone,email,role:"customer",createdAt:serverTimestamp()})}
+ catch(error){showError("regMessage",error)}
+};
+window.loginCustomer=async()=>{ $("loginMessage").textContent="";try{await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),$("loginPassword").value)}catch(error){showError("loginMessage",error)}};
+window.loginAdmin=async()=>{
+ $("adminLoginMessage").textContent="";const email=$("adminEmail").value.trim(),password=$("adminPassword").value;
+ if(!email||!password){$("adminLoginMessage").textContent="Enter Admin email and password.";return}
+ try{const result=await signInWithEmailAndPassword(auth,email,password);if(result.user.uid!==ADMIN_UID){await signOut(auth);$("adminLoginMessage").textContent="Not authorized as Admin."}}
+ catch(error){showError("adminLoginMessage",error)}
+};
+window.resetPassword=async()=>{const email=$("loginEmail").value.trim();if(!email){$("loginMessage").textContent="Enter your email address first.";return}try{await sendPasswordResetEmail(auth,email);$("loginMessage").textContent="Password reset email sent."}catch(error){showError("loginMessage",error)}};
+window.logoutUser=async()=>{try{stopListeners();await signOut(auth)}catch(error){alert(error.message)}};
+
+window.sendBookingWhatsApp=async()=>{
+ const user=auth.currentUser;if(!user||user.uid===ADMIN_UID){alert("Please login as a customer first.");return}
+ const service=$("serviceName").value.trim(),address=$("bookingAddress").value.trim(),date=$("bookingDate").value;
+ if(!service||!address||!date){alert("Please fill Service, Address and Booking Date.");return}
+ if(date<today()){alert("Please choose today or a future date.");return}
+ try{const profile=await getDoc(doc(db,"users",user.uid)),data=profile.exists()?profile.data():{},name=data.name||user.displayName||"Customer",mobile=data.phone||"";
+ if(!mobile){alert("Mobile number not found. Please check your customer profile.");return}
+ const message=`Hello PS POWER SERVICE, I want to book a service.\n\nName: ${name}\nMobile: ${mobile}\nService: ${service}\nAddress: ${address}\nBooking Date: ${date}\n\nBooking Fee: Rs.20\nPayment QR: ${PAYMENT_QR_URL}\n\nPayment will be verified by Admin.`;
+ window.open("https://wa.me/918144722094?text="+encodeURIComponent(message),"_blank","noopener,noreferrer");
+ }catch(error){alert("Could not load customer details: "+error.message)}
 };
 
-const ADMIN_UID = "UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
-const PAYMENT_FORM_URL = "https://forms.gle/7dnzHW8AopbkGpJL9";
-const PAYMENT_QR_URL = "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png";
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const $ = id => document.getElementById(id);
-
-function hideAllPanels() {
-  ["registerPanel","loginPanel","adminLoginPanel","dashboard","adminDashboard"]
-    .forEach(id => $(id).classList.add("hidden"));
-}
-
-function today() {
-  const d = new Date();
-  const offset = d.getTimezoneOffset();
-  return new Date(d.getTime() - offset * 60000).toISOString().slice(0,10);
-}
-
-$("bookingDate").min = today();
-$("waBookingDate").min = today();
-
-window.showRegister = () => {
-  if(auth.currentUser) return;
-  hideAllPanels();
-  $("registerPanel").classList.remove("hidden");
-};
-
-window.showLogin = () => {
-  if(auth.currentUser) return;
-  hideAllPanels();
-  $("loginPanel").classList.remove("hidden");
-};
-
-window.showAdminLogin = () => {
-  if(auth.currentUser) return;
-  hideAllPanels();
-  $("adminLoginPanel").classList.remove("hidden");
-};
-
-/* CUSTOMER REGISTRATION */
-window.registerCustomer = async () => {
-  const name = $("regName").value.trim();
-  const phone = $("regPhone").value.trim();
-  const email = $("regEmail").value.trim();
-  const password = $("regPassword").value;
-
-  $("regMessage").textContent = "";
-
-  if(!name || !phone || !email || !password) {
-    $("regMessage").textContent = "Please fill all fields.";
-    return;
-  }
-
-  if(!/^[0-9]{10}$/.test(phone)) {
-    $("regMessage").textContent = "Enter a valid 10-digit mobile number.";
-    return;
-  }
-
-  if(password.length < 6) {
-    $("regMessage").textContent = "Password must be at least 6 characters.";
-    return;
-  }
-
-  try {
-    const result = await createUserWithEmailAndPassword(auth,email,password);
-    await updateProfile(result.user,{displayName:name});
-    await setDoc(doc(db,"users",result.user.uid),{
-      name,phone,email,role:"customer",createdAt:serverTimestamp()
-    });
-  } catch(error) {
-    $("regMessage").textContent = error.message;
-  }
-};
-
-/* CUSTOMER LOGIN */
-window.loginCustomer = async () => {
-  $("loginMessage").textContent = "";
-  try {
-    await signInWithEmailAndPassword(
-      auth,$("loginEmail").value.trim(),$("loginPassword").value
-    );
-  } catch(error) {
-    $("loginMessage").textContent = error.message;
-  }
-};
-
-/* ADMIN LOGIN */
-window.loginAdmin = async () => {
-  $("adminLoginMessage").textContent = "";
-  const email = $("adminEmail").value.trim();
-  const password = $("adminPassword").value;
-
-  if(!email || !password) {
-    $("adminLoginMessage").textContent = "Enter Admin email and password.";
-    return;
-  }
-
-  try {
-    const result = await signInWithEmailAndPassword(auth,email,password);
-    if(result.user.uid !== ADMIN_UID) {
-      await signOut(auth);
-      $("adminLoginMessage").textContent = "Not authorized as Admin.";
-    }
-  } catch(error) {
-    $("adminLoginMessage").textContent = error.message;
-  }
-};
-
-window.resetPassword = async () => {
-  const email = $("loginEmail").value.trim();
-  if(!email) {
-    $("loginMessage").textContent = "Enter your email address first.";
-    return;
-  }
-  try {
-    await sendPasswordResetEmail(auth,email);
-    $("loginMessage").textContent = "Password reset email sent.";
-  } catch(error) {
-    $("loginMessage").textContent = error.message;
-  }
-};
-
-window.logoutUser = async () => {
-  try {
-    await signOut(auth);
-  } catch(error) {
-    alert(error.message);
-  }
-};
-
-/* WHATSAPP AUTO-FILL - FIXED */
-window.sendBookingWhatsApp = async () => {
-  const user = auth.currentUser;
-
-  if(!user || user.uid === ADMIN_UID) {
-    alert("Please login as a customer first.");
-    return;
-  }
-
-  const service = $("serviceName").value.trim();
-  const address = $("bookingAddress").value.trim();
-  const date = $("bookingDate").value;
-
-  if(!service || !address || !date) {
-    alert("Please fill Service, Address and Booking Date.");
-    return;
-  }
-
-  if(date < today()) {
-    alert("Please choose today or a future date.");
-    return;
-  }
-
-  try {
-    const profile = await getDoc(doc(db,"users",user.uid));
-    const data = profile.exists() ? profile.data() : {};
-
-    const name = data.name || user.displayName || "Customer";
-    const mobile = data.phone || "";
-
-    if(!mobile) {
-      alert("Mobile number not found. Please check your customer profile.");
-      return;
-    }
-
-    const message =
-`Hello PS POWER SERVICE, I want to book a service.
-
-Name: ${name}
-Mobile: ${mobile}
-Service: ${service}
-Address: ${address}
-Booking Date: ${date}
-
-Booking Fee: Rs.20
-Payment QR: ${PAYMENT_QR_URL}
-
-Payment will be verified by Admin.`;
-
-    const whatsappURL =
-      "https://wa.me/918144722094?text=" +
-      encodeURIComponent(message);
-
-    window.location.href = whatsappURL;
-
-  } catch(error) {
-    alert("Could not load customer details: " + error.message);
-  }
-};
-
-/* ADMIN WHATSAPP BOOKING ENTRY */
-$("whatsappBookingForm").addEventListener("submit", async event => {
-  event.preventDefault();
-  const user = auth.currentUser;
-
-  if(!user || user.uid !== ADMIN_UID) {
-    $("adminMessage").textContent = "Admin access required.";
-    return;
-  }
-
-  const customerName = $("waCustomerName").value.trim();
-  const customerPhone = $("waCustomerPhone").value.trim();
-  const service = $("waService").value;
-  const address = $("waAddress").value.trim();
-  const bookingDate = $("waBookingDate").value;
-  const button = $("waSaveButton");
-
-  if(!/^[0-9]{10}$/.test(customerPhone)) {
-    $("adminMessage").textContent = "Enter a valid 10-digit mobile number.";
-    return;
-  }
-
-  if(!customerName || !service || !address || !bookingDate) {
-    $("adminMessage").textContent = "Please fill all fields.";
-    return;
-  }
-
-  if(bookingDate < today()) {
-    $("adminMessage").textContent = "Choose today or a future date.";
-    return;
-  }
-
-  button.disabled = true;
-  $("adminMessage").textContent = "Saving WhatsApp booking...";
-
-  try {
-    const bookingRef = await addDoc(collection(db,"bookings"),{
-      userId:user.uid,
-      customerName,
-      customerPhone,
-      customerEmail:"",
-      service,
-      address,
-      bookingDate,
-      bookingFee:20,
-      bookingSource:"whatsapp",
-      paymentStatus:"pending",
-      bookingStatus:"pending",
-      createdAt:serverTimestamp()
-    });
-
-    $("whatsappBookingForm").reset();
-    $("waBookingDate").min = today();
-    $("adminMessage").textContent =
-      "WhatsApp booking saved. Booking ID: " + bookingRef.id;
-    await loadAdminBookings();
-  } catch(error) {
-    $("adminMessage").textContent = "Save failed: " + error.message;
-  } finally {
-    button.disabled = false;
-  }
+$("whatsappBookingForm").addEventListener("submit",async event=>{
+ event.preventDefault();const user=auth.currentUser;if(!user||user.uid!==ADMIN_UID){$("adminMessage").textContent="Admin access required.";return}
+ const customerName=$("waCustomerName").value.trim(),customerPhone=$("waCustomerPhone").value.trim(),service=$("waService").value,address=$("waAddress").value.trim(),bookingDate=$("waBookingDate").value,button=$("waSaveButton");
+ if(!/^[0-9]{10}$/.test(customerPhone)){$("adminMessage").textContent="Enter a valid 10-digit mobile number.";return}
+ if(!customerName||!service||!address||!bookingDate){$("adminMessage").textContent="Please fill all fields.";return}
+ if(bookingDate<today()){$("adminMessage").textContent="Choose today or a future date.";return}
+ button.disabled=true;$("adminMessage").textContent="Saving WhatsApp booking...";
+ try{const ref=await addDoc(collection(db,"bookings"),{userId:user.uid,customerName,customerPhone,customerEmail:"",service,address,bookingDate,bookingFee:20,bookingSource:"whatsapp",paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});$("whatsappBookingForm").reset();$("waBookingDate").min=today();$("adminMessage").textContent="WhatsApp booking saved. ID: "+ref.id}
+ catch(error){showError("adminMessage",error)}finally{button.disabled=false}
 });
 
-/* WEBSITE BOOKING */
-$("bookingForm").addEventListener("submit",async event => {
-  event.preventDefault();
-  const user = auth.currentUser;
-
-  if(!user || user.uid === ADMIN_UID) return;
-
-  const service = $("serviceName").value;
-  const address = $("bookingAddress").value.trim();
-  const date = $("bookingDate").value;
-  const button = $("bookingButton");
-
-  if(!service || !address || !date) {
-    $("bookingMessage").textContent = "Please complete all booking details.";
-    return;
-  }
-
-  if(date < today()) {
-    $("bookingMessage").textContent = "Choose today or a future date.";
-    return;
-  }
-
-  button.disabled = true;
-  $("bookingMessage").textContent = "Submitting booking...";
-  $("paymentProofPanel").classList.add("hidden");
-
-  try {
-    const profile = await getDoc(doc(db,"users",user.uid));
-    const data = profile.exists() ? profile.data() : {};
-
-    const bookingRef = await addDoc(collection(db,"bookings"),{
-      userId:user.uid,
-      customerName:data.name || user.displayName || "Customer",
-      customerPhone:data.phone || "",
-      customerEmail:user.email || "",
-      service,
-      address,
-      bookingDate:date,
-      bookingFee:20,
-      paymentStatus:"pending",
-      bookingStatus:"pending",
-      createdAt:serverTimestamp()
-    });
-
-    $("bookingMessage").textContent =
-      "Booking submitted successfully. Your Booking ID is shown below.";
-    $("latestBookingId").textContent = bookingRef.id;
-    $("paymentProofPanel").classList.remove("hidden");
-
-    // Keep form values so WhatsApp can also use them.
-    await loadBookings();
-  } catch(error) {
-    $("bookingMessage").textContent = "Booking failed: " + error.message;
-  } finally {
-    button.disabled = false;
-  }
+$("bookingForm").addEventListener("submit",async event=>{
+ event.preventDefault();const user=auth.currentUser;if(!user||user.uid===ADMIN_UID)return;
+ const service=$("serviceName").value,address=$("bookingAddress").value.trim(),date=$("bookingDate").value,button=$("bookingButton");
+ if(!service||!address||!date){$("bookingMessage").textContent="Please complete all booking details.";return}
+ if(date<today()){$("bookingMessage").textContent="Choose today or a future date.";return}
+ button.disabled=true;$("bookingMessage").textContent="Submitting booking...";$("paymentProofPanel").classList.add("hidden");
+ try{const profile=await getDoc(doc(db,"users",user.uid)),data=profile.exists()?profile.data():{};
+ const ref=await addDoc(collection(db,"bookings"),{userId:user.uid,customerName:data.name||user.displayName||"Customer",customerPhone:data.phone||"",customerEmail:user.email||"",service,address,bookingDate:date,bookingFee:20,paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});
+ $("bookingMessage").textContent="Booking submitted successfully."; $("latestBookingId").textContent=ref.id;$("paymentProofPanel").classList.remove("hidden");
+ }catch(error){showError("bookingMessage",error)}finally{button.disabled=false}
 });
 
-function escapeReceiptText(value) {
-  return String(value ?? "").replace(/[&<>"']/g, ch => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
-  })[ch]);
-}
-
-window.printReceipt = (bookingId,booking) => {
-  if(!booking || booking.paymentStatus !== "paid") {
-    alert("Receipt is available after payment is verified by Admin.");
-    return;
-  }
-
-  const customer = escapeReceiptText(booking.customerName || "Customer");
-  const email = escapeReceiptText(booking.customerEmail || "");
-  const service = escapeReceiptText(booking.service || "Service");
-  const address = escapeReceiptText(booking.address || "");
-  const date = escapeReceiptText(booking.bookingDate || "");
-  const id = escapeReceiptText(bookingId);
-  const receiptDate = escapeReceiptText(new Date().toLocaleDateString("en-IN"));
-
-  const receiptWindow = window.open("","_blank","width=760,height=850");
-  if(!receiptWindow) {
-    alert("Please allow pop-ups for this website, then try again.");
-    return;
-  }
-
-  receiptWindow.document.open();
-  receiptWindow.document.write(`<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8">
-<title>PS POWER SERVICE - Receipt</title>
-<style>
-body{font-family:Arial,sans-serif;color:#222;padding:28px;max-width:760px;margin:auto}
-.receipt{border:2px solid #171717;padding:25px;border-radius:10px}
-header{text-align:center;border-bottom:3px solid #ffd500;padding-bottom:15px}
-h1{margin:0;color:#171717}
-.paid{display:inline-block;background:#e7f7e9;color:#176b2c;padding:8px 16px;border-radius:20px;font-weight:bold}
-table{width:100%;border-collapse:collapse;margin-top:22px}
-td{padding:12px 8px;border-bottom:1px solid #ddd;vertical-align:top}
-td:first-child{font-weight:bold;width:38%}
-.total{font-size:21px;font-weight:bold;text-align:right;margin-top:22px}
-.note{font-size:13px;color:#555;margin-top:25px}
-.actions{text-align:center;margin:20px}
-button{background:#171717;color:#ffd500;border:0;padding:12px 20px;border-radius:6px;font-weight:bold}
-@media print{.actions{display:none}body{padding:0}.receipt{border:1px solid #222}}
-</style></head><body>
-<div class="actions"><button onclick="window.print()">Save / Print PDF</button></div>
-<div class="receipt">
-<header><h1>⚡ PS POWER SERVICE</h1>
-<p>Powering Your Home, Safely.</p><h2>PAYMENT RECEIPT</h2>
-<span class="paid">PAYMENT PAID</span></header>
-<table>
-<tr><td>Receipt Date</td><td>${receiptDate}</td></tr>
-<tr><td>Booking ID</td><td>${id}</td></tr>
-<tr><td>Customer Name</td><td>${customer}</td></tr>
-<tr><td>Customer Email</td><td>${email || "—"}</td></tr>
-<tr><td>Service</td><td>${service}</td></tr>
-<tr><td>Service Address</td><td>${address || "—"}</td></tr>
-<tr><td>Booking Date</td><td>${date || "—"}</td></tr>
-<tr><td>Payment Status</td><td><strong>PAID</strong></td></tr>
-</table>
-<div class="total">Amount Received: ₹20</div>
-<p class="note">This receipt confirms that the booking fee shown above has been marked as paid by PS POWER SERVICE Admin.</p>
-</div></body></html>`);
-  receiptWindow.document.close();
-  receiptWindow.focus();
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+window.printReceipt=(id,b)=>{
+ if(!b||b.paymentStatus!=="paid"){alert("Receipt is available after payment is verified by Admin.");return}
+ const fields={customer:esc(b.customerName||"Customer"),email:esc(b.customerEmail||""),service:esc(b.service||"Service"),address:esc(b.address||""),date:esc(b.bookingDate||""),id:esc(id),receiptDate:esc(new Date().toLocaleDateString("en-IN"))};
+ const w=window.open("","_blank","width=760,height=850");if(!w){alert("Please allow pop-ups for this website.");return}
+ w.document.open();w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>PS POWER SERVICE Receipt</title><style>body{font-family:Arial;padding:25px;max-width:760px;margin:auto}.receipt{border:2px solid #171717;padding:22px;border-radius:10px}header{text-align:center;border-bottom:3px solid #ffd500;padding-bottom:12px}table{width:100%;border-collapse:collapse;margin-top:20px}td{padding:11px;border-bottom:1px solid #ddd}td:first-child{font-weight:bold;width:38%}.total{text-align:right;font-size:21px;font-weight:bold;margin-top:20px}.actions{text-align:center;margin:18px}button{padding:12px;background:#171717;color:#ffd500;border:0}@media print{.actions{display:none}}</style></head><body><div class="actions"><button onclick="window.print()">Save / Print PDF</button></div><div class="receipt"><header><h1>⚡ PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p><h2>PAYMENT RECEIPT</h2><b>PAYMENT PAID</b></header><table><tr><td>Receipt Date</td><td>${fields.receiptDate}</td></tr><tr><td>Booking ID</td><td>${fields.id}</td></tr><tr><td>Customer</td><td>${fields.customer}</td></tr><tr><td>Email</td><td>${fields.email||"—"}</td></tr><tr><td>Service</td><td>${fields.service}</td></tr><tr><td>Address</td><td>${fields.address}</td></tr><tr><td>Booking Date</td><td>${fields.date}</td></tr><tr><td>Payment</td><td>PAID</td></tr></table><div class="total">Amount Received: ₹20</div><p>This receipt confirms that Admin marked the booking fee as paid.</p></div></body></html>`);w.document.close();w.focus();
 };
 
-/* NOTIFICATIONS */
-function notificationReadKey(userId) {
-  return "psps_read_notifications_" + userId;
+/* Customer notification read-state is stored only in this browser. */
+function readKey(uid){return "psps_read_notifications_"+uid}
+function getReadIds(uid){try{return new Set(JSON.parse(localStorage.getItem(readKey(uid))||"[]"))}catch{return new Set()}}
+function saveReadIds(uid,ids){try{localStorage.setItem(readKey(uid),JSON.stringify([...ids]))}catch(e){console.warn(e)}}
+window.markNotificationRead=id=>{const u=auth.currentUser;if(!u)return;const ids=getReadIds(u.uid);ids.add(id);saveReadIds(u.uid,ids);renderCustomerBookings(lastCustomerBookings,u.uid)};
+window.markAllNotificationsRead=()=>{const u=auth.currentUser;if(!u)return;const ids=getReadIds(u.uid);lastCustomerBookings.forEach(x=>ids.add(x.id));saveReadIds(u.uid,ids);renderCustomerBookings(lastCustomerBookings,u.uid)};
+
+function addCell(row,value){const td=document.createElement("td");td.textContent=String(value??"—");row.append(td);return td}
+function renderCustomerBookings(items,uid){
+ lastCustomerBookings=items;const tbody=$("customerBookingRows"),notices=$("customerNotifications");tbody.replaceChildren();notices.replaceChildren();
+ if(!items.length){const tr=document.createElement("tr");const td=addCell(tr,"No bookings yet.");td.colSpan=8;tbody.append(tr);notices.textContent="No booking notifications yet.";$("unreadNotificationCount").textContent="(0 unread)";return}
+ const readIds=getReadIds(uid);let unread=0;
+ items.forEach(({id,b})=>{
+  const tr=document.createElement("tr");addCell(tr,id);addCell(tr,b.service||"Service");addCell(tr,b.bookingDate||"");addCell(tr,b.address||"");addCell(tr,"₹"+(b.bookingFee??20));addCell(tr,b.paymentStatus||"pending");addCell(tr,b.bookingStatus||"pending");
+  const receiptCell=document.createElement("td");if(b.paymentStatus==="paid"){const btn=document.createElement("button");btn.className="btn";btn.textContent="Receipt PDF";btn.onclick=()=>window.printReceipt(id,b);receiptCell.append(btn)}else receiptCell.textContent="After payment verification";tr.append(receiptCell);tbody.append(tr);
+  const state=(b.bookingStatus||"pending").toLowerCase(),messages={pending:["Booking received","Your booking is waiting for Admin confirmation."],confirmed:["Booking confirmed","Your service booking has been confirmed."],completed:["Work completed","Your service booking has been marked completed."],cancelled:["Booking cancelled","Please contact PS POWER SERVICE if you need help."]};
+  const info=messages[state];if(info){const isRead=readIds.has(id);if(!isRead)unread++;const box=document.createElement("div");box.className="notification"+(isRead?" read":"");const h=document.createElement("strong");h.textContent=info[0];const p=document.createElement("p");p.textContent=info[1];const small=document.createElement("small");small.textContent="Booking ID: "+id+" • "+(isRead?"Read":"Unread");box.append(h,p,small);if(!isRead){const btn=document.createElement("button");btn.className="btn";btn.textContent="Mark as Read";btn.onclick=()=>window.markNotificationRead(id);box.append(btn)}notices.append(box)}
+ });
+ $("unreadNotificationCount").textContent="("+unread+" unread)";
+ if(!notices.childElementCount)notices.textContent="No booking notifications yet.";
+}
+function startCustomerListener(uid){
+ if(stopCustomerListener)stopCustomerListener();
+ $("customerBookingRows").innerHTML='<tr><td colspan="8">Loading bookings...</td></tr>';
+ const q=query(collection(db,"bookings"),where("userId","==",uid));
+ stopCustomerListener=onSnapshot(q,snap=>{
+  const items=snap.docs.map(d=>({id:d.id,b:d.data()})).sort((a,b)=>(b.b.createdAt?.seconds||0)-(a.b.createdAt?.seconds||0));
+  renderCustomerBookings(items,uid);
+ },error=>{$("bookingMessage").textContent="Could not load live bookings: "+error.message});
+}
+window.loadBookings=()=>{const u=auth.currentUser;if(u&&u.uid!==ADMIN_UID)startCustomerListener(u.uid)};
+
+function renderAdminBookings(snapshot){
+ const tbody=$("adminBookingRows");tbody.replaceChildren();
+ if(snapshot.empty){const tr=document.createElement("tr"),td=addCell(tr,"No bookings found.");td.colSpan=12;tbody.append(tr);$("adminMessage").textContent="Total bookings: 0";return}
+ const docs=snapshot.docs.slice().sort((a,b)=>(b.data().createdAt?.seconds||0)-(a.data().createdAt?.seconds||0));
+ $("adminMessage").textContent="Total bookings: "+docs.length+" • Live updates active";
+ docs.forEach(item=>{
+  const b=item.data(),tr=document.createElement("tr");addCell(tr,item.id);addCell(tr,b.customerName||"N/A");addCell(tr,b.customerPhone||"N/A");addCell(tr,b.customerEmail||"N/A");addCell(tr,b.service||"N/A");addCell(tr,b.address||"N/A");addCell(tr,b.bookingDate||"N/A");addCell(tr,b.bookingSource==="whatsapp"?"WhatsApp":"Website");addCell(tr,"₹"+(b.bookingFee??20));addCell(tr,b.paymentStatus||"pending");addCell(tr,b.bookingStatus||"pending");
+  const actions=document.createElement("td");
+  [["Confirm",{bookingStatus:"confirmed"}],["Cancel",{bookingStatus:"cancelled"}],["Complete",{bookingStatus:"completed"}]].forEach(([label,change])=>{const btn=document.createElement("button");btn.className="btn";btn.textContent=label;btn.onclick=()=>updateBooking(item.id,change);actions.append(btn)});
+  const paid=document.createElement("button");paid.className="btn dark";paid.textContent="Mark Paid";paid.disabled=b.paymentStatus==="paid";paid.onclick=()=>{if(confirm("Have you checked the actual PhonePe payment and confirmed ₹20 was received?"))updateBooking(item.id,{paymentStatus:"paid"})};actions.append(paid);
+  if(b.paymentStatus==="paid"){const receipt=document.createElement("button");receipt.className="btn";receipt.textContent="Receipt";receipt.onclick=()=>window.printReceipt(item.id,b);actions.append(receipt)}
+  tr.append(actions);tbody.append(tr);
+ });
+}
+function startAdminListener(){
+ if(stopAdminListener)stopAdminListener();
+ $("adminBookingRows").innerHTML='<tr><td colspan="12">Loading bookings...</td></tr>';
+ stopAdminListener=onSnapshot(collection(db,"bookings"),renderAdminBookings,error=>{$("adminMessage").textContent="Error loading bookings: "+error.message});
+}
+window.loadAdminBookings=()=>{if(auth.currentUser?.uid===ADMIN_UID)startAdminListener()};
+async function updateBooking(id,changes){
+ if(auth.currentUser?.uid!==ADMIN_UID)return;
+ try{await updateDoc(doc(db,"bookings",id),changes);$("adminMessage").textContent="Booking update saved. Live table is refreshing."}
+ catch(error){$("adminMessage").textContent="Update failed: "+error.message}
 }
 
-function getReadNotificationIds(userId) {
-  try {
-    return new Set(JSON.parse(localStorage.getItem(notificationReadKey(userId)) || "[]"));
-  } catch {
-    return new Set();
-  }
-}
-
-function saveReadNotificationIds(userId,ids) {
-  try {
-    localStorage.setItem(notificationReadKey(userId),JSON.stringify([...ids]));
-  } catch(error) {
-    console.warn("Could not save notification read state",error);
-  }
-}
-
-window.markNotificationRead = notificationId => {
-  const user = auth.currentUser;
-  if(!user) return;
-  const readIds = getReadNotificationIds(user.uid);
-  readIds.add(notificationId);
-  saveReadNotificationIds(user.uid,readIds);
-  loadBookings();
-};
-
-window.markAllNotificationsRead = () => {
-  const user = auth.currentUser;
-  if(!user) return;
-  const notices = [...document.querySelectorAll("#customerNotifications [data-notification-id]")];
-  const readIds = getReadNotificationIds(user.uid);
-  notices.forEach(n => readIds.add(n.dataset.notificationId));
-  saveReadNotificationIds(user.uid,readIds);
-  loadBookings();
-};
-
-window.loadBookings = async () => {
-  const user = auth.currentUser;
-  if(!user || user.uid === ADMIN_UID) return;
-
-  const history = $("bookingHistory");
-  history.textContent = "Loading bookings...";
-
-  try {
-    const result = await getDocs(
-      query(collection(db,"bookings"),where("userId","==",user.uid))
-    );
-
-    history.replaceChildren();
-    const notifications = $("customerNotifications");
-    notifications.replaceChildren();
-
-    if(result.empty) {
-      history.textContent = "No bookings yet.";
-      notifications.textContent = "No booking notifications yet.";
-      $("unreadNotificationCount").textContent = "(0 unread)";
-      return;
-    }
-
-    const readIds = getReadNotificationIds(user.uid);
-    const notificationItems = [];
-
-    result.forEach(item => {
-      const b = item.data();
-      const state = (b.bookingStatus || "pending").toLowerCase();
-
-      const messages = {
-        pending:["Booking received","Your service booking has been received and is waiting for Admin confirmation."],
-        confirmed:["Booking confirmed","Good news! Your service booking has been confirmed."],
-        completed:["Work completed","Your service booking has been marked as completed."],
-        cancelled:["Booking cancelled","Your service booking has been cancelled. Please contact PS POWER SERVICE if you need help."]
-      };
-
-      if(messages[state]) {
-        notificationItems.push({
-          id:item.id,title:messages[state][0],message:messages[state][1]
-        });
-      }
-
-      const card = document.createElement("div");
-      card.className = "booking";
-
-      const title = document.createElement("strong");
-      title.textContent = b.service || "Service";
-
-      const id = document.createElement("p");
-      id.textContent = "Booking ID: " + item.id;
-
-      const details = document.createElement("p");
-      details.textContent = "Date: " + (b.bookingDate || "") + " | Fee: ₹" + (b.bookingFee ?? 20);
-
-      const payment = document.createElement("p");
-      payment.textContent = "Payment: " + (b.paymentStatus || "pending");
-
-      const status = document.createElement("p");
-      status.textContent = "Booking Status: " + (b.bookingStatus || "pending");
-
-      card.append(title,id,details,payment,status);
-
-      if(b.paymentStatus === "paid") {
-        const receiptBtn = document.createElement("button");
-        receiptBtn.className = "btn";
-        receiptBtn.textContent = "Download Receipt / PDF";
-        receiptBtn.onclick = () => window.printReceipt(item.id,b);
-        card.append(receiptBtn);
-      }
-
-      history.append(card);
-    });
-
-    let unreadCount = 0;
-
-    notificationItems.reverse().forEach(item => {
-      const isRead = readIds.has(item.id);
-      if(!isRead) unreadCount++;
-
-      const notice = document.createElement("div");
-      notice.className = "notification" + (isRead ? " read" : "");
-      notice.dataset.notificationId = item.id;
-
-      const heading = document.createElement("strong");
-      heading.textContent = item.title;
-
-      const message = document.createElement("p");
-      message.textContent = item.message;
-
-      const reference = document.createElement("small");
-      reference.textContent = "Booking ID: " + item.id + " • " + (isRead ? "Read" : "Unread");
-
-      notice.append(heading,message,reference);
-
-      if(!isRead) {
-        const readBtn = document.createElement("button");
-        readBtn.className = "btn";
-        readBtn.type = "button";
-        readBtn.textContent = "Mark as Read";
-        readBtn.onclick = () => window.markNotificationRead(item.id);
-        notice.append(readBtn);
-      }
-
-      notifications.append(notice);
-    });
-
-    $("unreadNotificationCount").textContent = "(" + unreadCount + " unread)";
-    if(notificationItems.length === 0) {
-      notifications.textContent = "No booking notifications yet.";
-    }
-  } catch(error) {
-    history.textContent = "Could not load bookings: " + error.message;
-    $("customerNotifications").textContent = "Could not load notifications.";
-  }
-};
-
-/* ADMIN BOOKINGS */
-window.loadAdminBookings = async () => {
-  if(!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) return;
-
-  const list = $("adminBookings");
-  $("adminMessage").textContent = "Loading all bookings...";
-  list.replaceChildren();
-
-  try {
-    const snapshot = await getDocs(collection(db,"bookings"));
-
-    if(snapshot.empty) {
-      $("adminMessage").textContent = "No bookings found.";
-      return;
-    }
-
-    $("adminMessage").textContent = "Total bookings: " + snapshot.size;
-
-    snapshot.forEach(item => {
-      const b = item.data();
-      const card = document.createElement("div");
-      card.className = "booking";
-
-      const title = document.createElement("h3");
-      title.textContent = b.service || "Service";
-
-      const id = document.createElement("p");
-      id.textContent = "Booking ID: " + item.id;
-
-      const details = document.createElement("p");
-      details.textContent =
-        "Customer: " + (b.customerName || "N/A") +
-        " | Mobile: " + (b.customerPhone || "N/A") +
-        " | Email: " + (b.customerEmail || "N/A");
-
-      const source = document.createElement("p");
-      source.textContent = "Booking Source: " +
-        (b.bookingSource === "whatsapp" ? "WhatsApp" : "Website");
-
-      const address = document.createElement("p");
-      address.textContent = "Address: " + (b.address || "N/A");
-
-      const date = document.createElement("p");
-      date.textContent = "Booking Date: " + (b.bookingDate || "N/A");
-
-      const fee = document.createElement("p");
-      fee.textContent = "Booking Fee: ₹" + (b.bookingFee ?? 20);
-
-      const status = document.createElement("p");
-      status.textContent = "Booking Status: " + (b.bookingStatus || "pending");
-
-      const payment = document.createElement("p");
-      payment.textContent = "Payment Status: " + (b.paymentStatus || "pending");
-
-      const confirmBtn = document.createElement("button");
-      confirmBtn.className = "btn";
-      confirmBtn.textContent = "Confirm";
-      confirmBtn.onclick = () => updateBooking(item.id,{bookingStatus:"confirmed"});
-
-      const cancelBtn = document.createElement("button");
-      cancelBtn.className = "btn";
-      cancelBtn.textContent = "Cancel";
-      cancelBtn.onclick = () => updateBooking(item.id,{bookingStatus:"cancelled"});
-
-      const completeBtn = document.createElement("button");
-      completeBtn.className = "btn";
-      completeBtn.textContent = "Complete";
-      completeBtn.onclick = () => updateBooking(item.id,{bookingStatus:"completed"});
-
-      const paidBtn = document.createElement("button");
-      paidBtn.className = "btn";
-      paidBtn.textContent = "Mark Paid";
-      paidBtn.onclick = () => {
-        if(b.paymentStatus === "paid") {
-          $("adminMessage").textContent = "Payment is already marked paid.";
-          return;
-        }
-        if(confirm("Have you checked the actual PhonePe payment and confirmed ₹20 was received?")) {
-          updateBooking(item.id,{paymentStatus:"paid"});
-        }
-      };
-
-      card.append(
-        title,id,details,source,address,date,fee,status,payment,
-        confirmBtn,cancelBtn,completeBtn,paidBtn
-      );
-
-      if(b.paymentStatus === "paid") {
-        const receiptBtn = document.createElement("button");
-        receiptBtn.className = "btn";
-        receiptBtn.textContent = "Download Receipt / PDF";
-        receiptBtn.onclick = () => window.printReceipt(item.id,b);
-        card.append(receiptBtn);
-      }
-
-      list.append(card);
-    });
-  } catch(error) {
-    $("adminMessage").textContent = "Error loading bookings: " + error.message;
-  }
-};
-
-async function updateBooking(id,changes) {
-  if(!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) return;
-
-  try {
-    await updateDoc(doc(db,"bookings",id),changes);
-    $("adminMessage").textContent = "Booking updated successfully.";
-    await loadAdminBookings();
-  } catch(error) {
-    $("adminMessage").textContent = "Update failed: " + error.message;
-  }
-}
-
-/* LOGIN SESSION */
-onAuthStateChanged(auth,async user => {
-  hideAllPanels();
-
-  if(!user) {
-    $("registerPanel").classList.remove("hidden");
-    return;
-  }
-
-  if(user.uid === ADMIN_UID) {
-    $("adminDashboard").classList.remove("hidden");
-    await loadAdminBookings();
-    return;
-  }
-
-  $("dashboard").classList.remove("hidden");
-  $("customerName").textContent = user.displayName || "Customer";
-  $("customerEmail").textContent = user.email || "";
-
-  try {
-    const snap = await getDoc(doc(db,"users",user.uid));
-    const profile = snap.exists() ? snap.data() : {};
-
-    $("customerName").textContent =
-      profile.name || user.displayName || "Customer";
-
-    $("customerPhone").textContent =
-      profile.phone || "Not available";
-  } catch(error) {
-    $("customerPhone").textContent = "Not available";
-  }
-
-  await loadBookings();
+onAuthStateChanged(auth,async user=>{
+ stopListeners();hideAllPanels();
+ if(!user){$("registerPanel").classList.remove("hidden");return}
+ if(user.uid===ADMIN_UID){$("adminDashboard").classList.remove("hidden");startAdminListener();return}
+ $("dashboard").classList.remove("hidden");$("customerName").textContent=user.displayName||"Customer";$("customerEmail").textContent=user.email||"";
+ try{const snap=await getDoc(doc(db,"users",user.uid)),profile=snap.exists()?snap.data():{};$("customerName").textContent=profile.name||user.displayName||"Customer";$("customerPhone").textContent=profile.phone||"Not available"}
+ catch{$("customerPhone").textContent="Not available"}
+ startCustomerListener(user.uid);
 });
 </script>
 </body>
