@@ -173,6 +173,53 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
   <div class="service">⚡ Electrical Work</div><div class="service">🏠 Home Wiring</div>
   <div class="service">🔧 Repair & Maintenance</div><div class="service">💡 Lenter Piping</div>
 </div></section>
+  <!-- HOUSE DESIGN GALLERY -->
+<section id="design-gallery" class="section">
+  <div class="container">
+    <h2>House Designs Gallery</h2>
+    <p>Choose your favourite home design.</p>
+
+    <div class="design-categories">
+      <button class="btn" onclick="filterDesigns('All')">All</button>
+      <button class="btn" onclick="filterDesigns('House Wiring Design')">House Wiring</button>
+      <button class="btn" onclick="filterDesigns('TV Unit Design')">TV Unit</button>
+      <button class="btn" onclick="filterDesigns('Ceiling Design')">Ceiling</button>
+      <button class="btn" onclick="filterDesigns('Kitchen Design')">Kitchen</button>
+      <button class="btn" onclick="filterDesigns('Wardrobe Design')">Wardrobe</button>
+      <button class="btn" onclick="filterDesigns('Switch Board Design')">Switch Board</button>
+    </div>
+
+    <div id="designGalleryList" class="design-gallery-grid">
+      <p>Designs loading...</p>
+    </div>
+
+    <!-- ADMIN UPLOAD PANEL -->
+    <div id="adminDesignUpload" class="panel hidden">
+      <h3>Admin — Add New Design</h3>
+
+      <label>Design Name</label>
+      <input id="designName" type="text" placeholder="Enter design name">
+
+      <label>Design Category</label>
+      <select id="designCategory">
+        <option value="House Wiring Design">House Wiring Design</option>
+        <option value="TV Unit Design">TV Unit Design</option>
+        <option value="Ceiling Design">Ceiling Design</option>
+        <option value="Kitchen Design">Kitchen Design</option>
+        <option value="Wardrobe Design">Wardrobe Design</option>
+        <option value="Switch Board Design">Switch Board Design</option>
+      </select>
+
+      <label>Select Design Photo</label>
+      <input id="designPhoto" type="file" accept="image/*">
+
+      <button class="btn" id="uploadDesignBtn" onclick="uploadNewDesign()">
+        Upload Design
+      </button>
+      <p id="designUploadMessage"></p>
+    </div>
+  </div>
+</section>
 <section id="account"><h2>Account</h2>
 <div class="panel auth-panel" id="registerPanel">
   <h3>Customer Registration</h3>
@@ -270,12 +317,21 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,sendPasswordResetEmail,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import {getFirestore,doc,setDoc,getDoc,collection,addDoc,query,where,getDocs,updateDoc,serverTimestamp,onSnapshot} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+  import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-storage.js";
 
 const firebaseConfig={apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",authDomain:"ps-power-service-68007.firebaseapp.com",projectId:"ps-power-service-68007",storageBucket:"ps-power-service-68007.firebasestorage.app",messagingSenderId:"647095348680",appId:"1:647095348680:web:51b3833ce08d767e9d64fd"};
 const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 const PAYMENT_FORM_URL="https://forms.gle/7dnzHW8AopbkGpJL9";
 const PAYMENT_QR_URL="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png";
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const storage=getStorage(app);
 const $=id=>document.getElementById(id);
 let stopCustomerListener=null,stopAdminListener=null,lastCustomerBookings=[];
 
