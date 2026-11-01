@@ -1,0 +1,461 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#ffd000">
+
+<title>PS POWER SERVICE | Electrical Services</title>
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #fff;
+  color: #151515;
+}
+
+header {
+  width: 100%;
+  padding: 15px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  box-shadow: 0 2px 12px #00000012;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  background: #ffd000;
+  padding: 10px;
+  font-size: 23px;
+  font-weight: 900;
+  border-radius: 10px;
+}
+
+.logo h2 {
+  font-size: 17px;
+}
+
+.logo small {
+  color: #777;
+  font-size: 11px;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+
+nav a {
+  text-decoration: none;
+  color: #222;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.login-btn, .book-btn {
+  background: #ffd000;
+  color: #111;
+  border: none;
+  padding: 12px 19px;
+  border-radius: 7px;
+  font-weight: bold;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.hero {
+  min-height: 520px;
+  padding: 75px 7%;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(120deg,#fff 50%,#fff4c4);
+}
+
+.hero-content {
+  max-width: 650px;
+}
+
+.tag {
+  display: inline-block;
+  background: #fff0a8;
+  padding: 9px 15px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-size: clamp(35px,6vw,62px);
+  line-height: 1.12;
+  margin-bottom: 20px;
+}
+
+.hero h1 span {
+  color: #d6a900;
+}
+
+.hero p {
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 28px;
+  font-size: 16px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.secondary-btn {
+  padding: 12px 19px;
+  border: 2px solid #222;
+  border-radius: 7px;
+  color: #222;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.hero-art {
+  margin-left: auto;
+  font-size: 150px;
+  padding: 30px;
+}
+
+.section {
+  padding: 70px 7%;
+  text-align: center;
+}
+
+.section-title {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+.section-desc {
+  color: #777;
+  margin-bottom: 35px;
+}
+
+.services {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 20px;
+}
+
+.service-card {
+  padding: 28px 15px;
+  border: 1px solid #eee;
+  border-radius: 13px;
+  transition: .3s;
+  background: white;
+}
+
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px #00000012;
+  border-color: #ffd000;
+}
+
+.service-icon {
+  font-size: 42px;
+  margin-bottom: 15px;
+}
+
+.service-card h3 {
+  margin-bottom: 10px;
+}
+
+.service-card p {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.6;
+}
+
+.about {
+  background: #fff9df;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.feature {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.feature strong {
+  display: block;
+  margin-top: 10px;
+}
+
+.login-section {
+  background: #171717;
+  color: white;
+}
+
+.login-cards {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 20px;
+  max-width: 700px;
+  margin: 30px auto 0;
+}
+
+.login-card {
+  background: #292929;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.login-card p {
+  color: #bbb;
+  margin: 12px 0 20px;
+}
+
+footer {
+  padding: 30px 7%;
+  text-align: center;
+  background: #101010;
+  color: white;
+}
+
+footer p {
+  color: #aaa;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+@media(max-width:800px) {
+  nav {
+    display: none;
+  }
+
+  .hero {
+    min-height: 480px;
+    padding: 60px 7%;
+  }
+
+  .hero-art {
+    display: none;
+  }
+
+  .services {
+    grid-template-columns: repeat(2,1fr);
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media(max-width:420px) {
+  .login-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .section {
+    padding: 55px 5%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-icon">PS</div>
+    <div>
+      <h2>PS POWER SERVICE</h2>
+      <small>Powering Your Home, Safely.</small>
+    </div>
+  </div>
+
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <a href="#login" class="login-btn">Login</a>
+</header>
+
+<!-- HOME BANNER -->
+<section class="hero" id="home">
+  <div class="hero-content">
+
+    <div class="tag">⚡ YOUR TRUSTED ELECTRICIAN</div>
+
+    <h1>
+      Professional <span>Electrical</span>
+      Services For Your Home
+    </h1>
+
+    <p>
+      Reliable Electrical Work, Home Wiring,
+      Lenter Piping and Repair & Maintenance.
+      Quality service for your home and business.
+    </p>
+
+    <div class="hero-buttons">
+      <a href="#login" class="book-btn">Book Now →</a>
+      <a href="#services" class="secondary-btn">
+        Our Services
+      </a>
+    </div>
+
+  </div>
+
+  <div class="hero-art">⚡</div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+
+  <h2 class="section-title">Our Services</h2>
+
+  <p class="section-desc">
+    Professional services at your doorstep.
+  </p>
+
+  <div class="services">
+
+    <div class="service-card">
+      <div class="service-icon">⚡</div>
+      <h3>Electrical Work</h3>
+      <p>Electrical installation and maintenance services.</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">🏠</div>
+      <h3>Home Wiring</h3>
+      <p>Home electrical wiring and installation.</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">🔧</div>
+      <h3>Lenter Piping</h3>
+      <p>Electrical conduit piping for construction.</p>
+    </div>
+
+    <div class="service-card">
+      <div class="service-icon">🛠️</div>
+      <h3>Repair & Maintenance</h3>
+      <p>Electrical repair and maintenance services.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section about" id="about">
+
+  <h2 class="section-title">Why Choose Us?</h2>
+
+  <p class="section-desc">
+    PS POWER SERVICE - Safe, Reliable & Professional.
+  </p>
+
+  <div class="features">
+    <div class="feature">
+      <div class="service-icon">🛡️</div>
+      <strong>Safe Service</strong>
+      <p>Safety-focused service.</p>
+    </div>
+
+    <div class="feature">
+      <div class="service-icon">⭐</div>
+      <strong>Reliable Work</strong>
+      <p>Professional service experience.</p>
+    </div>
+
+    <div class="feature">
+      <div class="service-icon">📞</div>
+      <strong>Customer Support</strong>
+      <p>Support for your service requests.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LOGIN -->
+<section class="section login-section" id="login">
+
+  <h2 class="section-title">Login Portal</h2>
+
+  <p class="section-desc">
+    Select your account type to continue.
+  </p>
+
+  <div class="login-cards">
+
+    <div class="login-card">
+      <div class="service-icon">👤</div>
+      <h3>Customer Login</h3>
+      <p>Register and manage your bookings.</p>
+      <a href="#contact" class="book-btn">Customer Login →</a>
+    </div>
+
+    <div class="login-card">
+      <div class="service-icon">🔐</div>
+      <h3>Admin Login</h3>
+      <p>Manage customer bookings and services.</p>
+      <a href="#contact" class="book-btn">Admin Login →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" id="contact">
+
+  <h2 class="section-title">Contact Us</h2>
+
+  <p class="section-desc">
+    PS POWER SERVICE
+  </p>
+
+  <p>📍 Muniguda, Odisha</p>
+  <p style="margin-top:12px">
+    ⚡ Powering Your Home, Safely.
+  </p>
+
+</section>
+
+<footer>
+  <h3>PS POWER SERVICE ⚡</h3>
+  <p>Safe • Reliable • Professional</p>
+  <p>© 2026 PS POWER SERVICE. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
