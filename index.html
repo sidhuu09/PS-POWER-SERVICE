@@ -1419,9 +1419,35 @@ function renderNotifications() {
 }
 
 window.markAllNotificationsRead = async function() {
-  alert(
-    "Notifications read status update ପାଇଁ Firestore Rules ଓ notification update function ଆବଶ୍ୟକ।"
+  if (!auth.currentUser ||
+      auth.currentUser.uid === ADMIN_UID) {
+    alert("Customer login required.");
+    return;
+  }
+
+  const unread = currentNotifications.filter(
+    n => n.read !== true
   );
+
+  if (!unread.length) {
+    alert("All notifications are already read.");
+    return;
+  }
+
+  try {
+    await Promise.all(
+      unread.map(n =>
+        updateDoc(
+          doc(db, "notifications", n.id),
+          { read: true }
+        )
+      )
+    );
+
+    alert("All notifications marked as read!");
+  } catch (error) {
+    alert("Notification Error: " + error.message);
+  }
 };
 
 /* AUTHENTICATION STATE */
