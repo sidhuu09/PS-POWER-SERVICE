@@ -1367,9 +1367,69 @@ async function updateBooking(id, changes) {
   }
 
   try {
-    await updateDoc(doc(db, "bookings", id), changes);
+    const bookingRef = doc(db, "bookings", id);
+    const bookingSnap = await getDoc(bookingRef);
 
-    showMessage("adminMessage", "Booking updated.");
+    if (!bookingSnap.exists()) {
+      showMessage("adminMessage", "Booking not found.", true);
+      return;
+    }
+
+    const booking = bookingSnap.data();
+
+    await updateDoc(bookingRef, changes);
+
+    const userId = booking.userId;
+
+    if (userId) {
+      let title = "";
+      let message = "";
+
+      if (
+        changes.paymentStatus === "paid" &&
+        booking.paymentStatus !== "paid"
+      ) {
+        title = "Payment Verified";
+        message = "Your ₹20 booking payment has been verified.";
+      }
+
+      if (
+        changes.status === "confirmed" &&
+        booking.status !== "confirmed"
+      ) {
+        title = "Booking Confirmed";
+        message = "Your service booking has been confirmed.";
+      }
+
+      if (
+        changes.status === "completed" &&
+        booking.status !== "completed"
+      ) {
+        title = "Booking Completed";
+        message = "Your service booking has been completed.";
+      }
+
+      if (
+        changes.status === "cancelled" &&
+        booking.status !== "cancelled"
+      ) {
+        title = "Booking Cancelled";
+        message = "Your service booking has been cancelled.";
+      }
+
+      if (title) {
+        await addDoc(collection(db, "notifications"), {
+          userId,
+          bookingId: id,
+          title,
+          message,
+          read: false,
+          createdAt: serverTimestamp()
+        });
+      }
+    }
+
+    showMessage("adminMessage", "Booking updated successfully.");
   } catch (error) {
     showMessage("adminMessage", error.message, true);
   }
