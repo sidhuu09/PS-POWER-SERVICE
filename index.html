@@ -238,6 +238,75 @@ $("bookingForm").addEventListener("submit",async event=>{
   finally{button.disabled=false;}
 });
 
+
+function escapeReceiptText(value){
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[ch]);
+}
+
+window.printReceipt = (bookingId, booking) => {
+  if(!booking || booking.paymentStatus !== "paid"){
+    alert("Receipt is available after payment is verified by Admin.");
+    return;
+  }
+
+  const customer = escapeReceiptText(booking.customerName || "Customer");
+  const email = escapeReceiptText(booking.customerEmail || "");
+  const service = escapeReceiptText(booking.service || "Service");
+  const address = escapeReceiptText(booking.address || "");
+  const date = escapeReceiptText(booking.bookingDate || "");
+  const id = escapeReceiptText(bookingId);
+  const receiptDate = escapeReceiptText(new Date().toLocaleDateString("en-IN"));
+
+  const receiptWindow = window.open("", "_blank", "width=760,height=850");
+  if(!receiptWindow){
+    alert("Please allow pop-ups for this website, then try again.");
+    return;
+  }
+
+  receiptWindow.document.open();
+  receiptWindow.document.write(`<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PS POWER SERVICE - Receipt</title>
+<style>
+body{font-family:Arial,sans-serif;color:#222;padding:28px;max-width:760px;margin:auto}
+.receipt{border:2px solid #171717;padding:25px;border-radius:10px}
+header{text-align:center;border-bottom:3px solid #ffd500;padding-bottom:15px}
+h1{margin:0;color:#171717}header p{margin:7px 0}
+.paid{display:inline-block;background:#e7f7e9;color:#176b2c;padding:8px 16px;border-radius:20px;font-weight:bold}
+table{width:100%;border-collapse:collapse;margin-top:22px}
+td{padding:12px 8px;border-bottom:1px solid #ddd;vertical-align:top}
+td:first-child{font-weight:bold;width:38%}
+.total{font-size:21px;font-weight:bold;text-align:right;margin-top:22px}
+.note{font-size:13px;color:#555;margin-top:25px}
+.actions{text-align:center;margin:20px}
+button{background:#171717;color:#ffd500;border:0;padding:12px 20px;border-radius:6px;font-weight:bold}
+@media print{.actions{display:none}body{padding:0}.receipt{border:1px solid #222}}
+</style></head><body>
+<div class="actions"><button onclick="window.print()">Save / Print PDF</button></div>
+<div class="receipt">
+<header><h1>⚡ PS POWER SERVICE</h1>
+<p>Powering Your Home, Safely.</p><h2>PAYMENT RECEIPT</h2>
+<span class="paid">PAYMENT PAID</span></header>
+<table>
+<tr><td>Receipt Date</td><td>${receiptDate}</td></tr>
+<tr><td>Booking ID</td><td>${id}</td></tr>
+<tr><td>Customer Name</td><td>${customer}</td></tr>
+<tr><td>Customer Email</td><td>${email || "—"}</td></tr>
+<tr><td>Service</td><td>${service}</td></tr>
+<tr><td>Service Address</td><td>${address || "—"}</td></tr>
+<tr><td>Booking Date</td><td>${date || "—"}</td></tr>
+<tr><td>Payment Status</td><td><strong>PAID</strong></td></tr>
+</table>
+<div class="total">Amount Received: ₹20</div>
+<p class="note">This receipt confirms that the booking fee shown above has been marked as paid by PS POWER SERVICE Admin. Please retain this receipt for your records.</p>
+</div></body></html>`);
+  receiptWindow.document.close();
+  receiptWindow.focus();
+};
+
 window.loadBookings = async () => {
   const user=auth.currentUser;
   if(!user||user.uid===ADMIN_UID)return;
@@ -253,7 +322,15 @@ window.loadBookings = async () => {
       const details=document.createElement("p"); details.textContent="Date: "+(b.bookingDate||"")+" | Fee: ₹"+(b.bookingFee??20);
       const payment=document.createElement("p"); payment.textContent="Payment: "+(b.paymentStatus||"pending");
       const status=document.createElement("p"); status.textContent="Booking Status: "+(b.bookingStatus||"pending");
-      card.append(title,id,details,payment,status); history.append(card);
+      card.append(title,id,details,payment,status);
+      if(b.paymentStatus === "paid"){
+        const receiptBtn=document.createElement("button");
+        receiptBtn.className="btn";
+        receiptBtn.textContent="Download Receipt / PDF";
+        receiptBtn.onclick=()=>window.printReceipt(item.id,b);
+        card.append(receiptBtn);
+      }
+      history.append(card);
     });
   }catch(error){history.textContent="Could not load bookings: "+error.message;}
 };
@@ -282,28 +359,4 @@ window.loadAdminBookings = async () => {
         if(b.paymentStatus==="paid"){$("adminMessage").textContent="Payment is already marked paid.";return;}
         if(confirm("Have you checked the actual PhonePe payment and confirmed ₹20 was received?"))updateBooking(item.id,{paymentStatus:"paid"});
       };
-      card.append(title,id,details,address,date,fee,status,payment,confirmBtn,cancelBtn,completeBtn,paidBtn); list.append(card);
-    });
-  }catch(error){$("adminMessage").textContent="Error loading bookings: "+error.message;}
-};
-async function updateBooking(id,changes){
-  if(!auth.currentUser||auth.currentUser.uid!==ADMIN_UID)return;
-  try{await updateDoc(doc(db,"bookings",id),changes);$("adminMessage").textContent="Booking updated successfully.";await loadAdminBookings();}
-  catch(error){$("adminMessage").textContent="Update failed: "+error.message;}
-}
-
-onAuthStateChanged(auth,async user=>{
-  hideAllPanels();
-  if(!user){$("registerPanel").classList.remove("hidden");return;}
-  if(user.uid===ADMIN_UID){$("adminDashboard").classList.remove("hidden");await loadAdminBookings();return;}
-  $("dashboard").classList.remove("hidden");
-  $("customerName").textContent=user.displayName||"Customer";
-  $("customerEmail").textContent=user.email||"";
-  try{const snap=await getDoc(doc(db,"users",user.uid));$("customerPhone").textContent=snap.exists()?(snap.data().phone||"Not available"):"Not available";}
-  catch(error){$("customerPhone").textContent="Not available";}
-  await loadBookings();
-});
-</script>
-</body>
-        </html>
-        
+      card.append(title,id,details,address,date,fee,status,payment,confirmBtn,cancelBtn,c
