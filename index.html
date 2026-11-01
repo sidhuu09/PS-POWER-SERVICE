@@ -53,6 +53,11 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
   <button class="btn" onclick="showLogin()">Customer Login</button>
   <button class="btn" onclick="showRegister()">Customer Register</button>
   <button class="btn" onclick="showAdminLogin()">Admin Login</button>
+  <a class="btn" style="display:inline-block;text-decoration:none"
+href="https://wa.me/918144722094?text=Hello%20PS%20POWER%20SERVICE%2C%20I%20want%20to%20book%20a%20service.%0A%0AName%3A%0AMobile%3A%0AService%3A%0AAddress%3A%0ABooking%20Date%3A%0A%0ABooking%20Fee%3A%20Rs.20%0APayment%20QR%3A%20https%3A%2F%2Fraw.githubusercontent.com%2Fsidhuu09%2FPS-POWER-SERVICE%2Fmain%2FNaviQR_Sidhanta%2520Tuika_01112026135053020.png"
+target="_blank" rel="noopener noreferrer">
+  WhatsApp Booking
+  </a>
 </div>
 
 <section id="services">
@@ -147,6 +152,38 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
 <div class="panel hidden" id="adminDashboard">
   <h2>⚡ Admin Dashboard</h2>
   <p>Welcome, Administrator</p>
+  <div class="booking">
+  <h3>📱 Add WhatsApp Booking</h3>
+
+  <form id="whatsappBookingForm">
+    <input id="waCustomerName" placeholder="Customer Name" required>
+    <input id="waCustomerPhone" type="tel"
+      placeholder="10-digit Mobile Number"
+      inputmode="numeric" required>
+
+    <select id="waService" required>
+      <option value="">Select Service</option>
+      <option>Electrical Work</option>
+      <option>Home Wiring</option>
+      <option>Lenter Piping</option>
+      <option>Repair & Maintenance</option>
+    </select>
+
+    <textarea id="waAddress"
+      placeholder="Customer Full Address" required></textarea>
+
+    <input id="waBookingDate" type="date" required>
+
+    <p class="price">Booking Fee: ₹20</p>
+    <p class="payment-note">
+      Payment Status: Pending. Admin must verify payment before marking Paid.
+    </p>
+
+    <button class="btn" type="submit" id="waSaveButton">
+      Save WhatsApp Booking
+    </button>
+  </form>
+  </div>
   <button class="btn" onclick="loadAdminBookings()">Refresh All Bookings</button>
   <div id="adminMessage" class="message" aria-live="polite"></div>
   <div id="adminBookings">Loading bookings...</div>
@@ -206,7 +243,76 @@ window.loginCustomer = async () => {
   $("loginMessage").textContent="";
   try{await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),$("loginPassword").value);}
   catch(error){$("loginMessage").textContent=error.message;}
-};
+};$("whatsappBookingForm").addEventListener("submit", async event => {
+  event.preventDefault();
+
+  const user = auth.currentUser;
+
+  if (!user || user.uid !== ADMIN_UID) {
+    $("adminMessage").textContent = "Admin access required.";
+    return;
+  }
+
+  const customerName = $("waCustomerName").value.trim();
+  const customerPhone = $("waCustomerPhone").value.trim();
+  const service = $("waService").value;
+  const address = $("waAddress").value.trim();
+  const bookingDate = $("waBookingDate").value;
+  const button = $("waSaveButton");
+
+  if (!/^[0-9]{10}$/.test(customerPhone)) {
+    $("adminMessage").textContent =
+      "Enter a valid 10-digit mobile number.";
+    return;
+  }
+
+  if (!customerName || !service || !address || !bookingDate) {
+    $("adminMessage").textContent = "Please fill all fields.";
+    return;
+  }
+
+  if (bookingDate < today()) {
+    $("adminMessage").textContent =
+      "Choose today or a future date.";
+    return;
+  }
+
+  button.disabled = true;
+  $("adminMessage").textContent = "Saving WhatsApp booking...";
+
+  try {
+    const bookingRef = await addDoc(collection(db, "bookings"), {
+      userId: user.uid,
+      customerName,
+      customerPhone,
+      customerEmail: "",
+      service,
+      address,
+      bookingDate,
+      bookingFee: 20,
+      bookingSource: "whatsapp",
+      paymentStatus: "pending",
+      bookingStatus: "pending",
+      createdAt: serverTimestamp()
+    });
+
+    $("whatsappBookingForm").reset();
+    $("waBookingDate").min = today();
+
+    $("adminMessage").textContent =
+      "WhatsApp booking saved. Booking ID: " + bookingRef.id;
+
+    await loadAdminBookings();
+
+  } catch (error) {
+    $("adminMessage").textContent =
+      "Save failed: " + error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+$("waBookingDate").min = today();
 window.loginAdmin = async () => {
   $("adminLoginMessage").textContent="";
   const email=$("adminEmail").value.trim(), password=$("adminPassword").value;
@@ -396,7 +502,16 @@ window.loadAdminBookings = async () => {
       const b=item.data(),card=document.createElement("div"); card.className="booking";
       const title=document.createElement("h3"); title.textContent=b.service||"Service";
       const id=document.createElement("p"); id.textContent="Booking ID: "+item.id;
-      const details=document.createElement("p"); details.textContent="Customer: "+(b.customerName||"N/A")+" | Email: "+(b.customerEmail||"N/A");
+      const details=document.createElement("p");
+details.textContent =
+  "Customer: " + (b.customerName || "N/A") +
+  " | Mobile: " + (b.customerPhone || "N/A") +
+  " | Email: " + (b.customerEmail || "N/A");
+
+const source=document.createElement("p");
+source.textContent =
+  "Booking Source: " +
+  (b.bookingSource === "whatsapp" ? "WhatsApp" : "Website");
       const address=document.createElement("p"); address.textContent="Address: "+(b.address||"N/A");
       const date=document.createElement("p"); date.textContent="Booking Date: "+(b.bookingDate||"N/A");
       const fee=document.createElement("p"); fee.textContent="Booking Fee: ₹"+(b.bookingFee??20);
@@ -409,7 +524,7 @@ window.loadAdminBookings = async () => {
         if(b.paymentStatus==="paid"){$("adminMessage").textContent="Payment is already marked paid.";return;}
         if(confirm("Have you checked the actual PhonePe payment and confirmed ₹20 was received?"))updateBooking(item.id,{paymentStatus:"paid"});
       };
-      card.append(title,id,details,address,date,fee,status,payment,confirmBtn,cancelBtn,completeBtn,paidBtn);
+      card.append(title,id,details,source,address,date,fee,status,payment,confirmBtn,cancelBtn,completeBtn,paidBtn);
       if(b.paymentStatus === "paid"){
         const receiptBtn=document.createElement("button");
         receiptBtn.className="btn";
