@@ -9,21 +9,22 @@
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#222}
 header{background:#171717;color:white;padding:18px 6%;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap}
-.logo{font-size:23px;font-weight:bold;color:#ffd500}
-nav a{color:white;text-decoration:none;margin:8px;font-weight:bold}
-.hero{background:linear-gradient(120deg,#171717,#393939);color:white;text-align:center;padding:75px 20px}
-.hero h1{font-size:38px;color:#ffd500}
-.hero p{font-size:18px}
-.btn{border:0;background:#ffd500;color:#171717;padding:12px 22px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px}
-section{padding:35px 6%;text-align:center}
-.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:15px}
-.service{padding:25px;background:#fff8d6;border-radius:10px;font-weight:bold}
-#account{background:#f7f7f7}
-.panel{max-width:430px;margin:15px auto;background:white;padding:25px;border-radius:12px;box-shadow:0 2px 12px #ddd}
-input{width:100%;padding:13px;margin:8px 0;border:1px solid #ccc;border-radius:6px}
+.logo{font-size:22px;font-weight:bold;color:#ffd500}
+nav a{color:white;text-decoration:none;margin:8px}
+.hero{background:linear-gradient(120deg,#171717,#393939);color:white;text-align:center;padding:65px 15px}
+.hero h1{font-size:36px;color:#ffd500}
+.btn{border:0;background:#ffd500;color:#171717;padding:12px 20px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px}
+section{padding:30px 6%;text-align:center}
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px}
+.service{padding:22px;background:#fff8d6;border-radius:10px;font-weight:bold}
+.panel{max-width:480px;margin:15px auto;background:white;padding:22px;border-radius:12px;box-shadow:0 2px 12px #ddd}
+input,select,textarea{width:100%;padding:13px;margin:8px 0;border:1px solid #ccc;border-radius:6px;font:inherit}
+textarea{min-height:85px}
 .panel button{width:100%;margin:7px 0}
-.hidden{display:none}
+.hidden{display:none!important}
 .message{font-size:14px;color:#b00020;min-height:20px}
+.booking{border:1px solid #ddd;border-radius:8px;padding:14px;margin:12px 0;text-align:left;background:#fffdf4}
+.price{font-size:22px;font-weight:bold;color:#a47d00}
 footer{background:#171717;color:white;text-align:center;padding:20px}
 </style>
 </head>
@@ -34,7 +35,7 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
   <nav>
     <a href="#home">Home</a>
     <a href="#services">Services</a>
-    <a href="#account">Customer Login</a>
+    <a href="#account">Customer</a>
   </nav>
 </header>
 
@@ -83,11 +84,42 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
 
   <div class="panel hidden" id="dashboard">
     <h3>Welcome, <span id="customerName"></span>!</h3>
-    <p>Your customer account is active.</p>
     <p>Email: <span id="customerEmail"></span></p>
     <p>Mobile: <span id="customerPhone"></span></p>
+
+    <hr>
+    <h3>⚡ Book a Service</h3>
+
+    <form id="bookingForm">
+      <label>Choose Service</label>
+      <select id="serviceName" required>
+        <option value="">Select Service</option>
+        <option>Electrical Work</option>
+        <option>Home Wiring</option>
+        <option>Lenter Piping</option>
+        <option>Repair & Maintenance</option>
+      </select>
+
+      <label>Full Address</label>
+      <textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
+
+      <label>Booking Date</label>
+      <input id="bookingDate" type="date" required>
+
+      <p>Booking Fee</p>
+      <div class="price">₹20 Fixed</div>
+      <p>Payment Status: Pending (QR payment not yet available)</p>
+
+      <button class="btn" type="submit" id="bookingButton">Submit Booking</button>
+    </form>
+    <div class="message" id="bookingMessage"></div>
+
+    <hr>
+    <h3>📋 My Booking History</h3>
+    <button class="btn" onclick="loadBookings()">Refresh Bookings</button>
+    <div id="bookingHistory">Loading bookings...</div>
+
     <button class="btn" onclick="logoutCustomer()">Logout</button>
-    <div class="message" id="dashMessage"></div>
   </div>
 </section>
 
@@ -103,7 +135,8 @@ import {
   updateProfile, onAuthStateChanged, sendPasswordResetEmail, signOut
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import {
-  getFirestore, doc, setDoc, getDoc
+  getFirestore, doc, setDoc, getDoc, collection, addDoc,
+  query, where, getDocs, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -118,8 +151,9 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
 const $ = id => document.getElementById(id);
+
+$("bookingDate").min = new Date().toLocaleDateString("en-CA");
 
 window.showLogin = () => {
   $("registerPanel").classList.add("hidden");
@@ -156,30 +190,22 @@ window.registerCustomer = async () => {
 
   try {
     const result = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(result.user, { displayName: name });
-
-    await setDoc(doc(db, "users", result.user.uid), {
-      name,
-      phone,
-      email,
-      role: "customer",
-      createdAt: new Date()
+    await updateProfile(result.user, {displayName:name});
+    await setDoc(doc(db,"users",result.user.uid), {
+      name, phone, email, role:"customer", createdAt:serverTimestamp()
     });
-
     $("regMessage").textContent = "Registration successful!";
-  } catch (error) {
+  } catch(error) {
     $("regMessage").textContent = error.message;
   }
 };
 
 window.loginCustomer = async () => {
-  const email = $("loginEmail").value.trim();
-  const password = $("loginPassword").value;
-  $("loginMessage").textContent = "";
-
   try {
-    await signInWithEmailAndPassword(auth, email, password);
-  } catch (error) {
+    await signInWithEmailAndPassword(
+      auth, $("loginEmail").value.trim(), $("loginPassword").value
+    );
+  } catch(error) {
     $("loginMessage").textContent = error.message;
   }
 };
@@ -191,9 +217,9 @@ window.resetPassword = async () => {
     return;
   }
   try {
-    await sendPasswordResetEmail(auth, email);
-    $("loginMessage").textContent = "Password reset email sent. Check your inbox.";
-  } catch (error) {
+    await sendPasswordResetEmail(auth,email);
+    $("loginMessage").textContent = "Password reset email sent.";
+  } catch(error) {
     $("loginMessage").textContent = error.message;
   }
 };
@@ -202,22 +228,116 @@ window.logoutCustomer = async () => {
   await signOut(auth);
 };
 
+$("bookingForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  const user = auth.currentUser;
+  if (!user) return;
+
+  const service = $("serviceName").value;
+  const address = $("bookingAddress").value.trim();
+  const date = $("bookingDate").value;
+  const button = $("bookingButton");
+
+  if (!service || !address || !date) {
+    $("bookingMessage").textContent = "Please complete all booking details.";
+    return;
+  }
+
+  if (date < new Date().toLocaleDateString("en-CA")) {
+    $("bookingMessage").textContent = "Please choose today or a future date.";
+    return;
+  }
+
+  button.disabled = true;
+  $("bookingMessage").textContent = "Submitting booking...";
+
+  try {
+    await addDoc(collection(db,"bookings"), {
+      userId: user.uid,
+      customerName: user.displayName || "Customer",
+      customerEmail: user.email,
+      service,
+      address,
+      bookingDate: date,
+      bookingFee: 20,
+      paymentStatus: "pending",
+      bookingStatus: "pending",
+      createdAt: serverTimestamp()
+    });
+
+    $("bookingMessage").textContent = "Booking submitted! Status: Pending.";
+    $("bookingForm").reset();
+    $("bookingDate").min = new Date().toLocaleDateString("en-CA");
+    await loadBookings();
+  } catch(error) {
+    $("bookingMessage").textContent = "Booking failed: " + error.message;
+  } finally {
+    button.disabled = false;
+  }
+});
+
+window.loadBookings = async () => {
+  const user = auth.currentUser;
+  if (!user) return;
+
+  $("bookingHistory").textContent = "Loading bookings...";
+
+  try {
+    const q = query(collection(db,"bookings"),where("userId","==",user.uid));
+    const result = await getDocs(q);
+
+    if (result.empty) {
+      $("bookingHistory").textContent = "No bookings yet.";
+      return;
+    }
+
+    const bookings = [];
+    result.forEach(item => bookings.push(item.data()));
+    bookings.sort((a,b) => (b.bookingDate || "").localeCompare(a.bookingDate || ""));
+
+    $("bookingHistory").replaceChildren();
+
+    bookings.forEach(item => {
+      const card = document.createElement("div");
+      card.className = "booking";
+
+      const title = document.createElement("strong");
+      title.textContent = item.service || "Service";
+
+      const details = document.createElement("p");
+      details.textContent = "Date: " + item.bookingDate +
+        " | Fee: ₹" + item.bookingFee;
+
+      const payment = document.createElement("p");
+      payment.textContent = "Payment: " + item.paymentStatus;
+
+      const status = document.createElement("p");
+      status.textContent = "Booking Status: " + item.bookingStatus;
+
+      card.append(title,details,payment,status);
+      $("bookingHistory").append(card);
+    });
+  } catch(error) {
+    $("bookingHistory").textContent = "Could not load bookings: " + error.message;
+  }
+};
+
 onAuthStateChanged(auth, async user => {
   if (user) {
     $("registerPanel").classList.add("hidden");
     $("loginPanel").classList.add("hidden");
     $("dashboard").classList.remove("hidden");
-
     $("customerName").textContent = user.displayName || "Customer";
     $("customerEmail").textContent = user.email || "";
 
     try {
-      const snap = await getDoc(doc(db, "users", user.uid));
-      $("customerPhone").textContent =
-        snap.exists() ? snap.data().phone : "Not available";
-    } catch (error) {
-      $("dashMessage").textContent = "Could not load customer details.";
+      const snap = await getDoc(doc(db,"users",user.uid));
+      $("customerPhone").textContent = snap.exists() ? snap.data().phone : "Not available";
+    } catch(error) {
+      $("customerPhone").textContent = "Not available";
     }
+
+    await loadBookings();
   } else {
     showRegister();
   }
