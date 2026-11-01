@@ -51,6 +51,72 @@ tr:nth-child(even) td{background:#fffdf2}
 footer{background:var(--ink);color:white;text-align:center;padding:20px}
 .small-note{font-size:13px;color:#666}
 @media(max-width:600px){header{justify-content:center;text-align:center}.hero{padding:45px 12px}section{padding:22px 12px}.panel{padding:14px}}
+/* IMAGE SLIDER */
+.slider {
+  max-width: 1100px;
+  height: 320px;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #171717;
+}
+
+.slide {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.slide.active {
+  display: block;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.slide-caption {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding: 25px 12px;
+  color: white;
+  text-align: center;
+  background: linear-gradient(transparent, #000);
+}
+
+.slide-caption h2 {
+  color: #ffd500;
+}
+
+.slider-dots {
+  text-align: center;
+  padding: 10px;
+}
+
+.slider-dots button {
+  width: 12px;
+  height: 12px;
+  border: 0;
+  border-radius: 50%;
+  margin: 5px;
+  background: #bbb;
+}
+
+.slider-dots button.active {
+  background: #ffd500;
+}
+
+@media(max-width:600px) {
+  .slider {
+    height: 230px;
+    margin: 15px 10px;
+  }
+  }
 </style>
 </head>
 <body>
@@ -69,6 +135,39 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
   <button class="btn" onclick="showLogin()">Customer Login</button>
   <button class="btn" onclick="showRegister()">Customer Register</button>
   <button class="btn dark" onclick="showAdminLogin()">Admin Login</button>
+</div><!-- HOME IMAGE SLIDER -->
+<div class="slider" id="homeSlider">
+
+  <div class="slide active">
+    <img src="https://images.unsplash.com/photo-1621905251918-48416bd8575a?auto=format&fit=crop&w=1400&q=80" alt="Electrical Work">
+    <div class="slide-caption">
+      <h2>Electrical Work</h2>
+      <p>Professional Electrical Services</p>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1400&q=80" alt="Home Wiring">
+    <div class="slide-caption">
+      <h2>Home Wiring</h2>
+      <p>Safe and Reliable Home Wiring</p>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="https://images.unsplash.com/photo-1621905252507-b35492cc74b4?auto=format&fit=crop&w=1400&q=80" alt="Lenter Piping">
+    <div class="slide-caption">
+      <h2>Lenter Piping</h2>
+      <p>Quality Piping Work</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="slider-dots" id="sliderDots">
+  <button class="active" type="button" aria-label="Slide 1"></button>
+  <button type="button" aria-label="Slide 2"></button>
+  <button type="button" aria-label="Slide 3"></button>
 </div>
 <section id="services"><h2>Our Services</h2><div class="services">
   <div class="service">⚡ Electrical Work</div><div class="service">🏠 Home Wiring</div>
@@ -317,7 +416,34 @@ onAuthStateChanged(auth,async user=>{
  try{const snap=await getDoc(doc(db,"users",user.uid)),profile=snap.exists()?snap.data():{};$("customerName").textContent=profile.name||user.displayName||"Customer";$("customerPhone").textContent=profile.phone||"Not available"}
  catch{$("customerPhone").textContent="Not available"}
  startCustomerListener(user.uid);
-});
+});// HOME IMAGE SLIDER
+const slider = document.getElementById("homeSlider");
+
+if (slider) {
+  const slides = [...slider.querySelectorAll(".slide")];
+  const dots = [...document.querySelectorAll("#sliderDots button")];
+  let currentSlide = 0;
+
+  function showSlide(index) {
+    currentSlide = (index + slides.length) % slides.length;
+
+    slides.forEach((slide, i) => {
+      slide.classList.toggle("active", i === currentSlide);
+    });
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("active", i === currentSlide);
+    });
+  }
+
+  dots.forEach((dot, i) => {
+    dot.addEventListener("click", () => showSlide(i));
+  });
+
+  setInterval(() => {
+    showSlide(currentSlide + 1);
+  }, 4000);
+}
 </script>
 </body>
 </html>
