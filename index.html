@@ -5,6 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PS POWER SERVICE</title>
+
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#222}
@@ -26,9 +27,13 @@ textarea{min-height:85px}
 .message{font-size:14px;color:#b00020;min-height:20px}
 .booking{border:1px solid #ddd;border-radius:8px;padding:14px;margin:12px 0;text-align:left;background:#fffdf4;overflow-wrap:anywhere}
 .price{font-size:22px;font-weight:bold;color:#a47d00}
+.payment-box{background:#fff8d6;border:1px solid #f0d45c;border-radius:12px;padding:18px;margin:18px 0;text-align:center}
+.payment-box img{width:220px;max-width:100%;height:auto;display:block;margin:15px auto;border:1px solid #ddd;border-radius:8px;background:white;padding:5px}
+.payment-note{font-size:14px;color:#555}
 footer{background:#171717;color:white;text-align:center;padding:20px}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -60,79 +65,107 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
 </section>
 
 <section id="account">
-  <h2>Account</h2>
+<h2>Account</h2>
 
-  <div class="panel" id="registerPanel">
-    <h3>Customer Registration</h3>
-    <input id="regName" placeholder="Full Name">
-    <input id="regPhone" type="tel" placeholder="Mobile Number">
-    <input id="regEmail" type="email" placeholder="Email Address">
-    <input id="regPassword" type="password" placeholder="Create Password">
-    <button class="btn" onclick="registerCustomer()">Register</button>
-    <p>Already have an account?</p>
-    <button class="btn" onclick="showLogin()">Login</button>
-    <div class="message" id="regMessage"></div>
-  </div>
+<div class="panel" id="registerPanel">
+  <h3>Customer Registration</h3>
+  <input id="regName" placeholder="Full Name">
+  <input id="regPhone" type="tel" placeholder="Mobile Number">
+  <input id="regEmail" type="email" placeholder="Email Address">
+  <input id="regPassword" type="password" placeholder="Create Password">
+  <button class="btn" onclick="registerCustomer()">Register</button>
+  <p>Already have an account?</p>
+  <button class="btn" onclick="showLogin()">Login</button>
+  <div class="message" id="regMessage"></div>
+</div>
 
-  <div class="panel hidden" id="loginPanel">
-    <h3>Customer Login</h3>
-    <input id="loginEmail" type="email" placeholder="Email Address">
-    <input id="loginPassword" type="password" placeholder="Password">
-    <button class="btn" onclick="loginCustomer()">Login</button>
-    <button class="btn" onclick="resetPassword()">Forgot Password?</button>
-    <button class="btn" onclick="showRegister()">Create Account</button>
-    <div class="message" id="loginMessage"></div>
-  </div>
+<div class="panel hidden" id="loginPanel">
+  <h3>Customer Login</h3>
+  <input id="loginEmail" type="email" placeholder="Email Address">
+  <input id="loginPassword" type="password" placeholder="Password">
+  <button class="btn" onclick="loginCustomer()">Login</button>
+  <button class="btn" onclick="resetPassword()">Forgot Password?</button>
+  <button class="btn" onclick="showRegister()">Create Account</button>
+  <div class="message" id="loginMessage"></div>
+</div>
 
-  <div class="panel hidden" id="adminLoginPanel">
-    <h3>🔐 Admin Login</h3>
-    <input id="adminEmail" type="email" placeholder="Admin Email">
-    <input id="adminPassword" type="password" placeholder="Admin Password">
-    <button class="btn" onclick="loginAdmin()">Admin Login</button>
-    <button class="btn" onclick="showRegister()">Back to Home</button>
-    <div class="message" id="adminLoginMessage"></div>
-  </div>
+<div class="panel hidden" id="adminLoginPanel">
+  <h3>🔐 Admin Login</h3>
+  <input id="adminEmail" type="email" placeholder="Admin Email">
+  <input id="adminPassword" type="password" placeholder="Admin Password">
+  <button class="btn" onclick="loginAdmin()">Admin Login</button>
+  <button class="btn" onclick="showRegister()">Back to Home</button>
+  <div class="message" id="adminLoginMessage"></div>
+</div>
 
-  <div class="panel hidden" id="dashboard">
-    <h3>Welcome, <span id="customerName"></span>!</h3>
-    <p>Email: <span id="customerEmail"></span></p>
-    <p>Mobile: <span id="customerPhone"></span></p>
-    <hr>
-    <h3>⚡ Book a Service</h3>
-    <form id="bookingForm">
-      <label>Choose Service</label>
-      <select id="serviceName" required>
-        <option value="">Select Service</option>
-        <option>Electrical Work</option>
-        <option>Home Wiring</option>
-        <option>Lenter Piping</option>
-        <option>Repair & Maintenance</option>
-      </select>
-      <label>Full Address</label>
-      <textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
-      <label>Booking Date</label>
-      <input id="bookingDate" type="date" required>
-      <p>Booking Fee</p>
-      <div class="price">₹20 Fixed</div>
-      <p>Payment Status: Pending (QR payment not yet available)</p>
-      <button class="btn" type="submit" id="bookingButton">Submit Booking</button>
-    </form>
-    <div class="message" id="bookingMessage"></div>
-    <hr>
-    <h3>📋 My Booking History</h3>
-    <button class="btn" onclick="loadBookings()">Refresh Bookings</button>
-    <div id="bookingHistory">No bookings yet.</div>
-    <button class="btn" onclick="logoutUser()">Logout</button>
-  </div>
+<div class="panel hidden" id="dashboard">
+  <h3>Welcome, <span id="customerName"></span>!</h3>
+  <p>Email: <span id="customerEmail"></span></p>
+  <p>Mobile: <span id="customerPhone"></span></p>
+  <hr>
 
-  <div class="panel hidden" id="adminDashboard">
-    <h2>⚡ Admin Dashboard</h2>
-    <p>Welcome, Administrator</p>
-    <button class="btn" onclick="loadAdminBookings()">Refresh All Bookings</button>
-    <div id="adminMessage" class="message"></div>
-    <div id="adminBookings">Loading bookings...</div>
-    <button class="btn" onclick="logoutUser()">Admin Logout</button>
-  </div>
+  <h3>⚡ Book a Service</h3>
+
+  <form id="bookingForm">
+    <label>Choose Service</label>
+    <select id="serviceName" required>
+      <option value="">Select Service</option>
+      <option>Electrical Work</option>
+      <option>Home Wiring</option>
+      <option>Lenter Piping</option>
+      <option>Repair & Maintenance</option>
+    </select>
+
+    <label>Full Address</label>
+    <textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
+
+    <label>Booking Date</label>
+    <input id="bookingDate" type="date" required>
+
+    <p>Booking Fee</p>
+    <div class="price">₹20 Fixed</div>
+
+    <div class="payment-box">
+      <h3>📱 Pay ₹20 via PhonePe</h3>
+
+      <img
+        src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png"
+        alt="PS POWER SERVICE PhonePe QR Code"
+      >
+
+      <p><strong>Scan QR Code and Pay ₹20 Booking Fee.</strong></p>
+      <p class="payment-note">
+        After payment, keep your transaction confirmation.
+        Admin will verify your payment.
+      </p>
+      <p class="payment-note">
+        Payment Status: Pending until verified by Admin.
+      </p>
+    </div>
+
+    <button class="btn" type="submit" id="bookingButton">
+      Submit Booking
+    </button>
+  </form>
+
+  <div class="message" id="bookingMessage"></div>
+
+  <hr>
+  <h3>📋 My Booking History</h3>
+  <button class="btn" onclick="loadBookings()">Refresh Bookings</button>
+  <div id="bookingHistory">No bookings yet.</div>
+  <button class="btn" onclick="logoutUser()">Logout</button>
+</div>
+
+<div class="panel hidden" id="adminDashboard">
+  <h2>⚡ Admin Dashboard</h2>
+  <p>Welcome, Administrator</p>
+  <button class="btn" onclick="loadAdminBookings()">Refresh All Bookings</button>
+  <div id="adminMessage" class="message"></div>
+  <div id="adminBookings">Loading bookings...</div>
+  <button class="btn" onclick="logoutUser()">Admin Logout</button>
+</div>
+
 </section>
 
 <footer>
@@ -142,14 +175,29 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
 import {
-  getAuth, createUserWithEmailAndPassword,
-  signInWithEmailAndPassword, updateProfile,
-  onAuthStateChanged, sendPasswordResetEmail, signOut
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signOut
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
 import {
-  getFirestore, doc, setDoc, getDoc, collection, addDoc,
-  query, where, getDocs, updateDoc, serverTimestamp
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  getDocs,
+  updateDoc,
+  serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -162,14 +210,21 @@ const firebaseConfig = {
 };
 
 const ADMIN_UID = "UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+
 const $ = id => document.getElementById(id);
 
 function hideAllPanels(){
-  ["registerPanel","loginPanel","adminLoginPanel","dashboard","adminDashboard"]
-    .forEach(id => $(id).classList.add("hidden"));
+  [
+    "registerPanel",
+    "loginPanel",
+    "adminLoginPanel",
+    "dashboard",
+    "adminDashboard"
+  ].forEach(id => $(id).classList.add("hidden"));
 }
 
 function today(){
@@ -203,27 +258,39 @@ window.registerCustomer = async () => {
   const phone = $("regPhone").value.trim();
   const email = $("regEmail").value.trim();
   const password = $("regPassword").value;
+
   $("regMessage").textContent = "";
 
   if(!name || !phone || !email || !password){
     $("regMessage").textContent = "Please fill all fields.";
     return;
   }
+
   if(!/^[0-9]{10}$/.test(phone)){
     $("regMessage").textContent = "Enter a valid 10-digit mobile number.";
     return;
   }
+
   if(password.length < 6){
     $("regMessage").textContent = "Password must be at least 6 characters.";
     return;
   }
 
   try{
-    const result = await createUserWithEmailAndPassword(auth,email,password);
+    const result = await createUserWithEmailAndPassword(
+      auth,email,password
+    );
+
     await updateProfile(result.user,{displayName:name});
+
     await setDoc(doc(db,"users",result.user.uid),{
-      name,phone,email,role:"customer",createdAt:serverTimestamp()
+      name,
+      phone,
+      email,
+      role:"customer",
+      createdAt:serverTimestamp()
     });
+
   }catch(error){
     $("regMessage").textContent = error.message;
   }
@@ -231,9 +298,12 @@ window.registerCustomer = async () => {
 
 window.loginCustomer = async () => {
   $("loginMessage").textContent = "";
+
   try{
     await signInWithEmailAndPassword(
-      auth,$("loginEmail").value.trim(),$("loginPassword").value
+      auth,
+      $("loginEmail").value.trim(),
+      $("loginPassword").value
     );
   }catch(error){
     $("loginMessage").textContent = error.message;
@@ -242,20 +312,27 @@ window.loginCustomer = async () => {
 
 window.loginAdmin = async () => {
   $("adminLoginMessage").textContent = "";
+
   const email = $("adminEmail").value.trim();
   const password = $("adminPassword").value;
 
   if(!email || !password){
-    $("adminLoginMessage").textContent = "Enter Admin email and password.";
+    $("adminLoginMessage").textContent =
+      "Enter Admin email and password.";
     return;
   }
 
   try{
-    const result = await signInWithEmailAndPassword(auth,email,password);
+    const result = await signInWithEmailAndPassword(
+      auth,email,password
+    );
+
     if(result.user.uid !== ADMIN_UID){
       await signOut(auth);
-      $("adminLoginMessage").textContent = "Not authorized as Admin.";
+      $("adminLoginMessage").textContent =
+        "Not authorized as Admin.";
     }
+
   }catch(error){
     $("adminLoginMessage").textContent = error.message;
   }
@@ -263,13 +340,17 @@ window.loginAdmin = async () => {
 
 window.resetPassword = async () => {
   const email = $("loginEmail").value.trim();
+
   if(!email){
-    $("loginMessage").textContent = "Enter your email address first.";
+    $("loginMessage").textContent =
+      "Enter your email address first.";
     return;
   }
+
   try{
     await sendPasswordResetEmail(auth,email);
-    $("loginMessage").textContent = "Password reset email sent.";
+    $("loginMessage").textContent =
+      "Password reset email sent.";
   }catch(error){
     $("loginMessage").textContent = error.message;
   }
@@ -281,7 +362,9 @@ window.logoutUser = async () => {
 
 $("bookingForm").addEventListener("submit",async event => {
   event.preventDefault();
+
   const user = auth.currentUser;
+
   if(!user || user.uid === ADMIN_UID) return;
 
   const service = $("serviceName").value;
@@ -290,11 +373,14 @@ $("bookingForm").addEventListener("submit",async event => {
   const button = $("bookingButton");
 
   if(!service || !address || !date){
-    $("bookingMessage").textContent = "Please complete all booking details.";
+    $("bookingMessage").textContent =
+      "Please complete all booking details.";
     return;
   }
+
   if(date < today()){
-    $("bookingMessage").textContent = "Choose today or a future date.";
+    $("bookingMessage").textContent =
+      "Choose today or a future date.";
     return;
   }
 
@@ -306,19 +392,26 @@ $("bookingForm").addEventListener("submit",async event => {
       userId:user.uid,
       customerName:user.displayName || "Customer",
       customerEmail:user.email || "",
-      service,address,
+      service,
+      address,
       bookingDate:date,
       bookingFee:20,
       paymentStatus:"pending",
       bookingStatus:"pending",
       createdAt:serverTimestamp()
     });
-    $("bookingMessage").textContent = "Booking submitted! Status: Pending.";
+
+    $("bookingMessage").textContent =
+      "Booking submitted! Status: Pending.";
+
     $("bookingForm").reset();
     $("bookingDate").min = today();
+
     await loadBookings();
+
   }catch(error){
-    $("bookingMessage").textContent = "Booking failed: " + error.message;
+    $("bookingMessage").textContent =
+      "Booking failed: " + error.message;
   }finally{
     button.disabled = false;
   }
@@ -326,13 +419,18 @@ $("bookingForm").addEventListener("submit",async event => {
 
 window.loadBookings = async () => {
   const user = auth.currentUser;
+
   if(!user || user.uid === ADMIN_UID) return;
 
   const history = $("bookingHistory");
   history.textContent = "Loading bookings...";
 
   try{
-    const q = query(collection(db,"bookings"),where("userId","==",user.uid));
+    const q = query(
+      collection(db,"bookings"),
+      where("userId","==",user.uid)
+    );
+
     const result = await getDocs(q);
     history.replaceChildren();
 
@@ -350,20 +448,25 @@ window.loadBookings = async () => {
       title.textContent = b.service || "Service";
 
       const details = document.createElement("p");
-      details.textContent = "Date: " + (b.bookingDate || "") +
+      details.textContent =
+        "Date: " + (b.bookingDate || "") +
         " | Fee: ₹" + (b.bookingFee ?? 20);
 
       const payment = document.createElement("p");
-      payment.textContent = "Payment: " + (b.paymentStatus || "pending");
+      payment.textContent =
+        "Payment: " + (b.paymentStatus || "pending");
 
       const status = document.createElement("p");
-      status.textContent = "Booking Status: " + (b.bookingStatus || "pending");
+      status.textContent =
+        "Booking Status: " + (b.bookingStatus || "pending");
 
       card.append(title,details,payment,status);
       history.append(card);
     });
+
   }catch(error){
-    history.textContent = "Could not load bookings: " + error.message;
+    history.textContent =
+      "Could not load bookings: " + error.message;
   }
 };
 
@@ -382,7 +485,8 @@ window.loadAdminBookings = async () => {
       return;
     }
 
-    $("adminMessage").textContent = "Total bookings: " + snapshot.size;
+    $("adminMessage").textContent =
+      "Total bookings: " + snapshot.size;
 
     snapshot.forEach(item => {
       const b = item.data();
@@ -404,40 +508,65 @@ window.loadAdminBookings = async () => {
       date.textContent = "Booking Date: " + (b.bookingDate || "N/A");
 
       const fee = document.createElement("p");
-      fee.textContent = "Booking Fee: ₹" + (b.bookingFee ?? 20);
+      fee.textContent =
+        "Booking Fee: ₹" + (b.bookingFee ?? 20);
 
       const status = document.createElement("p");
-      status.textContent = "Booking Status: " + (b.bookingStatus || "pending");
+      status.textContent =
+        "Booking Status: " + (b.bookingStatus || "pending");
 
       const payment = document.createElement("p");
-      payment.textContent = "Payment Status: " + (b.paymentStatus || "pending");
+      payment.textContent =
+        "Payment Status: " + (b.paymentStatus || "pending");
 
       const confirmBtn = document.createElement("button");
       confirmBtn.className = "btn";
       confirmBtn.textContent = "Confirm";
-      confirmBtn.onclick = () => updateBooking(item.id,{bookingStatus:"confirmed"});
+      confirmBtn.onclick = () =>
+        updateBooking(item.id,{bookingStatus:"confirmed"});
 
       const cancelBtn = document.createElement("button");
       cancelBtn.className = "btn";
       cancelBtn.textContent = "Cancel";
-      cancelBtn.onclick = () => updateBooking(item.id,{bookingStatus:"cancelled"});
+      cancelBtn.onclick = () =>
+        updateBooking(item.id,{bookingStatus:"cancelled"});
 
       const completeBtn = document.createElement("button");
       completeBtn.className = "btn";
       completeBtn.textContent = "Complete";
-      completeBtn.onclick = () => updateBooking(item.id,{bookingStatus:"completed"});
+      completeBtn.onclick = () =>
+        updateBooking(item.id,{bookingStatus:"completed"});
 
       const paidBtn = document.createElement("button");
       paidBtn.className = "btn";
       paidBtn.textContent = "Mark Paid";
-      paidBtn.onclick = () => updateBooking(item.id,{paymentStatus:"paid"});
+      paidBtn.onclick = () => {
+        if(b.paymentStatus === "paid"){
+          $("adminMessage").textContent =
+            "Payment is already marked paid.";
+          return;
+        }
 
-      card.append(title,details,address,date,fee,status,payment,
-        confirmBtn,cancelBtn,completeBtn,paidBtn);
+        const verified = confirm(
+          "Have you checked the actual PhonePe payment and confirmed ₹20 was received?"
+        );
+
+        if(verified){
+          updateBooking(item.id,{paymentStatus:"paid"});
+        }
+      };
+
+      card.append(
+        title,details,address,date,fee,status,payment,
+        confirmBtn,cancelBtn,completeBtn,paidBtn
+      );
+
       list.append(card);
     });
+
   }catch(error){
-    $("adminMessage").textContent = "Error loading bookings: " + error.message;
+    $("adminMessage").textContent =
+      "Error loading bookings: " + error.message;
   }
 };
 
@@ -446,10 +575,15 @@ async function updateBooking(id,changes){
 
   try{
     await updateDoc(doc(db,"bookings",id),changes);
-    $("adminMessage").textContent = "Booking updated successfully.";
+
+    $("adminMessage").textContent =
+      "Booking updated successfully.";
+
     await loadAdminBookings();
+
   }catch(error){
-    $("adminMessage").textContent = "Update failed: " + error.message;
+    $("adminMessage").textContent =
+      "Update failed: " + error.message;
   }
 }
 
@@ -468,13 +602,21 @@ onAuthStateChanged(auth,async user => {
   }
 
   $("dashboard").classList.remove("hidden");
-  $("customerName").textContent = user.displayName || "Customer";
-  $("customerEmail").textContent = user.email || "";
+
+  $("customerName").textContent =
+    user.displayName || "Customer";
+
+  $("customerEmail").textContent =
+    user.email || "";
 
   try{
     const snap = await getDoc(doc(db,"users",user.uid));
+
     $("customerPhone").textContent =
-      snap.exists() ? (snap.data().phone || "Not available") : "Not available";
+      snap.exists()
+        ? (snap.data().phone || "Not available")
+        : "Not available";
+
   }catch(error){
     $("customerPhone").textContent = "Not available";
   }
@@ -482,6 +624,7 @@ onAuthStateChanged(auth,async user => {
   await loadBookings();
 });
 </script>
+
 </body>
-                                    </html>
-                                    
+    </html>
+      
