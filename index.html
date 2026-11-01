@@ -14,16 +14,17 @@ nav a{color:white;text-decoration:none;margin:8px}
 .hero{background:linear-gradient(120deg,#171717,#393939);color:white;text-align:center;padding:65px 15px}
 .hero h1{font-size:36px;color:#ffd500}
 .btn{border:0;background:#ffd500;color:#171717;padding:12px 20px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 section{padding:30px 6%;text-align:center}
 .services{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:15px}
 .service{padding:22px;background:#fff8d6;border-radius:10px;font-weight:bold}
-.panel{max-width:480px;margin:15px auto;background:white;padding:22px;border-radius:12px;box-shadow:0 2px 12px #ddd}
+.panel{max-width:600px;margin:15px auto;background:white;padding:22px;border-radius:12px;box-shadow:0 2px 12px #ddd}
 input,select,textarea{width:100%;padding:13px;margin:8px 0;border:1px solid #ccc;border-radius:6px;font:inherit}
 textarea{min-height:85px}
-.panel button{width:100%;margin:7px 0}
+.panel button{margin:7px 0}
 .hidden{display:none!important}
 .message{font-size:14px;color:#b00020;min-height:20px}
-.booking{border:1px solid #ddd;border-radius:8px;padding:14px;margin:12px 0;text-align:left;background:#fffdf4}
+.booking{border:1px solid #ddd;border-radius:8px;padding:14px;margin:12px 0;text-align:left;background:#fffdf4;overflow-wrap:anywhere}
 .price{font-size:22px;font-weight:bold;color:#a47d00}
 footer{background:#171717;color:white;text-align:center;padding:20px}
 </style>
@@ -35,7 +36,7 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
   <nav>
     <a href="#home">Home</a>
     <a href="#services">Services</a>
-    <a href="#account">Customer</a>
+    <a href="#account">Account</a>
   </nav>
 </header>
 
@@ -43,7 +44,9 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
   <h1>PS POWER SERVICE</h1>
   <p>Powering Your Home, Safely.</p>
   <p>Electrical Work • Home Wiring • Lenter Piping • Repair</p>
-  <a href="#account"><button class="btn">Customer Login / Register</button></a>
+  <button class="btn" onclick="showLogin()">Customer Login</button>
+  <button class="btn" onclick="showRegister()">Customer Register</button>
+  <button class="btn" onclick="showAdminLogin()">Admin Login</button>
 </div>
 
 <section id="services">
@@ -57,7 +60,7 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
 </section>
 
 <section id="account">
-  <h2>Customer Account</h2>
+  <h2>Account</h2>
 
   <div class="panel" id="registerPanel">
     <h3>Customer Registration</h3>
@@ -77,19 +80,25 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
     <input id="loginPassword" type="password" placeholder="Password">
     <button class="btn" onclick="loginCustomer()">Login</button>
     <button class="btn" onclick="resetPassword()">Forgot Password?</button>
-    <p>New customer?</p>
     <button class="btn" onclick="showRegister()">Create Account</button>
     <div class="message" id="loginMessage"></div>
+  </div>
+
+  <div class="panel hidden" id="adminLoginPanel">
+    <h3>🔐 Admin Login</h3>
+    <input id="adminEmail" type="email" placeholder="Admin Email">
+    <input id="adminPassword" type="password" placeholder="Admin Password">
+    <button class="btn" onclick="loginAdmin()">Admin Login</button>
+    <button class="btn" onclick="showRegister()">Back to Home</button>
+    <div class="message" id="adminLoginMessage"></div>
   </div>
 
   <div class="panel hidden" id="dashboard">
     <h3>Welcome, <span id="customerName"></span>!</h3>
     <p>Email: <span id="customerEmail"></span></p>
     <p>Mobile: <span id="customerPhone"></span></p>
-
     <hr>
     <h3>⚡ Book a Service</h3>
-
     <form id="bookingForm">
       <label>Choose Service</label>
       <select id="serviceName" required>
@@ -99,27 +108,30 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
         <option>Lenter Piping</option>
         <option>Repair & Maintenance</option>
       </select>
-
       <label>Full Address</label>
       <textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
-
       <label>Booking Date</label>
       <input id="bookingDate" type="date" required>
-
       <p>Booking Fee</p>
       <div class="price">₹20 Fixed</div>
       <p>Payment Status: Pending (QR payment not yet available)</p>
-
       <button class="btn" type="submit" id="bookingButton">Submit Booking</button>
     </form>
     <div class="message" id="bookingMessage"></div>
-
     <hr>
     <h3>📋 My Booking History</h3>
     <button class="btn" onclick="loadBookings()">Refresh Bookings</button>
-    <div id="bookingHistory">Loading bookings...</div>
+    <div id="bookingHistory">No bookings yet.</div>
+    <button class="btn" onclick="logoutUser()">Logout</button>
+  </div>
 
-    <button class="btn" onclick="logoutCustomer()">Logout</button>
+  <div class="panel hidden" id="adminDashboard">
+    <h2>⚡ Admin Dashboard</h2>
+    <p>Welcome, Administrator</p>
+    <button class="btn" onclick="loadAdminBookings()">Refresh All Bookings</button>
+    <div id="adminMessage" class="message"></div>
+    <div id="adminBookings">Loading bookings...</div>
+    <button class="btn" onclick="logoutUser()">Admin Logout</button>
   </div>
 </section>
 
@@ -131,12 +143,13 @@ footer{background:#171717;color:white;text-align:center;padding:20px}
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {
-  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  updateProfile, onAuthStateChanged, sendPasswordResetEmail, signOut
+  getAuth, createUserWithEmailAndPassword,
+  signInWithEmailAndPassword, updateProfile,
+  onAuthStateChanged, sendPasswordResetEmail, signOut
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import {
   getFirestore, doc, setDoc, getDoc, collection, addDoc,
-  query, where, getDocs, serverTimestamp
+  query, where, getDocs, updateDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -148,23 +161,41 @@ const firebaseConfig = {
   appId: "1:647095348680:web:51b3833ce08d767e9d64fd"
 };
 
+const ADMIN_UID = "UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const $ = id => document.getElementById(id);
 
-$("bookingDate").min = new Date().toLocaleDateString("en-CA");
+function hideAllPanels(){
+  ["registerPanel","loginPanel","adminLoginPanel","dashboard","adminDashboard"]
+    .forEach(id => $(id).classList.add("hidden"));
+}
+
+function today(){
+  const d = new Date();
+  const offset = d.getTimezoneOffset();
+  return new Date(d.getTime()-offset*60000).toISOString().slice(0,10);
+}
+
+$("bookingDate").min = today();
+
+window.showRegister = () => {
+  if(auth.currentUser) return;
+  hideAllPanels();
+  $("registerPanel").classList.remove("hidden");
+};
 
 window.showLogin = () => {
-  $("registerPanel").classList.add("hidden");
-  $("dashboard").classList.add("hidden");
+  if(auth.currentUser) return;
+  hideAllPanels();
   $("loginPanel").classList.remove("hidden");
 };
 
-window.showRegister = () => {
-  $("loginPanel").classList.add("hidden");
-  $("dashboard").classList.add("hidden");
-  $("registerPanel").classList.remove("hidden");
+window.showAdminLogin = () => {
+  if(auth.currentUser) return;
+  hideAllPanels();
+  $("adminLoginPanel").classList.remove("hidden");
 };
 
 window.registerCustomer = async () => {
@@ -172,176 +203,285 @@ window.registerCustomer = async () => {
   const phone = $("regPhone").value.trim();
   const email = $("regEmail").value.trim();
   const password = $("regPassword").value;
-
   $("regMessage").textContent = "";
 
-  if (!name || !phone || !email || !password) {
+  if(!name || !phone || !email || !password){
     $("regMessage").textContent = "Please fill all fields.";
     return;
   }
-  if (!/^[0-9]{10}$/.test(phone)) {
+  if(!/^[0-9]{10}$/.test(phone)){
     $("regMessage").textContent = "Enter a valid 10-digit mobile number.";
     return;
   }
-  if (password.length < 6) {
+  if(password.length < 6){
     $("regMessage").textContent = "Password must be at least 6 characters.";
     return;
   }
 
-  try {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(result.user, {displayName:name});
-    await setDoc(doc(db,"users",result.user.uid), {
-      name, phone, email, role:"customer", createdAt:serverTimestamp()
+  try{
+    const result = await createUserWithEmailAndPassword(auth,email,password);
+    await updateProfile(result.user,{displayName:name});
+    await setDoc(doc(db,"users",result.user.uid),{
+      name,phone,email,role:"customer",createdAt:serverTimestamp()
     });
-    $("regMessage").textContent = "Registration successful!";
-  } catch(error) {
+  }catch(error){
     $("regMessage").textContent = error.message;
   }
 };
 
 window.loginCustomer = async () => {
-  try {
+  $("loginMessage").textContent = "";
+  try{
     await signInWithEmailAndPassword(
-      auth, $("loginEmail").value.trim(), $("loginPassword").value
+      auth,$("loginEmail").value.trim(),$("loginPassword").value
     );
-  } catch(error) {
+  }catch(error){
     $("loginMessage").textContent = error.message;
+  }
+};
+
+window.loginAdmin = async () => {
+  $("adminLoginMessage").textContent = "";
+  const email = $("adminEmail").value.trim();
+  const password = $("adminPassword").value;
+
+  if(!email || !password){
+    $("adminLoginMessage").textContent = "Enter Admin email and password.";
+    return;
+  }
+
+  try{
+    const result = await signInWithEmailAndPassword(auth,email,password);
+    if(result.user.uid !== ADMIN_UID){
+      await signOut(auth);
+      $("adminLoginMessage").textContent = "Not authorized as Admin.";
+    }
+  }catch(error){
+    $("adminLoginMessage").textContent = error.message;
   }
 };
 
 window.resetPassword = async () => {
   const email = $("loginEmail").value.trim();
-  if (!email) {
+  if(!email){
     $("loginMessage").textContent = "Enter your email address first.";
     return;
   }
-  try {
+  try{
     await sendPasswordResetEmail(auth,email);
     $("loginMessage").textContent = "Password reset email sent.";
-  } catch(error) {
+  }catch(error){
     $("loginMessage").textContent = error.message;
   }
 };
 
-window.logoutCustomer = async () => {
+window.logoutUser = async () => {
   await signOut(auth);
 };
 
-$("bookingForm").addEventListener("submit", async event => {
+$("bookingForm").addEventListener("submit",async event => {
   event.preventDefault();
   const user = auth.currentUser;
-  if (!user) return;
+  if(!user || user.uid === ADMIN_UID) return;
 
   const service = $("serviceName").value;
   const address = $("bookingAddress").value.trim();
   const date = $("bookingDate").value;
   const button = $("bookingButton");
 
-  if (!service || !address || !date) {
+  if(!service || !address || !date){
     $("bookingMessage").textContent = "Please complete all booking details.";
     return;
   }
-
-  if (date < new Date().toLocaleDateString("en-CA")) {
-    $("bookingMessage").textContent = "Please choose today or a future date.";
+  if(date < today()){
+    $("bookingMessage").textContent = "Choose today or a future date.";
     return;
   }
 
   button.disabled = true;
   $("bookingMessage").textContent = "Submitting booking...";
 
-  try {
-    await addDoc(collection(db,"bookings"), {
-      userId: user.uid,
-      customerName: user.displayName || "Customer",
-      customerEmail: user.email,
-      service,
-      address,
-      bookingDate: date,
-      bookingFee: 20,
-      paymentStatus: "pending",
-      bookingStatus: "pending",
-      createdAt: serverTimestamp()
+  try{
+    await addDoc(collection(db,"bookings"),{
+      userId:user.uid,
+      customerName:user.displayName || "Customer",
+      customerEmail:user.email || "",
+      service,address,
+      bookingDate:date,
+      bookingFee:20,
+      paymentStatus:"pending",
+      bookingStatus:"pending",
+      createdAt:serverTimestamp()
     });
-
     $("bookingMessage").textContent = "Booking submitted! Status: Pending.";
     $("bookingForm").reset();
-    $("bookingDate").min = new Date().toLocaleDateString("en-CA");
+    $("bookingDate").min = today();
     await loadBookings();
-  } catch(error) {
+  }catch(error){
     $("bookingMessage").textContent = "Booking failed: " + error.message;
-  } finally {
+  }finally{
     button.disabled = false;
   }
 });
 
 window.loadBookings = async () => {
   const user = auth.currentUser;
-  if (!user) return;
+  if(!user || user.uid === ADMIN_UID) return;
 
-  $("bookingHistory").textContent = "Loading bookings...";
+  const history = $("bookingHistory");
+  history.textContent = "Loading bookings...";
 
-  try {
+  try{
     const q = query(collection(db,"bookings"),where("userId","==",user.uid));
     const result = await getDocs(q);
+    history.replaceChildren();
 
-    if (result.empty) {
-      $("bookingHistory").textContent = "No bookings yet.";
+    if(result.empty){
+      history.textContent = "No bookings yet.";
       return;
     }
 
-    const bookings = [];
-    result.forEach(item => bookings.push(item.data()));
-    bookings.sort((a,b) => (b.bookingDate || "").localeCompare(a.bookingDate || ""));
-
-    $("bookingHistory").replaceChildren();
-
-    bookings.forEach(item => {
+    result.forEach(item => {
+      const b = item.data();
       const card = document.createElement("div");
       card.className = "booking";
 
       const title = document.createElement("strong");
-      title.textContent = item.service || "Service";
+      title.textContent = b.service || "Service";
 
       const details = document.createElement("p");
-      details.textContent = "Date: " + item.bookingDate +
-        " | Fee: ₹" + item.bookingFee;
+      details.textContent = "Date: " + (b.bookingDate || "") +
+        " | Fee: ₹" + (b.bookingFee ?? 20);
 
       const payment = document.createElement("p");
-      payment.textContent = "Payment: " + item.paymentStatus;
+      payment.textContent = "Payment: " + (b.paymentStatus || "pending");
 
       const status = document.createElement("p");
-      status.textContent = "Booking Status: " + item.bookingStatus;
+      status.textContent = "Booking Status: " + (b.bookingStatus || "pending");
 
       card.append(title,details,payment,status);
-      $("bookingHistory").append(card);
+      history.append(card);
     });
-  } catch(error) {
-    $("bookingHistory").textContent = "Could not load bookings: " + error.message;
+  }catch(error){
+    history.textContent = "Could not load bookings: " + error.message;
   }
 };
 
-onAuthStateChanged(auth, async user => {
-  if (user) {
-    $("registerPanel").classList.add("hidden");
-    $("loginPanel").classList.add("hidden");
-    $("dashboard").classList.remove("hidden");
-    $("customerName").textContent = user.displayName || "Customer";
-    $("customerEmail").textContent = user.email || "";
+window.loadAdminBookings = async () => {
+  if(!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) return;
 
-    try {
-      const snap = await getDoc(doc(db,"users",user.uid));
-      $("customerPhone").textContent = snap.exists() ? snap.data().phone : "Not available";
-    } catch(error) {
-      $("customerPhone").textContent = "Not available";
+  const list = $("adminBookings");
+  $("adminMessage").textContent = "Loading all bookings...";
+  list.replaceChildren();
+
+  try{
+    const snapshot = await getDocs(collection(db,"bookings"));
+
+    if(snapshot.empty){
+      $("adminMessage").textContent = "No bookings found.";
+      return;
     }
 
-    await loadBookings();
-  } else {
-    showRegister();
+    $("adminMessage").textContent = "Total bookings: " + snapshot.size;
+
+    snapshot.forEach(item => {
+      const b = item.data();
+      const card = document.createElement("div");
+      card.className = "booking";
+
+      const title = document.createElement("h3");
+      title.textContent = b.service || "Service";
+
+      const details = document.createElement("p");
+      details.textContent =
+        "Customer: " + (b.customerName || "N/A") +
+        " | Email: " + (b.customerEmail || "N/A");
+
+      const address = document.createElement("p");
+      address.textContent = "Address: " + (b.address || "N/A");
+
+      const date = document.createElement("p");
+      date.textContent = "Booking Date: " + (b.bookingDate || "N/A");
+
+      const fee = document.createElement("p");
+      fee.textContent = "Booking Fee: ₹" + (b.bookingFee ?? 20);
+
+      const status = document.createElement("p");
+      status.textContent = "Booking Status: " + (b.bookingStatus || "pending");
+
+      const payment = document.createElement("p");
+      payment.textContent = "Payment Status: " + (b.paymentStatus || "pending");
+
+      const confirmBtn = document.createElement("button");
+      confirmBtn.className = "btn";
+      confirmBtn.textContent = "Confirm";
+      confirmBtn.onclick = () => updateBooking(item.id,{bookingStatus:"confirmed"});
+
+      const cancelBtn = document.createElement("button");
+      cancelBtn.className = "btn";
+      cancelBtn.textContent = "Cancel";
+      cancelBtn.onclick = () => updateBooking(item.id,{bookingStatus:"cancelled"});
+
+      const completeBtn = document.createElement("button");
+      completeBtn.className = "btn";
+      completeBtn.textContent = "Complete";
+      completeBtn.onclick = () => updateBooking(item.id,{bookingStatus:"completed"});
+
+      const paidBtn = document.createElement("button");
+      paidBtn.className = "btn";
+      paidBtn.textContent = "Mark Paid";
+      paidBtn.onclick = () => updateBooking(item.id,{paymentStatus:"paid"});
+
+      card.append(title,details,address,date,fee,status,payment,
+        confirmBtn,cancelBtn,completeBtn,paidBtn);
+      list.append(card);
+    });
+  }catch(error){
+    $("adminMessage").textContent = "Error loading bookings: " + error.message;
   }
+};
+
+async function updateBooking(id,changes){
+  if(!auth.currentUser || auth.currentUser.uid !== ADMIN_UID) return;
+
+  try{
+    await updateDoc(doc(db,"bookings",id),changes);
+    $("adminMessage").textContent = "Booking updated successfully.";
+    await loadAdminBookings();
+  }catch(error){
+    $("adminMessage").textContent = "Update failed: " + error.message;
+  }
+}
+
+onAuthStateChanged(auth,async user => {
+  hideAllPanels();
+
+  if(!user){
+    $("registerPanel").classList.remove("hidden");
+    return;
+  }
+
+  if(user.uid === ADMIN_UID){
+    $("adminDashboard").classList.remove("hidden");
+    await loadAdminBookings();
+    return;
+  }
+
+  $("dashboard").classList.remove("hidden");
+  $("customerName").textContent = user.displayName || "Customer";
+  $("customerEmail").textContent = user.email || "";
+
+  try{
+    const snap = await getDoc(doc(db,"users",user.uid));
+    $("customerPhone").textContent =
+      snap.exists() ? (snap.data().phone || "Not available") : "Not available";
+  }catch(error){
+    $("customerPhone").textContent = "Not available";
+  }
+
+  await loadBookings();
 });
 </script>
 </body>
-</html>
+                                    </html>
+                                    
