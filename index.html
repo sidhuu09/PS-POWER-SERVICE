@@ -580,6 +580,36 @@ async function loadCustomerProfile(user) {
 
 /* PUBLIC DESIGN GALLERY */
 
+function getCorrectCategory(design) {
+  const name = String(design.name || "")
+    .toUpperCase()
+    .replace(/\.(JPG|JPEG|PNG|WEBP)$/i, "")
+    .trim();
+
+  if (name.includes("TV UNIT")) return "TV Unit Design";
+  if (name.includes("CEILING")) return "Ceiling Design";
+
+  return design.category || "";
+}
+
+function getCorrectImage(design) {
+  const name = String(design.name || "")
+    .toUpperCase()
+    .replace(/\.(JPG|JPEG|PNG|WEBP)$/i, "")
+    .trim();
+
+  const images = {
+    "TV UNIT 2": "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/db08fe734af6516494075f9a6effa79dc948fdf1/TV%20UNIT%202.jpg",
+    "TV UNIT 3": "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/db08fe734af6516494075f9a6effa79dc948fdf1/TV%20UNIT%203.jpg",
+    "TV UNIT 5": "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/TV%20UNIT%205.jpg",
+    "CEILING 2": "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/CEILING%202.jpg",
+    "CEILING 3": "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/CEILING%203.jpg",
+    "CEILING 4": "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/CEILING%204.jpg"
+  };
+
+  return images[name] || design.imageUrl || "";
+}
+
 function startDesignListener() {
   if (designUnsubscribe) designUnsubscribe();
 
@@ -606,42 +636,6 @@ function startDesignListener() {
         "Gallery loading error: " + error.message;
     }
   );
-}
-
-
-function getCorrectCategory(design) {
-  const name = String(design.name || "").toUpperCase();
-
-  if (name.includes("TV UNIT")) return "TV Unit Design";
-  if (name.includes("CEILING")) return "Ceiling Design";
-
-  return design.category || "";
-}
-
-function getCorrectImage(design) {
-  const name = String(design.name || "").toUpperCase();
-
-  const images = {
-    "TV UNIT 2":
-      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/db08fe734af6516494075f9a6effa79dc948fdf1/TV%20UNIT%202.jpg",
-
-    "TV UNIT 3":
-      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/db08fe734af6516494075f9a6effa79dc948fdf1/TV%20UNIT%203.jpg",
-
-    "TV UNIT 5":
-      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/TV%20UNIT%205.jpg",
-
-    "CEILING 2":
-      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/CEILING%202.jpg",
-
-    "CEILING 3":
-      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/CEILING%203.jpg",
-
-    "CEILING 4":
-      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/CEILING%204.jpg"
-  };
-
-  return images[name] || design.imageUrl || "";
 }
 
 function renderDesigns(designs) {
@@ -696,11 +690,12 @@ function renderDesigns(designs) {
     container.appendChild(card);
   });
 }
-  
+
 window.filterDesigns = function(category) {
   selectedDesignCategory = category;
   startDesignListener();
 };
+
 
 /* ADMIN ADD DESIGN */
 
