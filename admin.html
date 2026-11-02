@@ -19,6 +19,7 @@ th,td{padding:10px;border:1px solid #ddd;text-align:left}th{background:#171717;c
 .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
 .design-card{border:1px solid #ddd;border-radius:10px;padding:10px;overflow:hidden}.design-card img{width:100%;height:160px;object-fit:cover;border-radius:7px;background:#eee}
 .design-card h4{margin:9px 0 5px}.request-image{width:100%;max-width:280px;max-height:220px;object-fit:contain;border-radius:8px;background:#eee}
+.filter-summary{font-size:13px;color:#666;margin:0 0 12px}
 </style>
 </head>
 <body>
@@ -51,7 +52,14 @@ th,td{padding:10px;border:1px solid #ddd;text-align:left}th{background:#171717;c
 <p id="imagePreviewText" class="small">Image preview ଏଠାରେ ଦେଖାଯିବ।</p>
 <img id="designPreview" alt="Design preview" style="display:none;width:100%;max-width:280px;max-height:180px;object-fit:contain;border:1px solid #ddd;border-radius:8px">
 <button class="green" id="designSubmit" type="submit">Add Design</button><button class="dark" id="cancelEditBtn" type="button" style="display:none">Cancel Edit</button></form>
-<hr><h3>Current Designs</h3><div id="designGallery" class="gallery">Loading designs...</div></section>
+<hr><h3>Current Designs</h3>
+<label for="adminDesignFilter">Filter Designs by Category</label>
+<select id="adminDesignFilter">
+<option value="ALL">ALL DESIGNS</option>
+<option>CEILING DESIGN</option><option>TV UNIT</option><option>KITCHEN</option><option>BEDROOM DESIGN</option><option>WALL DESIGN</option><option>POOJA ROOM</option><option>WARDROBE DESIGN</option><option>HALL DESIGN</option><option>SHOWCASE DESIGN</option><option>LED PANEL DESIGN</option><option>BATHROOM DESIGN</option><option>DOOR DESIGN</option><option>OFFICE INTERIOR</option><option>SHOP INTERIOR</option><option>3D HOME DESIGN</option>
+</select>
+<p id="designFilterSummary" class="filter-summary">Showing all designs.</p>
+<div id="designGallery" class="gallery">Loading designs...</div></section>
 
 <section class="card"><h3>Customer Design Requests</h3><p class="small">Customer ବାଛିଥିବା Design ଓ Request ଏଠାରେ ଦେଖାଯିବ।</p><div id="designList">Loading design requests...</div></section>
 <section class="card"><h3>Admin Notifications</h3><div id="adminNotifications">Loading notifications...</div></section>
@@ -75,8 +83,17 @@ $("bookingTableBody").addEventListener("click",async e=>{const btn=e.target.clos
 $("whatsappForm").addEventListener("submit",async e=>{e.preventDefault();if(!isAdmin)return;const btn=$("waSubmit");btn.disabled=true;btn.textContent="Adding...";try{await addDoc(collection(db,"bookings"),{userId:ADMIN_UID,customerName:$("waName").value.trim(),customerPhone:$("waPhone").value.trim(),customerEmail:"",service:$("waService").value,address:$("waAddress").value.trim(),bookingDate:$("waDate").value,bookingFee:20,bookingSource:"whatsapp",paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});alert("WhatsApp booking added. ₹20 payment is pending until verified.");$("whatsappForm").reset();}catch(e){alert("WhatsApp booking error: "+e.message);}finally{btn.disabled=false;btn.textContent="Add WhatsApp Booking";}});
 $("designImageUrl").addEventListener("input",()=>{const u=$("designImageUrl").value.trim(),p=$("designPreview");if(validImageUrl(u)){p.src=u;p.style.display="block";$("imagePreviewText").textContent="Image preview:";}else{p.removeAttribute("src");p.style.display="none";$("imagePreviewText").textContent="Valid HTTPS image URL paste କର।";}});
 function loadDesigns(){onSnapshot(collection(db,"designs"),s=>{designs=s.docs.map(d=>({id:d.id,...d.data()}));designs.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));renderDesigns();},e=>{$("designGallery").textContent="Design load error: "+e.message;});}
-function renderDesigns(){const g=$("designGallery");if(!designs.length){g.innerHTML="<p>No designs added yet.</p>";return;}g.innerHTML=designs.map(d=>`<div class="design-card"><img src="${safe(d.imageUrl)}" alt="${safe(d.name)}" loading="lazy"><h4>${safe(d.name||"Design")}</h4><p class="small">${safe(d.category||"Other")}</p><button class="dark" data-action="edit-design" data-id="${safe(d.id)}">Edit</button><button class="red" data-action="delete-design" data-id="${safe(d.id)}">Delete</button></div>`).join("");}
-$("designForm").addEventListener("submit",async e=>{e.preventDefault();if(!isAdmin)return;const name=$("designName").value.trim(),category=$("designCategory").value,imageUrl=$("designImageUrl").value.trim();if(!name||!category||!validImageUrl(imageUrl)){alert("Design Name, Category ଓ valid HTTPS Image URL ଦିଅ।");return;}const btn=$("designSubmit");btn.disabled=true;btn.textContent=editingDesignId?"Updating...":"Adding...";try{if(editingDesignId){await updateDoc(doc(db,"designs",editingDesignId),{name,category,imageUrl,updatedAt:serverTimestamp()});alert("Design updated successfully.");}else{await addDoc(collection(db,"designs"),{name,category,imageUrl,active:true,createdAt:serverTimestamp()});alert("New design added successfully.");}resetDesignForm();}catch(e){alert("Design save error: "+e.message);}finally{btn.disabled=false;btn.textContent=editingDesignId?"Update Design":"Add Design";}});
+function renderDesigns(){
+  const g=$("designGallery"),filter=$("adminDesignFilter").value;
+  const filtered=filter==="ALL"?designs:designs.filter(d=>(d.category||"").trim().toUpperCase()===filter);
+  $("designFilterSummary").textContent=filter==="ALL"
+    ?`Showing all ${filtered.length} design(s).`
+    :`Showing ${filtered.length} design(s) in ${filter}.`;
+  if(!filtered.length){g.innerHTML="<p>No designs found in this category.</p>";return;}
+  g.innerHTML=filtered.map(d=>`<div class="design-card"><img src="${safe(d.imageUrl)}" alt="${safe(d.name)}" loading="lazy"><h4>${safe(d.name||"Design")}</h4><p class="small">${safe(d.category||"Other")}</p><button class="dark" data-action="edit-design" data-id="${safe(d.id)}">Edit</button><button class="red" data-action="delete-design" data-id="${safe(d.id)}">Delete</button></div>`).join("");
+}
+$("adminDesignFilter").addEventListener("change",renderDesigns);
+$("designForm").addEventListener("submit",async e=>{e.preventDefault();if(!isAdmin)return;const name=$("designName").value.trim(),category=$("designCategory").value,imageUrl=$("designImageUrl").value.trim();if(!name||!category||!validImageUrl(imageUrl)){alert("Design Name, Category ଓ valid HTTPS Image URL ଦିଅ।");return;}const btn=$("designSubmit"),wasEditing=!!editingDesignId;btn.disabled=true;btn.textContent=wasEditing?"Updating...":"Adding...";try{if(editingDesignId){await updateDoc(doc(db,"designs",editingDesignId),{name,category,imageUrl,updatedAt:serverTimestamp()});alert("Design updated successfully.");}else{await addDoc(collection(db,"designs"),{name,category,imageUrl,active:true,createdAt:serverTimestamp()});alert("New design added successfully.");}resetDesignForm();}catch(e){alert("Design save error: "+e.message);}finally{btn.disabled=false;btn.textContent="Add Design";}});
 function resetDesignForm(){editingDesignId=null;$("designForm").reset();$("designPreview").removeAttribute("src");$("designPreview").style.display="none";$("imagePreviewText").textContent="Image preview ଏଠାରେ ଦେଖାଯିବ।";$("designSubmit").textContent="Add Design";$("cancelEditBtn").style.display="none";}
 $("cancelEditBtn").addEventListener("click",resetDesignForm);
 $("designGallery").addEventListener("click",async e=>{const btn=e.target.closest("button[data-action]");if(!btn||!isAdmin)return;const d=designs.find(x=>x.id===btn.dataset.id);if(!d)return;if(btn.dataset.action==="edit-design"){editingDesignId=d.id;$("designName").value=d.name||"";$("designCategory").value=d.category||"";$("designImageUrl").value=d.imageUrl||"";$("designPreview").src=d.imageUrl||"";$("designPreview").style.display=d.imageUrl?"block":"none";$("designSubmit").textContent="Update Design";$("cancelEditBtn").style.display="inline-block";$("designForm").scrollIntoView({behavior:"smooth"});}if(btn.dataset.action==="delete-design"){if(!confirm("ଏହି Design Gallery ରୁ Delete କରିବାକୁ ଚାହୁଁଛ କି?"))return;try{await deleteDoc(doc(db,"designs",d.id));alert("Design deleted.");}catch(e){alert("Delete error: "+e.message);}}});
