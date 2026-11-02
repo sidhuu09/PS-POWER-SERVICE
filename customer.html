@@ -2,478 +2,458 @@
 <!DOCTYPE html>
 <html lang="or">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Dashboard | PS POWER SERVICE</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Dashboard | PS POWER SERVICE</title>
 
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f4f6fa;
-      color: #222;
-    }
-    header {
-      background: #171717;
-      color: white;
-      padding: 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-    header h2 {
-      margin: 0;
-      color: #ffca28;
-      font-size: 20px;
-    }
-    button {
-      border: 0;
-      border-radius: 7px;
-      padding: 11px 16px;
-      background: #ffca28;
-      color: #171717;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:disabled {
-      opacity: .6;
-      cursor: not-allowed;
-    }
-    .logout { background: #e53935; color: white; }
-    main { max-width: 850px; margin: 22px auto; padding: 12px; }
-    .card {
-      background: white;
-      padding: 20px;
-      margin-bottom: 17px;
-      border-radius: 12px;
-      box-shadow: 0 2px 9px #00000012;
-    }
-    h3 { margin-top: 0; color: #222; }
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      margin: 7px 0 14px;
-      border: 1px solid #ccc;
-      border-radius: 7px;
-      font-size: 15px;
-    }
-    label { font-weight: bold; font-size: 14px; }
-    .yellow { background: #ffca28; color: #171717; }
-    .green { background: #168a45; color: white; }
-    .booking {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 13px;
-      margin: 12px 0;
-      overflow-wrap: anywhere;
-    }
-    .qr {
-      display: block;
-      width: 220px;
-      max-width: 100%;
-      margin: 15px auto;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-    }
-    .muted { color: #666; font-size: 13px; }
-    .status { font-weight: bold; color: #b36b00; }
-    a { color: #075fc7; }
-    @media(max-width:500px) {
-      header h2 { font-size: 16px; }
-      header { padding: 13px; }
-    }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f4f6fa;color:#222}
+header{background:#171717;color:white;padding:18px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+header h2{margin:0;color:#ffca28;font-size:20px}
+button{border:0;border-radius:7px;padding:11px 16px;background:#ffca28;color:#171717;font-weight:bold;cursor:pointer}
+button:disabled{opacity:.6;cursor:not-allowed}
+.logout{background:#e53935;color:white}
+.green{background:#168a45;color:white}
+main{max-width:1000px;margin:22px auto;padding:12px}
+.card{background:white;padding:20px;margin-bottom:17px;border-radius:12px;box-shadow:0 2px 9px #00000012}
+h3{margin-top:0;color:#222}
+input,select,textarea{width:100%;padding:12px;margin:7px 0 14px;border:1px solid #ccc;border-radius:7px;font-size:15px}
+label{font-weight:bold;font-size:14px}
+.booking,.design-request{border:1px solid #ddd;border-radius:8px;padding:13px;margin:12px 0;overflow-wrap:anywhere}
+.qr{display:block;width:220px;max-width:100%;margin:15px auto;border:1px solid #ddd;border-radius:8px}
+.muted{color:#666;font-size:13px}
+.status{font-weight:bold;color:#b36b00}
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.design-card{border:1px solid #ddd;border-radius:10px;padding:10px}
+.design-card img{width:100%;height:170px;object-fit:cover;border-radius:7px;background:#eee}
+.design-card h4{margin:9px 0 5px}
+.design-card button{width:100%;margin-top:8px}
+.selected{border:2px solid #168a45;background:#f0fff4}
+@media(max-width:500px){header h2{font-size:16px}header{padding:13px}}
+</style>
 </head>
 
 <body>
 
 <header>
-  <h2>PS POWER SERVICE</h2>
-  <button class="logout" id="logoutBtn">Logout</button>
+<h2>PS POWER SERVICE</h2>
+<button class="logout" id="logoutBtn">Logout</button>
 </header>
 
 <main>
 
-  <section class="card">
-    <h3>Welcome, <span id="customerName">Customer</span>!</h3>
-    <p id="customerEmail" class="muted"></p>
-    <p>ଏଠାରେ ତୁମେ Service Booking, Payment Status ଓ Booking History ଦେଖିପାରିବ।</p>
-  </section>
+<section class="card">
+<h3>Welcome, <span id="customerName">Customer</span>!</h3>
+<p id="customerEmail" class="muted"></p>
+<p>Service Booking, Design Gallery, Payment Status ଓ Booking History ଏଠାରେ ଦେଖିପାରିବ।</p>
+</section>
 
-  <section class="card">
-    <h3>Book a Service</h3>
+<section class="card">
+<h3>Book a Service</h3>
+<form id="bookingForm">
+<label>Service Select କର</label>
+<select id="service" required>
+<option value="">Select Service</option>
+<option>Electrical Wiring</option>
+<option>House Wiring</option>
+<option>Lenter Piping</option>
+<option>Fan Repair</option>
+<option>Motor Repair</option>
+<option>Other Electrical Service</option>
+</select>
 
-    <form id="bookingForm">
-      <label>Service Select କର</label>
-      <select id="service" required>
-        <option value="">Select Service</option>
-        <option>Electrical Wiring</option>
-        <option>House Wiring</option>
-        <option>Lenter Piping</option>
-        <option>Fan Repair</option>
-        <option>Motor Repair</option>
-        <option>Other Electrical Service</option>
-      </select>
+<label>Full Address</label>
+<textarea id="address" rows="3" required placeholder="ତୁମର ସମ୍ପୂର୍ଣ୍ଣ ଠିକଣା"></textarea>
 
-      <label>Full Address</label>
-      <textarea id="address" rows="3" required
-        placeholder="ତୁମର ସମ୍ପୂର୍ଣ୍ଣ ଠିକଣା"></textarea>
+<label>Service Date</label>
+<input type="date" id="date" required>
 
-      <label>Service Date</label>
-      <input type="date" id="date" required>
+<button id="bookingSubmit" type="submit">Submit Booking</button>
+</form>
+<p class="muted">Booking submit କଲେ ₹20 booking fee pending ରହିବ। Admin payment verify କରିବା ପରେ Paid ହେବ।</p>
+</section>
 
-      <button class="yellow" id="bookingSubmit" type="submit">
-        Submit Booking
-      </button>
-    </form>
+<!-- DESIGN GALLERY -->
+<section class="card">
+<h3>Our Design Gallery</h3>
+<p class="muted">ପସନ୍ଦର Design ବାଛି Request ପଠାଅ।</p>
 
-    <p class="muted">
-      Booking submit କଲେ ₹20 booking fee pending ରହିବ।
-      Admin payment verify କରିବା ପରେ Paid ହେବ।
-    </p>
-  </section>
+<div id="designGallery" class="gallery">Loading designs...</div>
 
-  <section class="card">
-    <h3>₹20 Booking Fee Payment</h3>
-    <p>PhonePe / UPI ଦ୍ୱାରା ₹20 payment କର।</p>
+<form id="designRequestForm" style="margin-top:18px">
+<h3>Submit Design Request</h3>
+<p id="selectedDesignText" class="muted">ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।</p>
 
-    <img class="qr"
-      src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png"
-      alt="Booking Payment QR Code">
+<label>Your Phone Number</label>
+<input id="designPhone" type="tel" maxlength="15" required placeholder="Phone number">
 
-    <p><b>Booking Fee: ₹20</b></p>
+<label>Additional Message (Optional)</label>
+<textarea id="designMessage" rows="3" maxlength="500" placeholder="କେଉଁ ପ୍ରକାର କାମ ଚାହୁଁଛ, ଲେଖ।"></textarea>
 
-    <p class="muted">
-      Payment କରିବା ପରେ payment proof submit କର।
-      Admin ଯାଞ୍ଚ କରି Paid କରିବେ।
-    </p>
+<button class="green" id="designRequestSubmit" type="submit" disabled>Submit Design Request</button>
+</form>
+</section>
 
-    <a href="https://forms.gle/7dnzHW8AopbkGpJL9"
-       target="_blank" rel="noopener">
-      <button class="green" type="button">Submit Payment Proof</button>
-    </a>
+<!-- MY DESIGN REQUESTS -->
+<section class="card">
+<h3>My Design Requests</h3>
+<div id="myDesignRequests">Loading requests...</div>
+</section>
 
-    <p class="muted">
-      କେବଳ payment proof submit କଲେ payment Paid ହେବ ନାହିଁ।
-      Admin verification ଆବଶ୍ୟକ।
-    </p>
-  </section>
+<section class="card">
+<h3>₹20 Booking Fee Payment</h3>
+<p>PhonePe / UPI ଦ୍ୱାରା ₹20 payment କର।</p>
+<img class="qr"
+src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png"
+alt="Booking Payment QR Code">
+<p><b>Booking Fee: ₹20</b></p>
+<p class="muted">Payment କରିବା ପରେ payment proof submit କର। Admin ଯାଞ୍ଚ କରି Paid କରିବେ।</p>
+<a href="https://forms.gle/7dnzHW8AopbkGpJL9" target="_blank" rel="noopener">
+<button class="green" type="button">Submit Payment Proof</button>
+</a>
+<p class="muted">କେବଳ payment proof submit କଲେ payment Paid ହେବ ନାହିଁ। Admin verification ଆବଶ୍ୟକ।</p>
+</section>
 
-  <section class="card">
-    <h3>My Booking History</h3>
-    <div id="bookingList">Loading bookings...</div>
-  </section>
+<section class="card">
+<h3>My Booking History</h3>
+<div id="bookingList">Loading bookings...</div>
+</section>
 
-  <section class="card">
-    <h3>My Notifications</h3>
-    <div id="notificationList">Loading notifications...</div>
-  </section>
+<section class="card">
+<h3>My Notifications</h3>
+<div id="notificationList">Loading notifications...</div>
+</section>
 
-  <section class="card">
-    <h3>WhatsApp Booking</h3>
-    <p>
-      WhatsApp ରେ service request ପଠାଇପାରିବ।
-      WhatsApp message ମାତ୍ର booking payment ର ପ୍ରମାଣ ନୁହେଁ।
-      ₹20 payment ଓ Admin verification ଆବଶ୍ୟକ।
-    </p>
-    <button class="green" id="whatsappBtn" type="button">
-      WhatsApp Booking
-    </button>
-  </section>
+<section class="card">
+<h3>WhatsApp Booking</h3>
+<p>WhatsApp message ମାତ୍ର payment proof ନୁହେଁ। ₹20 payment ଓ Admin verification ଆବଶ୍ୟକ।</p>
+<button class="green" id="whatsappBtn" type="button">WhatsApp Booking</button>
+</section>
 
 </main>
 
 <script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
-  import { initializeApp } from
-    "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {
+ getAuth,onAuthStateChanged,signOut
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
-  import {
-    getAuth,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {
+ getFirestore,collection,addDoc,query,where,onSnapshot,
+ serverTimestamp,getDoc,doc
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-  import {
-    getFirestore,
-    collection,
-    addDoc,
-    query,
-    where,
-    onSnapshot,
-    serverTimestamp,
-    getDoc,
-    doc
-  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+const firebaseConfig={
+ apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",
+ authDomain:"ps-power-service-68007.firebaseapp.com",
+ projectId:"ps-power-service-68007",
+ storageBucket:"ps-power-service-68007.firebasestorage.app",
+ messagingSenderId:"647095348680",
+ appId:"1:647095348680:web:51b3833ce08d767e9d64fd"
+};
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",
-    authDomain: "ps-power-service-68007.firebaseapp.com",
-    projectId: "ps-power-service-68007",
-    storageBucket: "ps-power-service-68007.firebasestorage.app",
-    messagingSenderId: "647095348680",
-    appId: "1:647095348680:web:51b3833ce08d767e9d64fd"
-  };
+const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
+const WHATSAPP_NUMBER="918144722094";
 
-  const ADMIN_UID = "UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
-  const WHATSAPP_NUMBER = "918144722094";
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const $=id=>document.getElementById(id);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+let currentCustomer=null;
+let selectedDesign=null;
+let customerProfile={};
 
-  let currentCustomer = null;
+function escapeHTML(value){
+ return String(value??"").replace(/[&<>"']/g,char=>({
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+ })[char]);
+}
 
-  const $ = id => document.getElementById(id);
+function safeImageUrl(value){
+ try{
+  const url=new URL(value);
+  return url.protocol==="https:"?url.href:"";
+ }catch{return "";}
+}
 
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, char => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    })[char]);
+// AUTHENTICATION
+onAuthStateChanged(auth,async user=>{
+ if(!user){
+  location.replace("index.html");
+  return;
+ }
+ if(user.uid===ADMIN_UID){
+  location.replace("admin.html");
+  return;
+ }
+
+ currentCustomer=user;
+ $("customerName").textContent=user.displayName||"Customer";
+ $("customerEmail").textContent=user.email||"";
+
+ try{
+  const userDoc=await getDoc(doc(db,"users",user.uid));
+  if(userDoc.exists()){
+   customerProfile=userDoc.data();
+   $("customerName").textContent=customerProfile.name||user.displayName||"Customer";
+   $("designPhone").value=customerProfile.phone||"";
+  }
+ }catch(error){
+  console.error("Profile error:",error);
+ }
+
+ loadBookings(user.uid);
+ loadNotifications(user.uid);
+ loadDesignGallery();
+ loadMyDesignRequests(user.uid);
+});
+
+// LOGOUT
+$("logoutBtn").addEventListener("click",async()=>{
+ try{
+  await signOut(auth);
+  location.replace("index.html");
+ }catch(error){
+  alert("Logout failed: "+error.message);
+ }
+});
+
+// BOOKING
+$("bookingForm").addEventListener("submit",async event=>{
+ event.preventDefault();
+ if(!currentCustomer)return alert("Please login first.");
+
+ const service=$("service").value;
+ const address=$("address").value.trim();
+ const date=$("date").value;
+
+ if(!service||!address||!date)return alert("ସମସ୍ତ ତଥ୍ୟ ପୂରଣ କର।");
+
+ const today=new Date();
+ const localToday=[
+  today.getFullYear(),
+  String(today.getMonth()+1).padStart(2,"0"),
+  String(today.getDate()).padStart(2,"0")
+ ].join("-");
+
+ if(date<localToday)return alert("ପୁରୁଣା ତାରିଖ ବାଛିପାରିବ ନାହିଁ।");
+
+ const button=$("bookingSubmit");
+ button.disabled=true;
+ button.textContent="Submitting...";
+
+ try{
+  await addDoc(collection(db,"bookings"),{
+   userId:currentCustomer.uid,
+   customerName:customerProfile.name||currentCustomer.displayName||"Customer",
+   customerPhone:customerProfile.phone||"",
+   customerEmail:currentCustomer.email||"",
+   service,address,bookingDate:date,
+   bookingFee:20,paymentStatus:"pending",
+   bookingStatus:"pending",createdAt:serverTimestamp()
+  });
+  alert("Booking submit ହୋଇଗଲା। ₹20 payment କରି proof submit କର।");
+  $("bookingForm").reset();
+ }catch(error){
+  alert("Booking failed: "+error.message);
+ }finally{
+  button.disabled=false;
+  button.textContent="Submit Booking";
+ }
+});
+
+// LOAD DESIGN GALLERY
+function loadDesignGallery(){
+ onSnapshot(collection(db,"designs"),snapshot=>{
+  const gallery=$("designGallery");
+  const activeDesigns=snapshot.docs
+   .map(d=>({id:d.id,...d.data()}))
+   .filter(d=>d.active!==false);
+
+  if(!activeDesigns.length){
+   gallery.innerHTML="<p>ଏପର୍ଯ୍ୟନ୍ତ Design ଯୋଡ଼ାଯାଇନାହିଁ। ପରେ ଆସ।</p>";
+   return;
   }
 
-  // AUTHENTICATION
-  onAuthStateChanged(auth, async user => {
+  gallery.innerHTML=activeDesigns.map(d=>{
+   const image=safeImageUrl(d.imageUrl);
+   return `
+    <div class="design-card ${selectedDesign?.id===d.id?"selected":""}">
+     ${image?`<img src="${escapeHTML(image)}" alt="${escapeHTML(d.name)}" loading="lazy">`:"<p>Image unavailable</p>"}
+     <h4>${escapeHTML(d.name||"Design")}</h4>
+     <p class="muted">${escapeHTML(d.category||"Other")}</p>
+     <button type="button" data-select-design="${escapeHTML(d.id)}">
+      ${selectedDesign?.id===d.id?"Selected ✓":"Select Design"}
+     </button>
+    </div>`;
+  }).join("");
+ },error=>{
+  $("designGallery").textContent="Design load error: "+error.message;
+ });
+}
 
-    if (!user) {
-      location.replace("index.html");
-      return;
-    }
+// SELECT DESIGN
+$("designGallery").addEventListener("click",event=>{
+ const button=event.target.closest("button[data-select-design]");
+ if(!button)return;
 
-    if (user.uid === ADMIN_UID) {
-      location.replace("admin.html");
-      return;
-    }
+ const designId=button.dataset.selectDesign;
+ const card=button.closest(".design-card");
+ const name=card?.querySelector("h4")?.textContent||"Selected Design";
+ const category=card?.querySelector(".muted")?.textContent||"Other";
+ const image=card?.querySelector("img")?.src||"";
 
-    currentCustomer = user;
+ selectedDesign={id:designId,name,category,imageUrl:image};
+ $("selectedDesignText").textContent="Selected: "+name;
+ $("designRequestSubmit").disabled=false;
 
-    $("customerName").textContent =
-      user.displayName || "Customer";
+ // Highlight selection in the displayed gallery
+ document.querySelectorAll(".design-card").forEach(item=>item.classList.remove("selected"));
+ card?.classList.add("selected");
+});
 
-    $("customerEmail").textContent =
-      user.email || "";
+// SUBMIT DESIGN REQUEST
+$("designRequestForm").addEventListener("submit",async event=>{
+ event.preventDefault();
+ if(!currentCustomer)return alert("Please login first.");
+ if(!selectedDesign)return alert("ପ୍ରଥମେ Design Select କର।");
 
-    try {
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+ const phone=$("designPhone").value.trim();
+ const description=$("designMessage").value.trim();
 
-      if (userDoc.exists()) {
-        const data = userDoc.data();
+ if(!phone)return alert("Phone number ଦିଅ।");
 
-        $("customerName").textContent =
-          data.name || user.displayName || "Customer";
-      }
-    } catch (error) {
-      console.error("Profile error:", error);
-    }
+ const button=$("designRequestSubmit");
+ button.disabled=true;
+ button.textContent="Submitting...";
 
-    loadBookings(user.uid);
-    loadNotifications(user.uid);
+ try{
+  await addDoc(collection(db,"designRequests"),{
+   userId:currentCustomer.uid,
+   customerName:customerProfile.name||currentCustomer.displayName||"Customer",
+   phone,
+   designId:selectedDesign.id,
+   designName:selectedDesign.name,
+   category:selectedDesign.category,
+   imageUrl:selectedDesign.imageUrl,
+   description,
+   status:"pending",
+   createdAt:serverTimestamp()
   });
 
-  // LOGOUT
-  $("logoutBtn").addEventListener("click", async () => {
-    try {
-      await signOut(auth);
-      location.replace("index.html");
-    } catch (error) {
-      alert("Logout failed: " + error.message);
-    }
-  });
+  alert("Design Request submit ହୋଇଗଲା। Admin ଯାଞ୍ଚ କରିବେ।");
+  $("designMessage").value="";
+  selectedDesign=null;
+  $("selectedDesignText").textContent="ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।";
+  $("designRequestSubmit").disabled=true;
+ }catch(error){
+  alert("Design request error: "+error.message);
+ }finally{
+  button.disabled=false;
+  button.textContent="Submit Design Request";
+ }
+});
 
-  // SERVICE BOOKING
-  $("bookingForm").addEventListener("submit", async event => {
+// MY DESIGN REQUESTS
+function loadMyDesignRequests(uid){
+ const q=query(collection(db,"designRequests"),where("userId","==",uid));
 
-    event.preventDefault();
-
-    if (!currentCustomer) {
-      alert("Please login first.");
-      return;
-    }
-
-    const service = $("service").value;
-    const address = $("address").value.trim();
-    const date = $("date").value;
-
-    if (!service || !address || !date) {
-      alert("ସମସ୍ତ ତଥ୍ୟ ପୂରଣ କର।");
-      return;
-    }
-
-    if (date < new Date().toISOString().split("T")[0]) {
-      alert("ପୁରୁଣା ତାରିଖ ବାଛିପାରିବ ନାହିଁ।");
-      return;
-    }
-
-    const submitButton = $("bookingSubmit");
-    submitButton.disabled = true;
-    submitButton.textContent = "Submitting...";
-
-    try {
-
-      const profile = await getDoc(
-        doc(db, "users", currentCustomer.uid)
-      );
-
-      const profileData = profile.exists()
-        ? profile.data()
-        : {};
-
-      await addDoc(collection(db, "bookings"), {
-        userId: currentCustomer.uid,
-        customerName:
-          profileData.name ||
-          currentCustomer.displayName ||
-          "Customer",
-        customerPhone: profileData.phone || "",
-        customerEmail: currentCustomer.email || "",
-        service: service,
-        address: address,
-        bookingDate: date,
-        bookingFee: 20,
-        paymentStatus: "pending",
-        bookingStatus: "pending",
-        createdAt: serverTimestamp()
-      });
-
-      alert(
-        "Booking submit ହୋଇଗଲା। ₹20 payment କରି proof submit କର। Admin verification ପରେ status update ହେବ।"
-      );
-
-      $("bookingForm").reset();
-
-    } catch (error) {
-      console.error("Booking error:", error);
-      alert("Booking failed: " + error.message);
-
-    } finally {
-      submitButton.disabled = false;
-      submitButton.textContent = "Submit Booking";
-    }
-  });
-
-  // BOOKING HISTORY
-  function loadBookings(uid) {
-
-    const q = query(
-      collection(db, "bookings"),
-      where("userId", "==", uid)
-    );
-
-    onSnapshot(q, snapshot => {
-
-      const list = $("bookingList");
-
-      if (snapshot.empty) {
-        list.innerHTML =
-          "<p>ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି Booking ନାହିଁ।</p>";
-        return;
-      }
-
-      const bookings = snapshot.docs.map(d => ({
-        id: d.id,
-        ...d.data()
-      }));
-
-      bookings.sort((a, b) =>
-        (b.createdAt?.seconds || 0) -
-        (a.createdAt?.seconds || 0)
-      );
-
-      list.innerHTML = bookings.map(b => `
-        <div class="booking">
-          <b>${escapeHTML(b.service || "Service")}</b>
-          <p>Date: ${escapeHTML(b.bookingDate || "-")}</p>
-          <p>Address: ${escapeHTML(b.address || "-")}</p>
-          <p>
-            Booking Status:
-            <span class="status">
-              ${escapeHTML(b.bookingStatus || "pending")}
-            </span>
-          </p>
-          <p>
-            Payment:
-            <span class="status">
-              ${escapeHTML(b.paymentStatus || "pending")}
-            </span>
-          </p>
-          <p>Booking Fee: ₹${Number(b.bookingFee || 20)}</p>
-          ${
-            b.paymentStatus === "paid"
-              ? "<b>Payment Verified</b>"
-              : "<span class='muted'>Payment verification pending</span>"
-          }
-        </div>
-      `).join("");
-
-    }, error => {
-      $("bookingList").textContent =
-        "Bookings load ହୋଇପାରିଲା ନାହିଁ: " + error.message;
-    });
+ onSnapshot(q,snapshot=>{
+  const list=$("myDesignRequests");
+  if(snapshot.empty){
+   list.innerHTML="<p>ତୁମେ ଏପର୍ଯ୍ୟନ୍ତ Design Request ପଠାଇନାହଁ।</p>";
+   return;
   }
 
-  // NOTIFICATIONS
-  function loadNotifications(uid) {
+  const items=snapshot.docs.map(d=>d.data());
+  items.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
 
-    const q = query(
-      collection(db, "notifications"),
-      where("userId", "==", uid)
-    );
+  list.innerHTML=items.map(r=>`
+   <div class="design-request">
+    <b>${escapeHTML(r.designName||"Selected Design")}</b>
+    ${safeImageUrl(r.imageUrl)?`<p><img src="${escapeHTML(safeImageUrl(r.imageUrl))}" alt="Selected design" style="width:100%;max-width:220px;border-radius:8px"></p>`:""}
+    <p>Category: ${escapeHTML(r.category||"-")}</p>
+    <p>Message: ${escapeHTML(r.description||"-")}</p>
+    <p>Request Status: <span class="status">${escapeHTML(r.status||"pending")}</span></p>
+   </div>
+  `).join("");
+ },error=>{
+  $("myDesignRequests").textContent="Request load error: "+error.message;
+ });
+}
 
-    onSnapshot(q, snapshot => {
+// BOOKING HISTORY
+function loadBookings(uid){
+ const q=query(collection(db,"bookings"),where("userId","==",uid));
 
-      const list = $("notificationList");
-
-      if (snapshot.empty) {
-        list.innerHTML =
-          "<p>କୌଣସି Notification ନାହିଁ।</p>";
-        return;
-      }
-
-      const items = snapshot.docs.map(d => d.data());
-
-      items.sort((a, b) =>
-        (b.createdAt?.seconds || 0) -
-        (a.createdAt?.seconds || 0)
-      );
-
-      list.innerHTML = items.map(n => `
-        <div class="booking">
-          <b>${escapeHTML(n.title || "Notification")}</b>
-          <p>${escapeHTML(n.message || "")}</p>
-        </div>
-      `).join("");
-
-    }, error => {
-      $("notificationList").textContent =
-        "Notifications load ହୋଇପାରିଲା ନାହିଁ: " + error.message;
-    });
+ onSnapshot(q,snapshot=>{
+  const list=$("bookingList");
+  if(snapshot.empty){
+   list.innerHTML="<p>ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି Booking ନାହିଁ।</p>";
+   return;
   }
 
-  // WHATSAPP BOOKING
-  $("whatsappBtn").addEventListener("click", () => {
+  const bookings=snapshot.docs.map(d=>d.data());
+  bookings.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
 
-    const message =
-      "Hello PS POWER SERVICE, I want to book a service. Please guide me for the ₹20 booking fee and payment verification. I understand that a WhatsApp message alone is not proof of payment.";
+  list.innerHTML=bookings.map(b=>`
+   <div class="booking">
+    <b>${escapeHTML(b.service||"Service")}</b>
+    <p>Date: ${escapeHTML(b.bookingDate||"-")}</p>
+    <p>Address: ${escapeHTML(b.address||"-")}</p>
+    <p>Booking Status: <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span></p>
+    <p>Payment: <span class="status">${escapeHTML(b.paymentStatus||"pending")}</span></p>
+    <p>Booking Fee: ₹${Number(b.bookingFee??20)}</p>
+    ${b.paymentStatus==="paid"?"<b>Payment Verified</b>":"<span class='muted'>Payment verification pending</span>"}
+   </div>
+  `).join("");
+ },error=>{
+  $("bookingList").textContent="Bookings load error: "+error.message;
+ });
+}
 
-    const url =
-      "https://wa.me/" +
-      WHATSAPP_NUMBER +
-      "?text=" +
-      encodeURIComponent(message);
+// NOTIFICATIONS
+function loadNotifications(uid){
+ const q=query(collection(db,"notifications"),where("userId","==",uid));
 
-    window.open(url, "_blank");
-  });
+ onSnapshot(q,snapshot=>{
+  const list=$("notificationList");
+  if(snapshot.empty){
+   list.innerHTML="<p>କୌଣସି Notification ନାହିଁ।</p>";
+   return;
+  }
 
-  // PREVENT PAST DATES
-  $("date").min = new Date().toISOString().split("T")[0];
+  const items=snapshot.docs.map(d=>d.data());
+  items.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
 
+  list.innerHTML=items.map(n=>`
+   <div class="booking">
+    <b>${escapeHTML(n.title||"Notification")}</b>
+    <p>${escapeHTML(n.message||"")}</p>
+   </div>
+  `).join("");
+ },error=>{
+  $("notificationList").textContent="Notification error: "+error.message;
+ });
+}
+
+// WHATSAPP BOOKING
+$("whatsappBtn").addEventListener("click",()=>{
+ const message="Hello PS POWER SERVICE, I want to book a service. Please guide me for the ₹20 booking fee and payment verification. A WhatsApp message alone is not proof of payment.";
+ const url="https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);
+ window.open(url,"_blank");
+});
+
+// PREVENT PAST DATES
+const now=new Date();
+$("date").min=[
+ now.getFullYear(),
+ String(now.getMonth()+1).padStart(2,"0"),
+ String(now.getDate()).padStart(2,"0")
+].join("-");
 </script>
-
 </body>
 </html>
