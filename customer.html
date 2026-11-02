@@ -30,6 +30,7 @@ label{font-weight:bold;font-size:14px}
 .design-card h4{margin:9px 0 5px}
 .design-card button{width:100%;margin-top:8px}
 .selected{border:2px solid #168a45;background:#f0fff4}
+.verified{color:#168a45;font-weight:bold}
 @media(max-width:500px){header h2{font-size:16px}header{padding:13px}}
 </style>
 </head>
@@ -101,30 +102,40 @@ label{font-weight:bold;font-size:14px}
 <div id="myDesignRequests">Loading requests...</div>
 </section>
 
+<!-- PAYMENT QR -->
 <section class="card">
 <h3>₹20 Booking Fee Payment</h3>
 <p>PhonePe / UPI ଦ୍ୱାରା ₹20 payment କର।</p>
+
 <img class="qr"
 src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png"
 alt="Booking Payment QR Code">
+
 <p><b>Booking Fee: ₹20</b></p>
-<p class="muted">Payment କରିବା ପରେ payment proof submit କର। Admin ଯାଞ୍ଚ କରି Paid କରିବେ।</p>
-<a href="https://forms.gle/7dnzHW8AopbkGpJL9" target="_blank" rel="noopener">
-<button class="green" type="button">Submit Payment Proof</button>
-</a>
-<p class="muted">କେବଳ payment proof submit କଲେ payment Paid ହେବ ନାହିଁ। Admin verification ଆବଶ୍ୟକ।</p>
+
+<p class="muted">
+Payment କରିବା ପରେ My Booking History ରେ ନିଜ Booking ପାଇଁ UTR Number Submit କର।
+</p>
+
+<p class="muted">
+କେବଳ UTR Submit କଲେ Payment Paid ହେବ ନାହିଁ। Admin payment ଯାଞ୍ଚ କରିବା ପରେ Paid କରିବେ।
+</p>
 </section>
 
+<!-- MY BOOKING HISTORY -->
 <section class="card">
 <h3>My Booking History</h3>
+<p class="muted">ପ୍ରତ୍ୟେକ Booking ପାଇଁ ₹20 Payment କରି UTR Number Submit କର।</p>
 <div id="bookingList">Loading bookings...</div>
 </section>
 
+<!-- NOTIFICATIONS -->
 <section class="card">
 <h3>My Notifications</h3>
 <div id="notificationList">Loading notifications...</div>
 </section>
 
+<!-- WHATSAPP -->
 <section class="card">
 <h3>WhatsApp Booking</h3>
 <p>WhatsApp message ମାତ୍ର payment proof ନୁହେଁ। ₹20 payment ଓ Admin verification ଆବଶ୍ୟକ।</p>
@@ -142,7 +153,7 @@ import {
 
 import {
  getFirestore,collection,addDoc,query,where,onSnapshot,
- serverTimestamp,getDoc,doc
+ serverTimestamp,getDoc,doc,updateDoc
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig={
@@ -185,6 +196,7 @@ onAuthStateChanged(auth,async user=>{
   location.replace("index.html");
   return;
  }
+
  if(user.uid===ADMIN_UID){
   location.replace("admin.html");
   return;
@@ -224,13 +236,15 @@ $("logoutBtn").addEventListener("click",async()=>{
 // BOOKING
 $("bookingForm").addEventListener("submit",async event=>{
  event.preventDefault();
+
  if(!currentCustomer)return alert("Please login first.");
 
  const service=$("service").value;
  const address=$("address").value.trim();
  const date=$("date").value;
 
- if(!service||!address||!date)return alert("ସମସ୍ତ ତଥ୍ୟ ପୂରଣ କର।");
+ if(!service||!address||!date)
+  return alert("ସମସ୍ତ ତଥ୍ୟ ପୂରଣ କର।");
 
  const today=new Date();
  const localToday=[
@@ -239,7 +253,8 @@ $("bookingForm").addEventListener("submit",async event=>{
   String(today.getDate()).padStart(2,"0")
  ].join("-");
 
- if(date<localToday)return alert("ପୁରୁଣା ତାରିଖ ବାଛିପାରିବ ନାହିଁ।");
+ if(date<localToday)
+  return alert("ପୁରୁଣା ତାରିଖ ବାଛିପାରିବ ନାହିଁ।");
 
  const button=$("bookingSubmit");
  button.disabled=true;
@@ -251,12 +266,18 @@ $("bookingForm").addEventListener("submit",async event=>{
    customerName:customerProfile.name||currentCustomer.displayName||"Customer",
    customerPhone:customerProfile.phone||"",
    customerEmail:currentCustomer.email||"",
-   service,address,bookingDate:date,
-   bookingFee:20,paymentStatus:"pending",
-   bookingStatus:"pending",createdAt:serverTimestamp()
+   service,address,
+   bookingDate:date,
+   bookingFee:20,
+   paymentStatus:"pending",
+   paymentProofStatus:"not_submitted",
+   bookingStatus:"pending",
+   createdAt:serverTimestamp()
   });
-  alert("Booking submit ହୋଇଗଲା। ₹20 payment କରି proof submit କର।");
+
+  alert("Booking submit ହୋଇଗଲା। ₹20 payment କରି My Booking History ରେ UTR Submit କର।");
   $("bookingForm").reset();
+
  }catch(error){
   alert("Booking failed: "+error.message);
  }finally{
@@ -269,6 +290,7 @@ $("bookingForm").addEventListener("submit",async event=>{
 function loadDesignGallery(){
  onSnapshot(collection(db,"designs"),snapshot=>{
   const gallery=$("designGallery");
+
   const activeDesigns=snapshot.docs
    .map(d=>({id:d.id,...d.data()}))
    .filter(d=>d.active!==false);
@@ -280,6 +302,7 @@ function loadDesignGallery(){
 
   gallery.innerHTML=activeDesigns.map(d=>{
    const image=safeImageUrl(d.imageUrl);
+
    return `
     <div class="design-card ${selectedDesign?.id===d.id?"selected":""}">
      ${image?`<img src="${escapeHTML(image)}" alt="${escapeHTML(d.name)}" loading="lazy">`:"<p>Image unavailable</p>"}
@@ -290,6 +313,7 @@ function loadDesignGallery(){
      </button>
     </div>`;
   }).join("");
+
  },error=>{
   $("designGallery").textContent="Design load error: "+error.message;
  });
@@ -306,18 +330,26 @@ $("designGallery").addEventListener("click",event=>{
  const category=card?.querySelector(".muted")?.textContent||"Other";
  const image=card?.querySelector("img")?.src||"";
 
- selectedDesign={id:designId,name,category,imageUrl:image};
+ selectedDesign={
+  id:designId,
+  name,
+  category,
+  imageUrl:image
+ };
+
  $("selectedDesignText").textContent="Selected: "+name;
  $("designRequestSubmit").disabled=false;
 
- // Highlight selection in the displayed gallery
- document.querySelectorAll(".design-card").forEach(item=>item.classList.remove("selected"));
+ document.querySelectorAll(".design-card")
+  .forEach(item=>item.classList.remove("selected"));
+
  card?.classList.add("selected");
 });
 
 // SUBMIT DESIGN REQUEST
 $("designRequestForm").addEventListener("submit",async event=>{
  event.preventDefault();
+
  if(!currentCustomer)return alert("Please login first.");
  if(!selectedDesign)return alert("ପ୍ରଥମେ Design Select କର।");
 
@@ -345,10 +377,12 @@ $("designRequestForm").addEventListener("submit",async event=>{
   });
 
   alert("Design Request submit ହୋଇଗଲା। Admin ଯାଞ୍ଚ କରିବେ।");
+
   $("designMessage").value="";
   selectedDesign=null;
   $("selectedDesignText").textContent="ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।";
   $("designRequestSubmit").disabled=true;
+
  }catch(error){
   alert("Design request error: "+error.message);
  }finally{
@@ -363,13 +397,17 @@ function loadMyDesignRequests(uid){
 
  onSnapshot(q,snapshot=>{
   const list=$("myDesignRequests");
+
   if(snapshot.empty){
    list.innerHTML="<p>ତୁମେ ଏପର୍ଯ୍ୟନ୍ତ Design Request ପଠାଇନାହଁ।</p>";
    return;
   }
 
   const items=snapshot.docs.map(d=>d.data());
-  items.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+
+  items.sort((a,b)=>
+   (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
+  );
 
   list.innerHTML=items.map(r=>`
    <div class="design-request">
@@ -380,6 +418,7 @@ function loadMyDesignRequests(uid){
     <p>Request Status: <span class="status">${escapeHTML(r.status||"pending")}</span></p>
    </div>
   `).join("");
+
  },error=>{
   $("myDesignRequests").textContent="Request load error: "+error.message;
  });
@@ -391,29 +430,118 @@ function loadBookings(uid){
 
  onSnapshot(q,snapshot=>{
   const list=$("bookingList");
+
   if(snapshot.empty){
    list.innerHTML="<p>ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି Booking ନାହିଁ।</p>";
    return;
   }
 
-  const bookings=snapshot.docs.map(d=>d.data());
-  bookings.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  const bookings=snapshot.docs.map(d=>({
+   id:d.id,
+   ...d.data()
+  }));
+
+  bookings.sort((a,b)=>
+   (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
+  );
 
   list.innerHTML=bookings.map(b=>`
    <div class="booking">
     <b>${escapeHTML(b.service||"Service")}</b>
+
     <p>Date: ${escapeHTML(b.bookingDate||"-")}</p>
     <p>Address: ${escapeHTML(b.address||"-")}</p>
-    <p>Booking Status: <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span></p>
-    <p>Payment: <span class="status">${escapeHTML(b.paymentStatus||"pending")}</span></p>
+
+    <p>Booking Status:
+     <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span>
+    </p>
+
+    <p>Payment:
+     <span class="status">${escapeHTML(b.paymentStatus||"pending")}</span>
+    </p>
+
     <p>Booking Fee: ₹${Number(b.bookingFee??20)}</p>
-    ${b.paymentStatus==="paid"?"<b>Payment Verified</b>":"<span class='muted'>Payment verification pending</span>"}
+
+    ${
+     b.paymentStatus==="paid"
+     ? `<p class="verified">✓ Payment Verified by Admin</p>`
+     : b.paymentProofStatus==="submitted"
+       ? `<p>UTR Number: <b>${escapeHTML(b.paymentReference||"-")}</b></p>
+          <p class="status">Admin Verification Pending</p>`
+       : `<label>UTR / Transaction Number</label>
+          <input type="text"
+           id="utr-${escapeHTML(b.id)}"
+           maxlength="50"
+           placeholder="Enter UTR Number">
+          <button type="button"
+           class="green"
+           data-submit-utr="${escapeHTML(b.id)}">
+           Submit UTR
+          </button>`
+    }
    </div>
   `).join("");
+
  },error=>{
   $("bookingList").textContent="Bookings load error: "+error.message;
  });
 }
+
+// SUBMIT UTR
+$("bookingList").addEventListener("click",async event=>{
+ const button=event.target.closest("button[data-submit-utr]");
+ if(!button)return;
+
+ if(!currentCustomer)return alert("Please login first.");
+
+ const bookingId=button.dataset.submitUtr;
+ const input=$("utr-"+bookingId);
+ const utr=input?.value.trim();
+
+ if(!utr)return alert("UTR Number ଦିଅ।");
+ if(utr.length<6)return alert("ଠିକ୍ UTR Number ଦିଅ।");
+
+ const utrPattern=/^[A-Za-z0-9-]+$/;
+
+ if(!utrPattern.test(utr))
+  return alert("UTR Number ରେ କେବଳ English letters, numbers ଓ hyphen ବ୍ୟବହାର କର।");
+
+ button.disabled=true;
+ button.textContent="Submitting...";
+
+ try{
+  const bookingRef=doc(db,"bookings",bookingId);
+  const bookingSnap=await getDoc(bookingRef);
+
+  if(!bookingSnap.exists())
+   throw new Error("Booking ମିଳିଲା ନାହିଁ।");
+
+  const booking=bookingSnap.data();
+
+  if(booking.userId!==currentCustomer.uid)
+   throw new Error("ଏହି Booking ତୁମର ନୁହେଁ।");
+
+  if(booking.paymentStatus==="paid")
+   throw new Error("ଏହି Booking ପୂର୍ବରୁ Paid ହୋଇଛି।");
+
+  if(booking.paymentProofStatus==="submitted")
+   throw new Error("UTR ପୂର୍ବରୁ Submit ହୋଇଛି।");
+
+  await updateDoc(bookingRef,{
+   paymentReference:utr,
+   paymentProofStatus:"submitted",
+   paymentSubmittedAt:serverTimestamp()
+  });
+
+  alert("UTR Number Submit ହୋଇଗଲା। Admin payment verify କରିବେ।");
+
+ }catch(error){
+  alert("UTR Submit Error: "+error.message);
+ }finally{
+  button.disabled=false;
+  button.textContent="Submit UTR";
+ }
+});
 
 // NOTIFICATIONS
 function loadNotifications(uid){
@@ -421,13 +549,17 @@ function loadNotifications(uid){
 
  onSnapshot(q,snapshot=>{
   const list=$("notificationList");
+
   if(snapshot.empty){
    list.innerHTML="<p>କୌଣସି Notification ନାହିଁ।</p>";
    return;
   }
 
   const items=snapshot.docs.map(d=>d.data());
-  items.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+
+  items.sort((a,b)=>
+   (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
+  );
 
   list.innerHTML=items.map(n=>`
    <div class="booking">
@@ -435,6 +567,7 @@ function loadNotifications(uid){
     <p>${escapeHTML(n.message||"")}</p>
    </div>
   `).join("");
+
  },error=>{
   $("notificationList").textContent="Notification error: "+error.message;
  });
@@ -443,17 +576,20 @@ function loadNotifications(uid){
 // WHATSAPP BOOKING
 $("whatsappBtn").addEventListener("click",()=>{
  const message="Hello PS POWER SERVICE, I want to book a service. Please guide me for the ₹20 booking fee and payment verification. A WhatsApp message alone is not proof of payment.";
+
  const url="https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);
  window.open(url,"_blank");
 });
 
 // PREVENT PAST DATES
 const now=new Date();
+
 $("date").min=[
  now.getFullYear(),
  String(now.getMonth()+1).padStart(2,"0"),
  String(now.getDate()).padStart(2,"0")
 ].join("-");
 </script>
+
 </body>
 </html>
