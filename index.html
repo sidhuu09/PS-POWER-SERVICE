@@ -199,7 +199,7 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
   <nav class="menu-dropdown" id="menuDropdown">
     <a href="#home" onclick="closeMenu()">🏠 Home</a>
     <a href="#services" onclick="closeMenu()">⚡ Services</a>
-    <a href="#services" onclick="closeMenu()">🖼️ Our Work Gallery</a>
+    <a href="#gallery" onclick="closeMenu()">🖼️ Our Work Gallery</a>
     <a href="#account" onclick="showLogin();closeMenu()">👤 Customer Login</a>
     <a href="#account" onclick="showRegister();closeMenu()">📝 Customer Register</a>
     <a href="#account" onclick="showAdminLogin();closeMenu()">🔐 Admin Login</a>
@@ -239,7 +239,7 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
   <div class="service">🔧 Repair & Maintenance</div><div class="service">💡 Lenter Piping</div>
 </div>
 
-<h2 class="gallery-title">Our Work Gallery</h2>
+<h2 class="gallery-title" id="gallery">Our Work Gallery</h2>
 <p class="small-note">A look at our electrical and installation work.</p>
 <div class="service-gallery">
   <figure class="gallery-item"><img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring" loading="lazy"><figcaption>Distribution Board Wiring<span>Electrical installation</span></figcaption></figure>
@@ -330,7 +330,6 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
   <button class="btn dark" onclick="logoutUser()">Admin Logout</button>
 </div>
 </section>
-<footer><p>PS POWER SERVICE</p><p>Powering Your Home, Safely.</p></footer>
 <!-- PHOTO SLIDER JAVASCRIPT -->
 <script>
 const slides=document.querySelectorAll(".slide");
@@ -518,7 +517,7 @@ onAuthStateChanged(auth,user=>{
 });
 </script>
 <!-- CONTACT FOOTER -->
-<footer class="contact-footer">
+<footer class="contact-footer" id="contact">
   <h2>⚡ PS POWER SERVICE</h2>
   <h3>MR SIDHU ELECTRICIAN</h3>
   <p>📍Dhadakuluguda</p>
