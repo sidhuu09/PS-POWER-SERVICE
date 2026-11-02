@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PS POWER SERVICE</title>
-
 <style>
 :root{--yellow:#ffd500;--ink:#171717;--paper:#fff;--soft:#fff9dc;--line:#e5e5e5}
 *{box-sizing:border-box}
@@ -12,6 +11,8 @@ body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#222}
 header{background:var(--ink);color:white;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .logo{font-size:21px;font-weight:bold;color:var(--yellow)}
 nav a{color:white;text-decoration:none;margin:7px}
+.hero{background:linear-gradient(120deg,#171717,#393939);color:white;text-align:center;padding:64px 15px}
+.hero h1{font-size:clamp(28px,5vw,42px);color:var(--yellow)}
 .btn{border:0;background:var(--yellow);color:var(--ink);padding:11px 17px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px}
 .btn.dark{background:var(--ink);color:var(--yellow)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
@@ -44,6 +45,7 @@ tr:nth-child(even) td{background:#fffdf2}
 .status{font-weight:bold;text-transform:capitalize}
 footer{background:var(--ink);color:white;text-align:center;padding:20px}
 .small-note{font-size:13px;color:#666}
+@media(max-width:600px){header{justify-content:center;text-align:center}.hero{padding:45px 12px}section{padding:22px 12px}.panel{padding:14px}}
 
 /* PREMIUM PHOTO SLIDER */
 .photo-slider{position:relative;width:100%;height:clamp(330px,65vh,580px);overflow:hidden;background:#171717}
@@ -55,92 +57,51 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
 .slide-content h1{font-size:clamp(30px,5vw,52px);color:var(--yellow);margin:0 0 12px}
 .slide-content p{font-size:18px;line-height:1.6}
 .slider-arrow{position:absolute;z-index:5;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;background:var(--yellow);color:var(--ink);font-size:23px;cursor:pointer}
-.slider-prev{left:15px}
-.slider-next{right:15px}
+.slider-prev{left:15px}.slider-next{right:15px}
 .slider-dots{position:absolute;z-index:5;bottom:18px;left:0;right:0;display:flex;justify-content:center;gap:10px}
 .slider-dot{width:12px;height:12px;padding:0;border:0;border-radius:50%;background:white;opacity:.65;cursor:pointer}
 .slider-dot.active{background:var(--yellow);opacity:1;transform:scale(1.25)}
-@media(max-width:600px){
- header{justify-content:center;text-align:center}
- nav a{margin:5px}
- .photo-slider{height:440px}
- .slide-content{left:13%;right:13%}
- .slide-content p{font-size:15px}
- .slider-arrow{width:36px;height:36px;font-size:19px}
- section{padding:22px 12px}
- .panel{padding:14px}
- .payment-box{padding:12px}
-}
+@media(max-width:600px){.photo-slider{height:440px}.slide-content{left:13%;right:13%}.slide-content p{font-size:15px}.slider-arrow{width:36px;height:36px;font-size:19px}}
+
 </style>
 </head>
-
 <body>
-
 <header>
   <div class="logo">⚡ PS POWER SERVICE</div>
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#services">Services</a>
-    <a href="#account">Account</a>
-  </nav>
+  <nav><a href="#home">Home</a><a href="#services">Services</a><a href="#account">Account</a></nav>
 </header>
-
 <!-- HOME PHOTO SLIDER -->
 <div class="photo-slider" id="home">
-
   <div class="slide active">
-    <img src="https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1600&q=85" alt="Electrical work">
-    <div class="slide-content">
-      <h1>PS POWER SERVICE</h1>
-      <p>Powering Your Home, Safely.</p>
-      <p>Electrical Work • Home Wiring • Lenter Piping • Repair</p>
+    <img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring">
+    <div class="slide-content"><h1>PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p><p>Electrical Work • Home Wiring • Lenter Piping • Repair</p>
       <button class="btn" onclick="showLogin()">Customer Login</button>
       <button class="btn" onclick="showRegister()">Customer Register</button>
-      <button class="btn dark" onclick="showAdminLogin()">Admin Login</button>
-    </div>
+      <button class="btn dark" onclick="showAdminLogin()">Admin Login</button></div>
   </div>
-
-  <div class="slide">
-    <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1600&q=85" alt="Electrical technician">
-    <div class="slide-content">
-      <h1>Professional Service</h1>
-      <p>Reliable Electrical Solutions for Your Home.</p>
-      <button class="btn" onclick="showLogin()">Book a Service</button>
-    </div>
-  </div>
-
-  <div class="slide">
-    <img src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?auto=format&fit=crop&w=1600&q=85" alt="Technical work">
-    <div class="slide-content">
-      <h1>Quality Work</h1>
-      <p>Safe Wiring • Repair • Maintenance</p>
-      <button class="btn" onclick="showRegister()">Get Started</button>
-    </div>
-  </div>
-
+  <div class="slide"><img src="images/electrical-panel-testing.jpg" alt="Electrical Panel Testing"><div class="slide-content"><h1>Professional Service</h1><p>Reliable Electrical Solutions for Your Home.</p><button class="btn" onclick="showLogin()">Book a Service</button></div></div>
+  <div class="slide"><img src="images/fan-fitting.jpg" alt="Fan Fitting"><div class="slide-content"><h1>Fan Fitting Service</h1><p>Professional Fan Installation.</p><button class="btn" onclick="showRegister()">Get Started</button></div></div>
+  <div class="slide"><img src="images/house-wiring.jpg" alt="House Wiring"><div class="slide-content"><h1>House Wiring</h1><p>Safe and Reliable Home Wiring.</p></div></div>
+  <div class="slide"><img src="images/lenter-pipe-fitting.jpg" alt="Lenter Pipe Fitting"><div class="slide-content"><h1>Lenter Piping</h1><p>Quality Lenter Pipe Fitting Service.</p></div></div>
+  <div class="slide"><img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting"><div class="slide-content"><h1>Switch Board Fitting</h1><p>Electrical Installation and Repair.</p></div></div>
+  <div class="slide"><img src="images/wall-cutting.jpg" alt="Wall Cutting"><div class="slide-content"><h1>Wall Cutting Service</h1><p>Professional Electrical Work.</p></div></div>
   <button class="slider-arrow slider-prev" onclick="changeSlide(-1)" aria-label="Previous photo">❮</button>
   <button class="slider-arrow slider-next" onclick="changeSlide(1)" aria-label="Next photo">❯</button>
-
   <div class="slider-dots" id="sliderDots">
     <button class="slider-dot active" onclick="goToSlide(0)" aria-label="Slide 1"></button>
     <button class="slider-dot" onclick="goToSlide(1)" aria-label="Slide 2"></button>
     <button class="slider-dot" onclick="goToSlide(2)" aria-label="Slide 3"></button>
+    <button class="slider-dot" onclick="goToSlide(3)" aria-label="Slide 4"></button>
+    <button class="slider-dot" onclick="goToSlide(4)" aria-label="Slide 5"></button>
+    <button class="slider-dot" onclick="goToSlide(5)" aria-label="Slide 6"></button>
+    <button class="slider-dot" onclick="goToSlide(6)" aria-label="Slide 7"></button>
   </div>
 </div>
-
-<section id="services">
-  <h2>Our Services</h2>
-  <div class="services">
-    <div class="service">⚡ Electrical Work</div>
-    <div class="service">🏠 Home Wiring</div>
-    <div class="service">🔧 Repair & Maintenance</div>
-    <div class="service">💡 Lenter Piping</div>
-  </div>
-</section>
-
-<section id="account">
-<h2>Account</h2>
-
+<section id="services"><h2>Our Services</h2><div class="services">
+  <div class="service">⚡ Electrical Work</div><div class="service">🏠 Home Wiring</div>
+  <div class="service">🔧 Repair & Maintenance</div><div class="service">💡 Lenter Piping</div>
+</div></section>
+<section id="account"><h2>Account</h2>
 <div class="panel auth-panel" id="registerPanel">
   <h3>Customer Registration</h3>
   <input id="regName" placeholder="Full Name" autocomplete="name">
@@ -148,750 +109,263 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
   <input id="regEmail" type="email" placeholder="Email Address" autocomplete="email">
   <input id="regPassword" type="password" placeholder="Create Password" autocomplete="new-password">
   <button class="btn" onclick="registerCustomer()">Register</button>
-  <p>Already have an account?</p>
-  <button class="btn dark" onclick="showLogin()">Login</button>
+  <p>Already have an account?</p><button class="btn dark" onclick="showLogin()">Login</button>
   <div class="message" id="regMessage" aria-live="polite"></div>
 </div>
-
 <div class="panel auth-panel hidden" id="loginPanel">
-  <h3>Customer Login</h3>
-  <input id="loginEmail" type="email" placeholder="Email Address">
+  <h3>Customer Login</h3><input id="loginEmail" type="email" placeholder="Email Address">
   <input id="loginPassword" type="password" placeholder="Password">
   <button class="btn" onclick="loginCustomer()">Login</button>
   <button class="btn dark" onclick="resetPassword()">Forgot Password?</button>
   <button class="btn" onclick="showRegister()">Create Account</button>
   <div class="message" id="loginMessage"></div>
 </div>
-
 <div class="panel auth-panel hidden" id="adminLoginPanel">
-  <h3>🔐 Admin Login</h3>
-  <input id="adminEmail" type="email" placeholder="Admin Email">
+  <h3>🔐 Admin Login</h3><input id="adminEmail" type="email" placeholder="Admin Email">
   <input id="adminPassword" type="password" placeholder="Admin Password">
   <button class="btn" onclick="loginAdmin()">Admin Login</button>
   <button class="btn dark" onclick="showRegister()">Back</button>
   <div class="message" id="adminLoginMessage"></div>
 </div>
-
 <div class="panel hidden" id="dashboard">
   <h3>Welcome, <span id="customerName"></span>!</h3>
-  <p>Email: <span id="customerEmail"></span> | Mobile: <span id="customerPhone"></span></p>
-  <hr>
+  <p>Email: <span id="customerEmail"></span> | Mobile: <span id="customerPhone"></span></p><hr>
   <h3>⚡ Book a Service</h3>
-
   <form id="bookingForm">
-    <label>Choose Service</label>
-    <select id="serviceName" required>
-      <option value="">Select Service</option>
-      <option>Electrical Work</option>
-      <option>Home Wiring</option>
-      <option>Lenter Piping</option>
-      <option>Repair & Maintenance</option>
+    <label>Choose Service</label><select id="serviceName" required>
+      <option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option>
     </select>
-
-    <label>Full Address</label>
-    <textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
-
-    <label>Booking Date</label>
-    <input id="bookingDate" type="date" required>
-
-    <p>Booking Fee</p>
-    <div class="price">₹20 Fixed</div>
-
-    <div class="payment-box">
-      <h3>📱 Pay ₹20 via PhonePe</h3>
+    <label>Full Address</label><textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
+    <label>Booking Date</label><input id="bookingDate" type="date" required>
+    <p>Booking Fee</p><div class="price">₹20 Fixed</div>
+    <div class="payment-box"><h3>📱 Pay ₹20 via PhonePe</h3>
       <img src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png" alt="PS POWER SERVICE PhonePe QR Code">
       <p><strong>Scan the QR code and pay ₹20 booking fee.</strong></p>
       <p class="payment-note">After submitting your booking, use the Booking ID to upload your payment screenshot. Payment stays Pending until Admin verifies it.</p>
     </div>
-
     <button class="btn" type="submit" id="bookingButton">Submit Booking</button>
     <button class="btn dark" type="button" onclick="sendBookingWhatsApp()">WhatsApp Booking</button>
   </form>
-
   <div class="message" id="bookingMessage" aria-live="polite"></div>
-
-  <div class="booking hidden" id="paymentProofPanel">
-    <h3>Upload Payment Screenshot</h3>
-    <p>Your Booking ID:</p>
-    <p class="booking-id" id="latestBookingId"></p>
+  <div class="booking hidden" id="paymentProofPanel"><h3>Upload Payment Screenshot</h3>
+    <p>Your Booking ID:</p><p class="booking-id" id="latestBookingId"></p>
     <p class="payment-note">Copy this ID and enter it in the Google Form with your payment screenshot.</p>
     <a class="payment-upload-btn" href="https://forms.gle/7dnzHW8AopbkGpJL9" target="_blank" rel="noopener noreferrer">Upload Payment Screenshot</a>
   </div>
-
-  <hr>
-  <h3>🔔 Notifications <span id="unreadNotificationCount" class="notification-status">(0 unread)</span></h3>
-  <div class="notification-tools">
-    <button class="btn" type="button" onclick="markAllNotificationsRead()">Mark All as Read</button>
-  </div>
+  <hr><h3>🔔 Notifications <span id="unreadNotificationCount" class="notification-status">(0 unread)</span></h3>
+  <div class="notification-tools"><button class="btn" type="button" onclick="markAllNotificationsRead()">Mark All as Read</button></div>
   <div id="customerNotifications">Your booking updates will appear here.</div>
-
-  <h3>📋 My Booking History</h3>
-  <p class="small-note">Booking status updates automatically when Admin changes it.</p>
+  <h3>📋 My Booking History</h3><p class="small-note">Booking status updates automatically when Admin changes it.</p>
   <button class="btn" onclick="loadBookings()">Refresh Bookings</button>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Booking ID</th><th>Service</th><th>Date</th><th>Address</th><th>Fee</th><th>Payment</th><th>Booking Status</th><th>Receipt</th></tr>
-      </thead>
-      <tbody id="customerBookingRows">
-        <tr><td colspan="8">No bookings yet.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
+  <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Service</th><th>Date</th><th>Address</th><th>Fee</th><th>Payment</th><th>Booking Status</th><th>Receipt</th></tr></thead><tbody id="customerBookingRows"><tr><td colspan="8">No bookings yet.</td></tr></tbody></table></div>
   <button class="btn dark" onclick="logoutUser()">Logout</button>
 </div>
-
 <div class="panel hidden" id="adminDashboard">
-  <h2>⚡ Admin Dashboard</h2>
-  <p>Welcome, Administrator</p>
-
-  <div class="booking">
-    <h3>📱 Add WhatsApp Booking</h3>
+  <h2>⚡ Admin Dashboard</h2><p>Welcome, Administrator</p>
+  <div class="booking"><h3>📱 Add WhatsApp Booking</h3>
     <form id="whatsappBookingForm">
       <input id="waCustomerName" placeholder="Customer Name" required>
       <input id="waCustomerPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric" required>
-      <select id="waService" required>
-        <option value="">Select Service</option>
-        <option>Electrical Work</option>
-        <option>Home Wiring</option>
-        <option>Lenter Piping</option>
-        <option>Repair & Maintenance</option>
-      </select>
+      <select id="waService" required><option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option></select>
       <textarea id="waAddress" placeholder="Customer Full Address" required></textarea>
-      <input id="waBookingDate" type="date" required>
-      <p class="price">Booking Fee: ₹20</p>
+      <input id="waBookingDate" type="date" required><p class="price">Booking Fee: ₹20</p>
       <p class="payment-note">Payment remains Pending until Admin verifies the payment.</p>
       <button class="btn" type="submit" id="waSaveButton">Save WhatsApp Booking</button>
     </form>
   </div>
-
-  <h3>All Customer Bookings</h3>
-  <p class="small-note">Live table: new bookings and status changes appear automatically.</p>
+  <h3>All Customer Bookings</h3><p class="small-note">Live table: new bookings and status changes appear automatically.</p>
   <button class="btn" onclick="loadAdminBookings()">Refresh All Bookings</button>
   <div id="adminMessage" class="message" aria-live="polite"></div>
-
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>Booking ID</th><th>Customer</th><th>Mobile</th><th>Email</th><th>Service</th><th>Address</th><th>Date</th><th>Source</th><th>Fee</th><th>Payment</th><th>Status</th><th>Actions</th></tr>
-      </thead>
-      <tbody id="adminBookingRows">
-        <tr><td colspan="12">Loading bookings...</td></tr>
-      </tbody>
-    </table>
-  </div>
-
+  <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Customer</th><th>Mobile</th><th>Email</th><th>Service</th><th>Address</th><th>Date</th><th>Source</th><th>Fee</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adminBookingRows"><tr><td colspan="12">Loading bookings...</td></tr></tbody></table></div>
   <button class="btn dark" onclick="logoutUser()">Admin Logout</button>
 </div>
 </section>
-
-<footer>
-  <p>PS POWER SERVICE</p>
-  <p>Powering Your Home, Safely.</p>
-</footer>
-
+<footer><p>PS POWER SERVICE</p><p>Powering Your Home, Safely.</p></footer>
 <!-- PHOTO SLIDER JAVASCRIPT -->
 <script>
 const slides=document.querySelectorAll(".slide");
 const dots=document.querySelectorAll(".slider-dot");
 let currentSlide=0;
 let sliderTimer;
-
 function showSlide(index){
-  currentSlide=(index+slides.length)%slides.length;
-  slides.forEach((slide,i)=>slide.classList.toggle("active",i===currentSlide));
-  dots.forEach((dot,i)=>dot.classList.toggle("active",i===currentSlide));
+ currentSlide=(index+slides.length)%slides.length;
+ slides.forEach((slide,i)=>slide.classList.toggle("active",i===currentSlide));
+ dots.forEach((dot,i)=>dot.classList.toggle("active",i===currentSlide));
 }
-function changeSlide(direction){
-  showSlide(currentSlide+direction);
-  restartSlider();
-}
-function goToSlide(index){
-  showSlide(index);
-  restartSlider();
-}
-function startSlider(){
-  sliderTimer=setInterval(()=>showSlide(currentSlide+1),5000);
-}
-function restartSlider(){
-  clearInterval(sliderTimer);
-  startSlider();
-}
+function changeSlide(direction){showSlide(currentSlide+direction);restartSlider()}
+function goToSlide(index){showSlide(index);restartSlider()}
+function startSlider(){sliderTimer=setInterval(()=>showSlide(currentSlide+1),5000)}
+function restartSlider(){clearInterval(sliderTimer);startSlider()}
 startSlider();
 </script>
 
-<!-- FIREBASE APPLICATION -->
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,sendPasswordResetEmail,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 import {getFirestore,doc,setDoc,getDoc,collection,addDoc,query,where,getDocs,updateDoc,serverTimestamp,onSnapshot} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-const firebaseConfig={
- apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",
- authDomain:"ps-power-service-68007.firebaseapp.com",
- projectId:"ps-power-service-68007",
- storageBucket:"ps-power-service-68007.firebasestorage.app",
- messagingSenderId:"647095348680",
- appId:"1:647095348680:web:51b3833ce08d767e9d64fd"
-};
-
+const firebaseConfig={apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",authDomain:"ps-power-service-68007.firebaseapp.com",projectId:"ps-power-service-68007",storageBucket:"ps-power-service-68007.firebasestorage.app",messagingSenderId:"647095348680",appId:"1:647095348680:web:51b3833ce08d767e9d64fd"};
 const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 const PAYMENT_FORM_URL="https://forms.gle/7dnzHW8AopbkGpJL9";
 const PAYMENT_QR_URL="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png";
-
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
 const $=id=>document.getElementById(id);
 let stopCustomerListener=null,stopAdminListener=null,lastCustomerBookings=[];
 let registrationInProgress=false;
 
-function hideAllPanels(){
- ["registerPanel","loginPanel","adminLoginPanel","dashboard","adminDashboard"].forEach(id=>$(id).classList.add("hidden"));
-}
-function today(){
- const d=new Date(),offset=d.getTimezoneOffset();
- return new Date(d.getTime()-offset*60000).toISOString().slice(0,10);
-}
-$("bookingDate").min=today();
-$("waBookingDate").min=today();
-
-function stopListeners(){
- if(stopCustomerListener){stopCustomerListener();stopCustomerListener=null;}
- if(stopAdminListener){stopAdminListener();stopAdminListener=null;}
-}
-function showError(el,error){$(el).textContent=error?.message||String(error);}
-
-window.showRegister=()=>{
- if(auth.currentUser)return;
- hideAllPanels();
- $("registerPanel").classList.remove("hidden");
-};
-window.showLogin=()=>{
- if(auth.currentUser)return;
- hideAllPanels();
- $("loginPanel").classList.remove("hidden");
-};
-window.showAdminLogin=()=>{
- if(auth.currentUser)return;
- hideAllPanels();
- $("adminLoginPanel").classList.remove("hidden");
-};
+function hideAllPanels(){["registerPanel","loginPanel","adminLoginPanel","dashboard","adminDashboard"].forEach(id=>$(id).classList.add("hidden"))}
+function today(){const d=new Date(),offset=d.getTimezoneOffset();return new Date(d.getTime()-offset*60000).toISOString().slice(0,10)}
+$("bookingDate").min=today();$("waBookingDate").min=today();
+function stopListeners(){if(stopCustomerListener){stopCustomerListener();stopCustomerListener=null}if(stopAdminListener){stopAdminListener();stopAdminListener=null}}
+function showError(el,error){$(el).textContent=error?.message||String(error)}
+window.showRegister=()=>{if(auth.currentUser)return;hideAllPanels();$("registerPanel").classList.remove("hidden")};
+window.showLogin=()=>{if(auth.currentUser)return;hideAllPanels();$("loginPanel").classList.remove("hidden")};
+window.showAdminLogin=()=>{if(auth.currentUser)return;hideAllPanels();$("adminLoginPanel").classList.remove("hidden")};
 
 window.registerCustomer=async()=>{
- const name=$("regName").value.trim();
- const phone=$("regPhone").value.trim();
- const email=$("regEmail").value.trim();
- const password=$("regPassword").value;
+ const name=$("regName").value.trim(),phone=$("regPhone").value.trim(),email=$("regEmail").value.trim(),password=$("regPassword").value;
  $("regMessage").textContent="";
-
- if(!name||!phone||!email||!password){
-  $("regMessage").textContent="Please fill all fields.";
-  return;
- }
- if(!/^[0-9]{10}$/.test(phone)){
-  $("regMessage").textContent="Enter a valid 10-digit mobile number.";
-  return;
- }
- if(password.length<6){
-  $("regMessage").textContent="Password must be at least 6 characters.";
-  return;
- }
-
+ if(!name||!phone||!email||!password){$("regMessage").textContent="Please fill all fields.";return}
+ if(!/^[0-9]{10}$/.test(phone)){$("regMessage").textContent="Enter a valid 10-digit mobile number.";return}
+ if(password.length<6){$("regMessage").textContent="Password must be at least 6 characters.";return}
  registrationInProgress=true;
  try{
   const result=await createUserWithEmailAndPassword(auth,email,password);
   await updateProfile(result.user,{displayName:name});
-  await setDoc(doc(db,"users",result.user.uid),{
-   name,phone,email,role:"customer",createdAt:serverTimestamp()
-  });
+  await setDoc(doc(db,"users",result.user.uid),{name,phone,email,role:"customer",createdAt:serverTimestamp()});
   registrationInProgress=false;
   location.replace("customer.html");
- }catch(error){
+ }
+ catch(error){
   registrationInProgress=false;
   showError("regMessage",error);
  }
 };
-
-window.loginCustomer=async()=>{
- $("loginMessage").textContent="";
- try{
-  await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),$("loginPassword").value);
- }catch(error){showError("loginMessage",error);}
-};
-
+window.loginCustomer=async()=>{ $("loginMessage").textContent="";try{await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),$("loginPassword").value)}catch(error){showError("loginMessage",error)}};
 window.loginAdmin=async()=>{
- $("adminLoginMessage").textContent="";
- const email=$("adminEmail").value.trim();
- const password=$("adminPassword").value;
- if(!email||!password){
-  $("adminLoginMessage").textContent="Enter Admin email and password.";
-  return;
- }
- try{
-  const result=await signInWithEmailAndPassword(auth,email,password);
-  if(result.user.uid!==ADMIN_UID){
-   await signOut(auth);
-   $("adminLoginMessage").textContent="Not authorized as Admin.";
-  }
- }catch(error){showError("adminLoginMessage",error);}
+ $("adminLoginMessage").textContent="";const email=$("adminEmail").value.trim(),password=$("adminPassword").value;
+ if(!email||!password){$("adminLoginMessage").textContent="Enter Admin email and password.";return}
+ try{const result=await signInWithEmailAndPassword(auth,email,password);if(result.user.uid!==ADMIN_UID){await signOut(auth);$("adminLoginMessage").textContent="Not authorized as Admin."}}
+ catch(error){showError("adminLoginMessage",error)}
 };
-
-window.resetPassword=async()=>{
- const email=$("loginEmail").value.trim();
- if(!email){
-  $("loginMessage").textContent="Enter your email address first.";
-  return;
- }
- try{
-  await sendPasswordResetEmail(auth,email);
-  $("loginMessage").textContent="Password reset email sent.";
- }catch(error){showError("loginMessage",error);}
-};
-
-window.logoutUser=async()=>{
- try{
-  stopListeners();
-  await signOut(auth);
- }catch(error){alert(error.message);}
-};
+window.resetPassword=async()=>{const email=$("loginEmail").value.trim();if(!email){$("loginMessage").textContent="Enter your email address first.";return}try{await sendPasswordResetEmail(auth,email);$("loginMessage").textContent="Password reset email sent."}catch(error){showError("loginMessage",error)}};
+window.logoutUser=async()=>{try{stopListeners();await signOut(auth)}catch(error){alert(error.message)}};
 
 window.sendBookingWhatsApp=async()=>{
- const user=auth.currentUser;
- if(!user||user.uid===ADMIN_UID){
-  alert("Please login as a customer first.");
-  return;
- }
- const service=$("serviceName").value.trim();
- const address=$("bookingAddress").value.trim();
- const date=$("bookingDate").value;
- if(!service||!address||!date){
-  alert("Please fill Service, Address and Booking Date.");
-  return;
- }
- if(date<today()){
-  alert("Please choose today or a future date.");
-  return;
- }
- try{
-  const profile=await getDoc(doc(db,"users",user.uid));
-  const data=profile.exists()?profile.data():{};
-  const name=data.name||user.displayName||"Customer";
-  const mobile=data.phone||"";
-  if(!mobile){
-   alert("Mobile number not found. Please check your customer profile.");
-   return;
-  }
-  const message=`Hello PS POWER SERVICE, I want to book a service.
-
-Name: ${name}
-Mobile: ${mobile}
-Service: ${service}
-Address: ${address}
-Booking Date: ${date}
-
-Booking Fee: Rs.20
-Payment QR: ${PAYMENT_QR_URL}
-
-Payment will be verified by Admin.`;
-  window.open("https://wa.me/918144722094?text="+encodeURIComponent(message),"_blank","noopener,noreferrer");
- }catch(error){
-  alert("Could not load customer details: "+error.message);
- }
+ const user=auth.currentUser;if(!user||user.uid===ADMIN_UID){alert("Please login as a customer first.");return}
+ const service=$("serviceName").value.trim(),address=$("bookingAddress").value.trim(),date=$("bookingDate").value;
+ if(!service||!address||!date){alert("Please fill Service, Address and Booking Date.");return}
+ if(date<today()){alert("Please choose today or a future date.");return}
+ try{const profile=await getDoc(doc(db,"users",user.uid)),data=profile.exists()?profile.data():{},name=data.name||user.displayName||"Customer",mobile=data.phone||"";
+ if(!mobile){alert("Mobile number not found. Please check your customer profile.");return}
+ const message=`Hello PS POWER SERVICE, I want to book a service.\n\nName: ${name}\nMobile: ${mobile}\nService: ${service}\nAddress: ${address}\nBooking Date: ${date}\n\nBooking Fee: Rs.20\nPayment QR: ${PAYMENT_QR_URL}\n\nPayment will be verified by Admin.`;
+ window.open("https://wa.me/918144722094?text="+encodeURIComponent(message),"_blank","noopener,noreferrer");
+ }catch(error){alert("Could not load customer details: "+error.message)}
 };
 
 $("whatsappBookingForm").addEventListener("submit",async event=>{
- event.preventDefault();
- const user=auth.currentUser;
- if(!user||user.uid!==ADMIN_UID){
-  $("adminMessage").textContent="Admin access required.";
-  return;
- }
- const customerName=$("waCustomerName").value.trim();
- const customerPhone=$("waCustomerPhone").value.trim();
- const service=$("waService").value;
- const address=$("waAddress").value.trim();
- const bookingDate=$("waBookingDate").value;
- const button=$("waSaveButton");
-
- if(!/^[0-9]{10}$/.test(customerPhone)){
-  $("adminMessage").textContent="Enter a valid 10-digit mobile number.";
-  return;
- }
- if(!customerName||!service||!address||!bookingDate){
-  $("adminMessage").textContent="Please fill all fields.";
-  return;
- }
- if(bookingDate<today()){
-  $("adminMessage").textContent="Choose today or a future date.";
-  return;
- }
-
- button.disabled=true;
- $("adminMessage").textContent="Saving WhatsApp booking...";
- try{
-  const ref=await addDoc(collection(db,"bookings"),{
-   userId:user.uid,customerName,customerPhone,customerEmail:"",
-   service,address,bookingDate,bookingFee:20,
-   bookingSource:"whatsapp",paymentStatus:"pending",
-   bookingStatus:"pending",createdAt:serverTimestamp()
-  });
-  $("whatsappBookingForm").reset();
-  $("waBookingDate").min=today();
-  $("adminMessage").textContent="WhatsApp booking saved. ID: "+ref.id;
- }catch(error){
-  showError("adminMessage",error);
- }finally{
-  button.disabled=false;
- }
+ event.preventDefault();const user=auth.currentUser;if(!user||user.uid!==ADMIN_UID){$("adminMessage").textContent="Admin access required.";return}
+ const customerName=$("waCustomerName").value.trim(),customerPhone=$("waCustomerPhone").value.trim(),service=$("waService").value,address=$("waAddress").value.trim(),bookingDate=$("waBookingDate").value,button=$("waSaveButton");
+ if(!/^[0-9]{10}$/.test(customerPhone)){$("adminMessage").textContent="Enter a valid 10-digit mobile number.";return}
+ if(!customerName||!service||!address||!bookingDate){$("adminMessage").textContent="Please fill all fields.";return}
+ if(bookingDate<today()){$("adminMessage").textContent="Choose today or a future date.";return}
+ button.disabled=true;$("adminMessage").textContent="Saving WhatsApp booking...";
+ try{const ref=await addDoc(collection(db,"bookings"),{userId:user.uid,customerName,customerPhone,customerEmail:"",service,address,bookingDate,bookingFee:20,bookingSource:"whatsapp",paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});$("whatsappBookingForm").reset();$("waBookingDate").min=today();$("adminMessage").textContent="WhatsApp booking saved. ID: "+ref.id}
+ catch(error){showError("adminMessage",error)}finally{button.disabled=false}
 });
 
 $("bookingForm").addEventListener("submit",async event=>{
- event.preventDefault();
- const user=auth.currentUser;
- if(!user||user.uid===ADMIN_UID)return;
-
- const service=$("serviceName").value;
- const address=$("bookingAddress").value.trim();
- const date=$("bookingDate").value;
- const button=$("bookingButton");
-
- if(!service||!address||!date){
-  $("bookingMessage").textContent="Please complete all booking details.";
-  return;
- }
- if(date<today()){
-  $("bookingMessage").textContent="Choose today or a future date.";
-  return;
- }
-
- button.disabled=true;
- $("bookingMessage").textContent="Submitting booking...";
- $("paymentProofPanel").classList.add("hidden");
-
- try{
-  const profile=await getDoc(doc(db,"users",user.uid));
-  const data=profile.exists()?profile.data():{};
-  const ref=await addDoc(collection(db,"bookings"),{
-   userId:user.uid,
-   customerName:data.name||user.displayName||"Customer",
-   customerPhone:data.phone||"",
-   customerEmail:user.email||"",
-   service,address,bookingDate:date,bookingFee:20,
-   paymentStatus:"pending",bookingStatus:"pending",
-   createdAt:serverTimestamp()
-  });
-  $("bookingMessage").textContent="Booking submitted successfully.";
-  $("latestBookingId").textContent=ref.id;
-  $("paymentProofPanel").classList.remove("hidden");
- }catch(error){
-  showError("bookingMessage",error);
- }finally{
-  button.disabled=false;
- }
+ event.preventDefault();const user=auth.currentUser;if(!user||user.uid===ADMIN_UID)return;
+ const service=$("serviceName").value,address=$("bookingAddress").value.trim(),date=$("bookingDate").value,button=$("bookingButton");
+ if(!service||!address||!date){$("bookingMessage").textContent="Please complete all booking details.";return}
+ if(date<today()){$("bookingMessage").textContent="Choose today or a future date.";return}
+ button.disabled=true;$("bookingMessage").textContent="Submitting booking...";$("paymentProofPanel").classList.add("hidden");
+ try{const profile=await getDoc(doc(db,"users",user.uid)),data=profile.exists()?profile.data():{};
+ const ref=await addDoc(collection(db,"bookings"),{userId:user.uid,customerName:data.name||user.displayName||"Customer",customerPhone:data.phone||"",customerEmail:user.email||"",service,address,bookingDate:date,bookingFee:20,paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});
+ $("bookingMessage").textContent="Booking submitted successfully."; $("latestBookingId").textContent=ref.id;$("paymentProofPanel").classList.remove("hidden");
+ }catch(error){showError("bookingMessage",error)}finally{button.disabled=false}
 });
 
-function esc(v){
- return String(v??"").replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
-
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
 window.printReceipt=(id,b)=>{
- if(!b||b.paymentStatus!=="paid"){
-  alert("Receipt is available after payment is verified by Admin.");
-  return;
- }
- const fields={
-  customer:esc(b.customerName||"Customer"),
-  email:esc(b.customerEmail||""),
-  service:esc(b.service||"Service"),
-  address:esc(b.address||""),
-  date:esc(b.bookingDate||""),
-  id:esc(id),
-  receiptDate:esc(new Date().toLocaleDateString("en-IN"))
- };
- const w=window.open("","_blank","width=760,height=850");
- if(!w){
-  alert("Please allow pop-ups for this website.");
-  return;
- }
- w.document.open();
- w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>PS POWER SERVICE Receipt</title><style>
- body{font-family:Arial;padding:25px;max-width:760px;margin:auto}
- .receipt{border:2px solid #171717;padding:22px;border-radius:10px}
- header{text-align:center;border-bottom:3px solid #ffd500;padding-bottom:12px}
- table{width:100%;border-collapse:collapse;margin-top:20px}
- td{padding:11px;border-bottom:1px solid #ddd}
- td:first-child{font-weight:bold;width:38%}
- .total{text-align:right;font-size:21px;font-weight:bold;margin-top:20px}
- .actions{text-align:center;margin:18px}
- button{padding:12px;background:#171717;color:#ffd500;border:0}
- @media print{.actions{display:none}}
- </style></head><body>
- <div class="actions"><button onclick="window.print()">Save / Print PDF</button></div>
- <div class="receipt">
- <header><h1>⚡ PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p><h2>PAYMENT RECEIPT</h2><b>PAYMENT PAID</b></header>
- <table>
- <tr><td>Receipt Date</td><td>${fields.receiptDate}</td></tr>
- <tr><td>Booking ID</td><td>${fields.id}</td></tr>
- <tr><td>Customer</td><td>${fields.customer}</td></tr>
- <tr><td>Email</td><td>${fields.email||"—"}</td></tr>
- <tr><td>Service</td><td>${fields.service}</td></tr>
- <tr><td>Address</td><td>${fields.address}</td></tr>
- <tr><td>Booking Date</td><td>${fields.date}</td></tr>
- <tr><td>Payment</td><td>PAID</td></tr>
- </table>
- <div class="total">Amount Received: ₹20</div>
- <p>This receipt confirms that Admin marked the booking fee as paid.</p>
- </div></body></html>`);
- w.document.close();
- w.focus();
+ if(!b||b.paymentStatus!=="paid"){alert("Receipt is available after payment is verified by Admin.");return}
+ const fields={customer:esc(b.customerName||"Customer"),email:esc(b.customerEmail||""),service:esc(b.service||"Service"),address:esc(b.address||""),date:esc(b.bookingDate||""),id:esc(id),receiptDate:esc(new Date().toLocaleDateString("en-IN"))};
+ const w=window.open("","_blank","width=760,height=850");if(!w){alert("Please allow pop-ups for this website.");return}
+ w.document.open();w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>PS POWER SERVICE Receipt</title><style>body{font-family:Arial;padding:25px;max-width:760px;margin:auto}.receipt{border:2px solid #171717;padding:22px;border-radius:10px}header{text-align:center;border-bottom:3px solid #ffd500;padding-bottom:12px}table{width:100%;border-collapse:collapse;margin-top:20px}td{padding:11px;border-bottom:1px solid #ddd}td:first-child{font-weight:bold;width:38%}.total{text-align:right;font-size:21px;font-weight:bold;margin-top:20px}.actions{text-align:center;margin:18px}button{padding:12px;background:#171717;color:#ffd500;border:0}@media print{.actions{display:none}}</style></head><body><div class="actions"><button onclick="window.print()">Save / Print PDF</button></div><div class="receipt"><header><h1>⚡ PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p><h2>PAYMENT RECEIPT</h2><b>PAYMENT PAID</b></header><table><tr><td>Receipt Date</td><td>${fields.receiptDate}</td></tr><tr><td>Booking ID</td><td>${fields.id}</td></tr><tr><td>Customer</td><td>${fields.customer}</td></tr><tr><td>Email</td><td>${fields.email||"—"}</td></tr><tr><td>Service</td><td>${fields.service}</td></tr><tr><td>Address</td><td>${fields.address}</td></tr><tr><td>Booking Date</td><td>${fields.date}</td></tr><tr><td>Payment</td><td>PAID</td></tr></table><div class="total">Amount Received: ₹20</div><p>This receipt confirms that Admin marked the booking fee as paid.</p></div></body></html>`);w.document.close();w.focus();
 };
 
 /* Customer notification read-state is stored only in this browser. */
-function readKey(uid){return "psps_read_notifications_"+uid;}
-function getReadIds(uid){
- try{return new Set(JSON.parse(localStorage.getItem(readKey(uid))||"[]"));}
- catch{return new Set();}
-}
-function saveReadIds(uid,ids){
- try{localStorage.setItem(readKey(uid),JSON.stringify([...ids]));}
- catch(e){console.warn(e);}
-}
-window.markNotificationRead=id=>{
- const u=auth.currentUser;
- if(!u)return;
- const ids=getReadIds(u.uid);
- ids.add(id);
- saveReadIds(u.uid,ids);
- renderCustomerBookings(lastCustomerBookings,u.uid);
-};
-window.markAllNotificationsRead=()=>{
- const u=auth.currentUser;
- if(!u)return;
- const ids=getReadIds(u.uid);
- lastCustomerBookings.forEach(x=>ids.add(x.id));
- saveReadIds(u.uid,ids);
- renderCustomerBookings(lastCustomerBookings,u.uid);
-};
+function readKey(uid){return "psps_read_notifications_"+uid}
+function getReadIds(uid){try{return new Set(JSON.parse(localStorage.getItem(readKey(uid))||"[]"))}catch{return new Set()}}
+function saveReadIds(uid,ids){try{localStorage.setItem(readKey(uid),JSON.stringify([...ids]))}catch(e){console.warn(e)}}
+window.markNotificationRead=id=>{const u=auth.currentUser;if(!u)return;const ids=getReadIds(u.uid);ids.add(id);saveReadIds(u.uid,ids);renderCustomerBookings(lastCustomerBookings,u.uid)};
+window.markAllNotificationsRead=()=>{const u=auth.currentUser;if(!u)return;const ids=getReadIds(u.uid);lastCustomerBookings.forEach(x=>ids.add(x.id));saveReadIds(u.uid,ids);renderCustomerBookings(lastCustomerBookings,u.uid)};
 
-function addCell(row,value){
- const td=document.createElement("td");
- td.textContent=String(value??"—");
- row.append(td);
- return td;
-}
-
+function addCell(row,value){const td=document.createElement("td");td.textContent=String(value??"—");row.append(td);return td}
 function renderCustomerBookings(items,uid){
- lastCustomerBookings=items;
- const tbody=$("customerBookingRows");
- const notices=$("customerNotifications");
- tbody.replaceChildren();
- notices.replaceChildren();
-
- if(!items.length){
-  const tr=document.createElement("tr");
-  const td=addCell(tr,"No bookings yet.");
-  td.colSpan=8;
-  tbody.append(tr);
-  notices.textContent="No booking notifications yet.";
-  $("unreadNotificationCount").textContent="(0 unread)";
-  return;
- }
-
- const readIds=getReadIds(uid);
- let unread=0;
-
+ lastCustomerBookings=items;const tbody=$("customerBookingRows"),notices=$("customerNotifications");tbody.replaceChildren();notices.replaceChildren();
+ if(!items.length){const tr=document.createElement("tr");const td=addCell(tr,"No bookings yet.");td.colSpan=8;tbody.append(tr);notices.textContent="No booking notifications yet.";$("unreadNotificationCount").textContent="(0 unread)";return}
+ const readIds=getReadIds(uid);let unread=0;
  items.forEach(({id,b})=>{
-  const tr=document.createElement("tr");
-  addCell(tr,id);
-  addCell(tr,b.service||"Service");
-  addCell(tr,b.bookingDate||"");
-  addCell(tr,b.address||"");
-  addCell(tr,"₹"+(b.bookingFee??20));
-  addCell(tr,b.paymentStatus||"pending");
-  addCell(tr,b.bookingStatus||"pending");
-
-  const receiptCell=document.createElement("td");
-  if(b.paymentStatus==="paid"){
-   const btn=document.createElement("button");
-   btn.className="btn";
-   btn.textContent="Receipt PDF";
-   btn.onclick=()=>window.printReceipt(id,b);
-   receiptCell.append(btn);
-  }else{
-   receiptCell.textContent="After payment verification";
-  }
-  tr.append(receiptCell);
-  tbody.append(tr);
-
-  const state=(b.bookingStatus||"pending").toLowerCase();
-  const messages={
-   pending:["Booking received","Your booking is waiting for Admin confirmation."],
-   confirmed:["Booking confirmed","Your service booking has been confirmed."],
-   completed:["Work completed","Your service booking has been marked completed."],
-   cancelled:["Booking cancelled","Please contact PS POWER SERVICE if you need help."]
-  };
-  const info=messages[state];
-
-  if(info){
-   const isRead=readIds.has(id);
-   if(!isRead)unread++;
-
-   const box=document.createElement("div");
-   box.className="notification"+(isRead?" read":"");
-   const h=document.createElement("strong");
-   h.textContent=info[0];
-   const p=document.createElement("p");
-   p.textContent=info[1];
-   const small=document.createElement("small");
-   small.textContent="Booking ID: "+id+" • "+(isRead?"Read":"Unread");
-   box.append(h,p,small);
-
-   if(!isRead){
-    const btn=document.createElement("button");
-    btn.className="btn";
-    btn.textContent="Mark as Read";
-    btn.onclick=()=>window.markNotificationRead(id);
-    box.append(btn);
-   }
-   notices.append(box);
-  }
+  const tr=document.createElement("tr");addCell(tr,id);addCell(tr,b.service||"Service");addCell(tr,b.bookingDate||"");addCell(tr,b.address||"");addCell(tr,"₹"+(b.bookingFee??20));addCell(tr,b.paymentStatus||"pending");addCell(tr,b.bookingStatus||"pending");
+  const receiptCell=document.createElement("td");if(b.paymentStatus==="paid"){const btn=document.createElement("button");btn.className="btn";btn.textContent="Receipt PDF";btn.onclick=()=>window.printReceipt(id,b);receiptCell.append(btn)}else receiptCell.textContent="After payment verification";tr.append(receiptCell);tbody.append(tr);
+  const state=(b.bookingStatus||"pending").toLowerCase(),messages={pending:["Booking received","Your booking is waiting for Admin confirmation."],confirmed:["Booking confirmed","Your service booking has been confirmed."],completed:["Work completed","Your service booking has been marked completed."],cancelled:["Booking cancelled","Please contact PS POWER SERVICE if you need help."]};
+  const info=messages[state];if(info){const isRead=readIds.has(id);if(!isRead)unread++;const box=document.createElement("div");box.className="notification"+(isRead?" read":"");const h=document.createElement("strong");h.textContent=info[0];const p=document.createElement("p");p.textContent=info[1];const small=document.createElement("small");small.textContent="Booking ID: "+id+" • "+(isRead?"Read":"Unread");box.append(h,p,small);if(!isRead){const btn=document.createElement("button");btn.className="btn";btn.textContent="Mark as Read";btn.onclick=()=>window.markNotificationRead(id);box.append(btn)}notices.append(box)}
  });
-
  $("unreadNotificationCount").textContent="("+unread+" unread)";
  if(!notices.childElementCount)notices.textContent="No booking notifications yet.";
 }
-
 function startCustomerListener(uid){
  if(stopCustomerListener)stopCustomerListener();
  $("customerBookingRows").innerHTML='<tr><td colspan="8">Loading bookings...</td></tr>';
-
  const q=query(collection(db,"bookings"),where("userId","==",uid));
  stopCustomerListener=onSnapshot(q,snap=>{
-  const items=snap.docs.map(d=>({id:d.id,b:d.data()}))
-   .sort((a,b)=>(b.b.createdAt?.seconds||0)-(a.b.createdAt?.seconds||0));
+  const items=snap.docs.map(d=>({id:d.id,b:d.data()})).sort((a,b)=>(b.b.createdAt?.seconds||0)-(a.b.createdAt?.seconds||0));
   renderCustomerBookings(items,uid);
- },error=>{
-  $("bookingMessage").textContent="Could not load live bookings: "+error.message;
- });
+ },error=>{$("bookingMessage").textContent="Could not load live bookings: "+error.message});
 }
-window.loadBookings=()=>{
- const u=auth.currentUser;
- if(u&&u.uid!==ADMIN_UID)startCustomerListener(u.uid);
-};
+window.loadBookings=()=>{const u=auth.currentUser;if(u&&u.uid!==ADMIN_UID)startCustomerListener(u.uid)};
 
 function renderAdminBookings(snapshot){
- const tbody=$("adminBookingRows");
- tbody.replaceChildren();
-
- if(snapshot.empty){
-  const tr=document.createElement("tr");
-  const td=addCell(tr,"No bookings found.");
-  td.colSpan=12;
-  tbody.append(tr);
-  $("adminMessage").textContent="Total bookings: 0";
-  return;
- }
-
- const docs=snapshot.docs.slice().sort((a,b)=>
-  (b.data().createdAt?.seconds||0)-(a.data().createdAt?.seconds||0)
- );
+ const tbody=$("adminBookingRows");tbody.replaceChildren();
+ if(snapshot.empty){const tr=document.createElement("tr"),td=addCell(tr,"No bookings found.");td.colSpan=12;tbody.append(tr);$("adminMessage").textContent="Total bookings: 0";return}
+ const docs=snapshot.docs.slice().sort((a,b)=>(b.data().createdAt?.seconds||0)-(a.data().createdAt?.seconds||0));
  $("adminMessage").textContent="Total bookings: "+docs.length+" • Live updates active";
-
  docs.forEach(item=>{
-  const b=item.data();
-  const tr=document.createElement("tr");
-
-  addCell(tr,item.id);
-  addCell(tr,b.customerName||"N/A");
-  addCell(tr,b.customerPhone||"N/A");
-  addCell(tr,b.customerEmail||"N/A");
-  addCell(tr,b.service||"N/A");
-  addCell(tr,b.address||"N/A");
-  addCell(tr,b.bookingDate||"N/A");
-  addCell(tr,b.bookingSource==="whatsapp"?"WhatsApp":"Website");
-  addCell(tr,"₹"+(b.bookingFee??20));
-  addCell(tr,b.paymentStatus||"pending");
-  addCell(tr,b.bookingStatus||"pending");
-
+  const b=item.data(),tr=document.createElement("tr");addCell(tr,item.id);addCell(tr,b.customerName||"N/A");addCell(tr,b.customerPhone||"N/A");addCell(tr,b.customerEmail||"N/A");addCell(tr,b.service||"N/A");addCell(tr,b.address||"N/A");addCell(tr,b.bookingDate||"N/A");addCell(tr,b.bookingSource==="whatsapp"?"WhatsApp":"Website");addCell(tr,"₹"+(b.bookingFee??20));addCell(tr,b.paymentStatus||"pending");addCell(tr,b.bookingStatus||"pending");
   const actions=document.createElement("td");
-
-  [["Confirm",{bookingStatus:"confirmed"}],
-   ["Cancel",{bookingStatus:"cancelled"}],
-   ["Complete",{bookingStatus:"completed"}]
-  ].forEach(([label,change])=>{
-   const btn=document.createElement("button");
-   btn.className="btn";
-   btn.textContent=label;
-   btn.onclick=()=>updateBooking(item.id,change);
-   actions.append(btn);
-  });
-
-  const paid=document.createElement("button");
-  paid.className="btn dark";
-  paid.textContent="Mark Paid";
-  paid.disabled=b.paymentStatus==="paid";
-  paid.onclick=()=>{
-   if(confirm("Have you checked the actual PhonePe payment and confirmed ₹20 was received?")){
-    updateBooking(item.id,{paymentStatus:"paid"});
-   }
-  };
-  actions.append(paid);
-
-  if(b.paymentStatus==="paid"){
-   const receipt=document.createElement("button");
-   receipt.className="btn";
-   receipt.textContent="Receipt";
-   receipt.onclick=()=>window.printReceipt(item.id,b);
-   actions.append(receipt);
-  }
-
-  tr.append(actions);
-  tbody.append(tr);
+  [["Confirm",{bookingStatus:"confirmed"}],["Cancel",{bookingStatus:"cancelled"}],["Complete",{bookingStatus:"completed"}]].forEach(([label,change])=>{const btn=document.createElement("button");btn.className="btn";btn.textContent=label;btn.onclick=()=>updateBooking(item.id,change);actions.append(btn)});
+  const paid=document.createElement("button");paid.className="btn dark";paid.textContent="Mark Paid";paid.disabled=b.paymentStatus==="paid";paid.onclick=()=>{if(confirm("Have you checked the actual PhonePe payment and confirmed ₹20 was received?"))updateBooking(item.id,{paymentStatus:"paid"})};actions.append(paid);
+  if(b.paymentStatus==="paid"){const receipt=document.createElement("button");receipt.className="btn";receipt.textContent="Receipt";receipt.onclick=()=>window.printReceipt(item.id,b);actions.append(receipt)}
+  tr.append(actions);tbody.append(tr);
  });
 }
-
 function startAdminListener(){
  if(stopAdminListener)stopAdminListener();
  $("adminBookingRows").innerHTML='<tr><td colspan="12">Loading bookings...</td></tr>';
- stopAdminListener=onSnapshot(collection(db,"bookings"),renderAdminBookings,error=>{
-  $("adminMessage").textContent="Error loading bookings: "+error.message;
- });
+ stopAdminListener=onSnapshot(collection(db,"bookings"),renderAdminBookings,error=>{$("adminMessage").textContent="Error loading bookings: "+error.message});
 }
-window.loadAdminBookings=()=>{
- if(auth.currentUser?.uid===ADMIN_UID)startAdminListener();
-};
-
+window.loadAdminBookings=()=>{if(auth.currentUser?.uid===ADMIN_UID)startAdminListener()};
 async function updateBooking(id,changes){
  if(auth.currentUser?.uid!==ADMIN_UID)return;
- try{
-  await updateDoc(doc(db,"bookings",id),changes);
-  $("adminMessage").textContent="Booking update saved. Live table is refreshing.";
- }catch(error){
-  $("adminMessage").textContent="Update failed: "+error.message;
- }
+ try{await updateDoc(doc(db,"bookings",id),changes);$("adminMessage").textContent="Booking update saved. Live table is refreshing."}
+ catch(error){$("adminMessage").textContent="Update failed: "+error.message}
 }
 
 onAuthStateChanged(auth,user=>{
  if(registrationInProgress)return;
  stopListeners();
-
  if(!user){
   hideAllPanels();
   $("registerPanel").classList.remove("hidden");
   return;
  }
-
  if(user.uid===ADMIN_UID){
   location.replace("admin.html");
   return;
  }
-
  location.replace("customer.html");
 });
 </script>
-
 </body>
 </html>
