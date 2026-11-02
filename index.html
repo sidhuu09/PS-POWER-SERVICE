@@ -608,14 +608,50 @@ function startDesignListener() {
   );
 }
 
+
+function getCorrectCategory(design) {
+  const name = String(design.name || "").toUpperCase();
+
+  if (name.includes("TV UNIT")) return "TV Unit Design";
+  if (name.includes("CEILING")) return "Ceiling Design";
+
+  return design.category || "";
+}
+
+function getCorrectImage(design) {
+  const name = String(design.name || "").toUpperCase();
+
+  const images = {
+    "TV UNIT 2":
+      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/db08fe734af6516494075f9a6effa79dc948fdf1/TV%20UNIT%202.jpg",
+
+    "TV UNIT 3":
+      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/db08fe734af6516494075f9a6effa79dc948fdf1/TV%20UNIT%203.jpg",
+
+    "TV UNIT 5":
+      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/TV%20UNIT%205.jpg",
+
+    "CEILING 2":
+      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/CEILING%202.jpg",
+
+    "CEILING 3":
+      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/CEILING%203.jpg",
+
+    "CEILING 4":
+      "https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/CEILING%204.jpg"
+  };
+
+  return images[name] || design.imageUrl || "";
+}
+
 function renderDesigns(designs) {
   const container = $("designGalleryList");
   container.replaceChildren();
 
   const filtered = selectedDesignCategory === "All"
     ? designs
-    : designs.filter(
-        d => d.category === selectedDesignCategory
+    : designs.filter(d =>
+        getCorrectCategory(d) === selectedDesignCategory
       );
 
   if (!filtered.length) {
@@ -628,11 +664,16 @@ function renderDesigns(designs) {
     const card = document.createElement("div");
     card.className = "design-card";
 
-    if (validPhotoURL(design.imageUrl)) {
+    const imageUrl = getCorrectImage(design);
+
+    if (validPhotoURL(imageUrl)) {
       const img = document.createElement("img");
-      img.src = design.imageUrl;
+      img.src = imageUrl;
       img.alt = design.name || "House Design";
       img.loading = "lazy";
+      img.onerror = () => {
+        img.alt = "Image not available";
+      };
       card.appendChild(img);
     }
 
@@ -640,18 +681,22 @@ function renderDesigns(designs) {
     title.textContent = design.name || "Design";
 
     const category = document.createElement("p");
-    category.textContent = design.category || "";
+    category.textContent = getCorrectCategory(design);
 
     const button = document.createElement("button");
     button.className = "btn";
     button.textContent = "Select Design";
-    button.onclick = () => selectDesign(design);
+    button.onclick = () => selectDesign({
+      ...design,
+      category: getCorrectCategory(design),
+      imageUrl
+    });
 
     card.append(title, category, button);
     container.appendChild(card);
   });
 }
-
+  
 window.filterDesigns = function(category) {
   selectedDesignCategory = category;
   startDesignListener();
@@ -671,7 +716,11 @@ window.uploadNewDesign = async function() {
   }
 
   const name = cleanText($("designName").value);
-  const category = $("designCategory").value;
+  const category = name.toUpperCase().includes("TV UNIT")
+  ? "TV Unit Design"
+  : name.toUpperCase().includes("CEILING")
+  ? "Ceiling Design"
+  : $("designCategory").value;
   const imageUrl = cleanText($("designPhoto").value);
 
   if (!name || !validPhotoURL(imageUrl)) {
