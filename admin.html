@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="or">
 <head>
@@ -28,6 +27,10 @@ button:disabled{opacity:.6;cursor:not-allowed}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
 .stat{background:#fff8dc;padding:15px;border-radius:9px}
 .note{background:#fff8dc;padding:12px;border-radius:8px;font-size:13px}
+table{width:100%;min-width:1000px;border-collapse:collapse}
+th,td{padding:10px;border:1px solid #ddd;text-align:left}
+th{background:#171717;color:#ffca28}
+td select{min-width:110px}
 </style>
 </head>
 
@@ -56,10 +59,11 @@ button:disabled{opacity:.6;cursor:not-allowed}
 <div class="note">
 ₹20 payment proof ଯାଞ୍ଚ କରିବା ପରେ ମାତ୍ର Paid କର।
 </div>
-<div style="width:100%;overflow-x:auto;">
-<table style="width:100%;min-width:1000px;border-collapse:collapse;">
+
+<div style="width:100%;overflow-x:auto;margin-top:12px">
+<table>
 <thead>
-<tr style="background:#171717;color:#ffca28;">
+<tr>
 <th>No.</th>
 <th>Customer Name</th>
 <th>Phone</th>
@@ -80,7 +84,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
 
 <section class="card">
 <h3>Add WhatsApp Booking</h3>
-<p class="small">Customer WhatsApp ରେ କଥା ହେବା ପରେ ଏଠାରେ booking details ଦିଅ। ₹20 payment pending ରହିବ।</p>
+<p class="small">Customer WhatsApp ରେ କଥା ହେବା ପରେ ଏଠାରେ details ଦିଅ। ₹20 payment pending ରହିବ।</p>
 
 <form id="whatsappForm">
 <label>Customer Name</label>
@@ -124,7 +128,8 @@ button:disabled{opacity:.6;cursor:not-allowed}
 
 <script type="module">
 
-import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {initializeApp}
+from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
 import {
  getAuth,onAuthStateChanged,signOut
@@ -157,8 +162,11 @@ let bookings=[];
 
 function safe(value){
  return String(value??"").replace(/[&<>"']/g,c=>({
- "&":"&amp;","<":"&lt;",">":"&gt;",
- '"':"&quot;","'":"&#39;"
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
  })[c]);
 }
 
@@ -192,46 +200,73 @@ $("logoutBtn").addEventListener("click",async()=>{
  }
 });
 
- v// LOAD BOOKINGS
+// LOAD BOOKINGS
 function loadBookings(){
  onSnapshot(query(collection(db,"bookings")),snapshot=>{
-  bookings=snapshot.docs.map(d=>({id:d.id,...d.data()}));
+
+  bookings=snapshot.docs.map(d=>({
+   id:d.id,
+   ...d.data()
+  }));
 
   bookings.sort((a,b)=>
    (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
   );
 
   $("totalBookings").textContent=bookings.length;
+
   $("pendingPayments").textContent=
    bookings.filter(b=>b.paymentStatus!=="paid").length;
+
   $("paidPayments").textContent=
    bookings.filter(b=>b.paymentStatus==="paid").length;
 
- function renderBookings(){
+  renderBookings();
+
+ },error=>{
+  $("bookingTableBody").innerHTML=
+   `<tr><td colspan="9">Bookings load error: ${safe(error.message)}</td></tr>`;
+ });
+}
+
+// DISPLAY BOOKINGS
+function renderBookings(){
+
  const body=$("bookingTableBody");
 
  if(!bookings.length){
-  body.innerHTML='<tr><td colspan="9">No bookings found.</td></tr>';
+  body.innerHTML=
+   '<tr><td colspan="9">No bookings found.</td></tr>';
   return;
  }
 
  body.innerHTML=bookings.map((b,index)=>{
+
   const payment=b.paymentStatus||"pending";
   const status=b.bookingStatus||b.status||"pending";
-return `
+
+  return `
   <tr style="background:${index===0?"#fff8dc":"white"}">
+
    <td>${index+1} ${index===0?"🆕 NEW":""}</td>
+
    <td>${safe(b.customerName||"Customer")}</td>
+
    <td>${safe(b.customerPhone||"-")}</td>
+
    <td>${safe(b.service||"-")}</td>
+
    <td>${safe(b.bookingDate||b.date||"-")}</td>
+
    <td>₹${Number(b.bookingFee??b.fee??20)}</td>
+
    <td>
     <select id="payment-${safe(b.id)}">
-     <optionalue="pending" ${payment==="pending"?"selected":""}>Pending</option>
+     <option value="pending" ${payment==="pending"?"selected":""}>Pending</option>
      <option value="paid" ${payment==="paid"?"selected":""}>Paid</option>
     </select>
    </td>
+
    <td>
     <select id="status-${safe(b.id)}">
      <option value="pending" ${status==="pending"?"selected":""}>Pending</option>
@@ -240,64 +275,24 @@ return `
      <option value="cancelled" ${status==="cancelled"?"selected":""}>Cancelled</option>
     </select>
    </td>
+
    <td>
-    <button class="green" onclick="savePayment('${safe(b.id)}')">Save Payment</button>
-    <button class="dark" onclick="saveStatus('${safe(b.id)}')">Update Status</button>
+    <button class="green" onclick="savePayment('${safe(b.id)}')">
+     Save Payment
+    </button>
+
+    <button class="dark" onclick="saveStatus('${safe(b.id)}')">
+     Update Status
+    </button>
    </td>
+
   </tr>`;
  }).join("");
 }
 
- },error=>{
-  $("bookingList").textContent="Bookings load error: "+error.message;
- });
-}
-
-// DISPLAY BOOKINGS
-function renderBookings(){
- const list=$("bookingList");
-
- if(!bookings.length){
-  list.innerHTML="<p>No bookings found.</p>";
-  return;
- }
-
- list.innerHTML=bookings.map(b=>`
-  <div class="item">
-   <h3>${safe(b.customerName||"Customer")}</h3>
-   <p><b>Booking ID:</b> ${safe(b.id)}</p>
-   <p><b>Phone:</b> ${safe(b.customerPhone||"-")}</p>
-   <p><b>Email:</b> ${safe(b.customerEmail||"-")}</p>
-   <p><b>Service:</b> ${safe(b.service||"-")}</p>
-   <p><b>Address:</b> ${safe(b.address||"-")}</p>
-   <p><b>Date:</b> ${safe(b.bookingDate||b.date||"-")}</p>
-   <p><b>Source:</b> ${safe(b.bookingSource||b.source||"Website")}</p>
-   <p><b>Fee:</b> ₹${Number(b.bookingFee??b.fee??20)}</p>
-   <p><b>Payment:</b> <span class="status">${safe(b.paymentStatus||"pending")}</span></p>
-   <p><b>Booking Status:</b> <span class="status">${safe(b.bookingStatus||b.status||"pending")}</span></p>
-
-   <label>Payment Verification</label>
-   <select id="payment-${safe(b.id)}">
-    <option value="pending" ${b.paymentStatus!=="paid"?"selected":""}>Pending</option>
-    <option value="paid" ${b.paymentStatus==="paid"?"selected":""}>Paid — Verified</option>
-   </select>
-   <button class="green" onclick="savePayment('${safe(b.id)}')">Save Payment</button>
-
-   <label>Booking Status</label>
-   <select id="status-${safe(b.id)}">
-    <option value="pending" ${(b.bookingStatus||b.status)==="pending"?"selected":""}>Pending</option>
-    <option value="confirmed" ${(b.bookingStatus||b.status)==="confirmed"?"selected":""}>Confirmed</option>
-    <option value="completed" ${(b.bookingStatus||b.status)==="completed"?"selected":""}>Completed</option>
-    <option value="cancelled" ${(b.bookingStatus||b.status)==="cancelled"?"selected":""}>Cancelled</option>
-   </select>
-   <button class="dark" onclick="saveStatus('${safe(b.id)}')">Update Status</button>
-  </div>
- `).join("");
-}
-  
-
 // CUSTOMER NOTIFICATION
 async function notifyCustomer(booking,title,message){
+
  if(!booking.userId)return;
 
  await addDoc(collection(db,"notifications"),{
@@ -310,6 +305,7 @@ async function notifyCustomer(booking,title,message){
 
 // PAYMENT UPDATE
 window.savePayment=async id=>{
+
  if(!isAdmin)return;
 
  const booking=bookings.find(b=>b.id===id);
@@ -318,13 +314,16 @@ window.savePayment=async id=>{
  if(!booking||!payment)return;
 
  if(payment==="paid"){
+
   const confirmed=confirm(
    "ପ୍ରକୃତ ₹20 payment ଏବଂ proof ଯାଞ୍ଚ କରିଛ କି? ଯାଞ୍ଚ ହୋଇଥିଲେ ମାତ୍ର Paid କର।"
   );
+
   if(!confirmed)return;
  }
 
  try{
+
   await updateDoc(doc(db,"bookings",id),{
    paymentStatus:payment
   });
@@ -346,6 +345,7 @@ window.savePayment=async id=>{
   }
 
  }catch(error){
+
   console.error("Payment update error:",error);
   alert("Payment update error: "+error.message);
  }
@@ -353,6 +353,7 @@ window.savePayment=async id=>{
 
 // BOOKING STATUS UPDATE
 window.saveStatus=async id=>{
+
  if(!isAdmin)return;
 
  const booking=bookings.find(b=>b.id===id);
@@ -361,6 +362,7 @@ window.saveStatus=async id=>{
  if(!booking||!status)return;
 
  try{
+
   await updateDoc(doc(db,"bookings",id),{
    bookingStatus:status
   });
@@ -386,7 +388,9 @@ window.saveStatus=async id=>{
 
 // ADD WHATSAPP BOOKING
 $("whatsappForm").addEventListener("submit",async event=>{
+
  event.preventDefault();
+
  if(!isAdmin)return;
 
  const button=$("waSubmit");
@@ -394,7 +398,9 @@ $("whatsappForm").addEventListener("submit",async event=>{
  button.textContent="Adding...";
 
  try{
+
   await addDoc(collection(db,"bookings"),{
+
    userId:ADMIN_UID,
    customerName:$("waName").value.trim(),
    customerPhone:$("waPhone").value.trim(),
@@ -407,14 +413,19 @@ $("whatsappForm").addEventListener("submit",async event=>{
    paymentStatus:"pending",
    bookingStatus:"pending",
    createdAt:serverTimestamp()
+
   });
 
   alert("WhatsApp booking added. ₹20 payment is pending until verified.");
+
   $("whatsappForm").reset();
 
  }catch(error){
+
   alert("WhatsApp booking error: "+error.message);
+
  }finally{
+
   button.disabled=false;
   button.textContent="Add WhatsApp Booking";
  }
@@ -422,7 +433,9 @@ $("whatsappForm").addEventListener("submit",async event=>{
 
 // DESIGN REQUESTS
 function loadDesignRequests(){
+
  onSnapshot(collection(db,"designRequests"),snapshot=>{
+
   const list=$("designList");
 
   if(snapshot.empty){
@@ -431,77 +444,31 @@ function loadDesignRequests(){
   }
 
   list.innerHTML=snapshot.docs.map(d=>{
+
    const x=d.data();
+
    return `
     <div class="item">
-// LOAD BOOKINGS
-function loadBookings(){
- onSnapshot(query(collection(db,"bookings")),snapshot=>{
-  bookings=snapshot.docs.map(d=>({id:d.id,...d.data()}));
+     <b>${safe(x.customerName||x.name||"Customer")}</b>
+     <p><b>Phone:</b> ${safe(x.phone||x.customerPhone||"-")}</p>
+     <p><b>Request:</b> ${safe(x.description||x.request||x.message||"-")}</p>
+     <p><b>Status:</b> ${safe(x.status||"Pending")}</p>
+    </div>
+   `;
 
-  bookings.sort((a,b)=>
-   (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
-  );
-
-  $("totalBookings").textContent=bookings.length;
-  $("pendingPayments").textContent=
-   bookings.filter(b=>b.paymentStatus!=="paid").length;
-  $("paidPayments").textContent=
-   bookings.filter(b=>b.paymentStatus==="paid").length;
-
-  renderBookings();
+  }).join("");
 
  },error=>{
-  $("bookingTableBody").innerHTML=
-   `<tr><td colspan="9">Bookings load error: ${safe(error.message)}</td></tr>`;
+  $("designList").textContent=
+   "Design request error: "+error.message;
  });
 }
 
-// DISPLAY BOOKINGS
-function renderBookings(){
- const body=$("bookingTableBody");
-
- if(!bookings.length){
-  body.innerHTML='<tr><td colspan="9">No bookings found.</td></tr>';
-  return;
- }
-
- body.innerHTML=bookings.map((b,index)=>{
-  const payment=b.paymentStatus||"pending";
-  const status=b.bookingStatus||b.status||"pending";
-
-  return `
-  <tr style="background:${index===0?"#fff8dc":"white"}">
-   <td>${index+1} ${index===0?"🆕 NEW":""}</td>
-   <td>${safe(b.customerName||"Customer")}</td>
-   <td>${safe(b.customerPhone||"-")}</td>
-   <td>${safe(b.service||"-")}</td>
-   <td>${safe(b.bookingDate||b.date||"-")}</td>
-   <td>₹${Number(b.bookingFee??b.fee??20)}</td>
-   <td>
-    <select id="payment-${safe(b.id)}">
-     <option value="pending" ${payment==="pending"?"selected":""}>Pending</option>
-     <option value="paid" ${payment==="paid"?"selected":""}>Paid</option>
-    </select>
-   </td>
-   <td>
-    <select id="status-${safe(b.id)}">
-     <option value="pending" ${status==="pending"?"selected":""}>Pending</option>
-     <option value="confirmed" ${status==="confirmed"?"selected":""}>Confirmed</option>
-     <option value="completed" ${status==="completed"?"selected":""}>Completed</option>
-     <option value="cancelled" ${status==="cancelled"?"selected":""}>Cancelled</option>
-    </select>
-   </td>
-   <td>
-    <button class="green" onclick="savePayment('${safe(b.id)}')">Save Payment</button>
-    <button class="dark" onclick="saveStatus('${safe(b.id)}')">Update Status</button>
-   </td>
-  </tr>`;
- }).join("");
-}
 // ADMIN NOTIFICATIONS
 function loadAdminNotifications(){
+
  onSnapshot(collection(db,"notifications"),snapshot=>{
+
   const list=$("adminNotifications");
 
   if(snapshot.empty){
@@ -510,6 +477,7 @@ function loadAdminNotifications(){
   }
 
   const items=snapshot.docs.map(d=>d.data());
+
   items.sort((a,b)=>
    (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
   );
@@ -522,12 +490,20 @@ function loadAdminNotifications(){
   `).join("");
 
  },error=>{
-  $("adminNotifications").textContent="Notification error: "+error.message;
+  $("adminNotifications").textContent=
+   "Notification error: "+error.message;
  });
 }
 
 // PREVENT PAST DATES
-$("waDate").min=new Date().toISOString().split("T")[0];
+const today=new Date();
+const localToday=[
+ today.getFullYear(),
+ String(today.getMonth()+1).padStart(2,"0"),
+ String(today.getDate()).padStart(2,"0")
+].join("-");
+
+$("waDate").min=localToday;
 
 </script>
 </body>
