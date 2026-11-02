@@ -41,6 +41,7 @@ td select{min-width:110px}
 .design-card h4{margin:9px 0 5px}
 .request-image{width:100%;max-width:280px;max-height:220px;object-fit:contain;border-radius:8px;background:#eee}
 .filter-summary{font-size:13px;color:#666;margin:0 0 12px}
+.push-status{background:#f5f8ff;padding:12px;border-radius:8px;overflow-wrap:anywhere}
 </style>
 </head>
 
@@ -62,17 +63,14 @@ td select{min-width:110px}
 <b>Total Bookings</b>
 <h2 id="totalBookings">0</h2>
 </div>
-
 <div class="stat">
 <b>Payment Pending</b>
 <h2 id="pendingPayments">0</h2>
 </div>
-
 <div class="stat">
 <b>Payment Verified</b>
 <h2 id="paidPayments">0</h2>
 </div>
-
 <div class="stat">
 <b>UTR Submitted</b>
 <h2 id="utrSubmitted">0</h2>
@@ -80,10 +78,23 @@ td select{min-width:110px}
 </div>
 </section>
 
+<!-- ADMIN PHONE NOTIFICATIONS -->
+<section class="card">
+<h3>Admin Phone Notifications</h3>
+<p class="small">
+Admin ଫୋନ୍‌ରେ Notification ପାଇବା ପାଇଁ ଏହି Button ଦବାଅ।
+</p>
+<button class="green" id="enableAdminPush">
+Enable Phone Notifications
+</button>
+<p id="adminPushStatus" class="small push-status">
+Phone Notification Not Registered
+</p>
+</section>
+
 <!-- CUSTOMER BOOKINGS -->
 <section class="card">
 <h3>Customer Bookings & Payment Verification</h3>
-
 <div class="note">
 ₹20 payment ଯାଞ୍ଚ କରିବା ପରେ ମାତ୍ର Paid କର।
 Customer UTR ନମ୍ବରକୁ ନିଜ UPI transaction history ସହିତ ମେଳ କର।
@@ -106,7 +117,6 @@ Customer UTR ନମ୍ବରକୁ ନିଜ UPI transaction history ସହି�
 <th>Action</th>
 </tr>
 </thead>
-
 <tbody id="bookingTableBody">
 <tr><td colspan="11">Loading bookings...</td></tr>
 </tbody>
@@ -120,7 +130,6 @@ Customer UTR ନମ୍ବରକୁ ନିଜ UPI transaction history ସହି�
 <p class="small">Customer WhatsApp ରେ କଥା ହେବା ପରେ details ଦିଅ। ₹20 payment pending ରହିବ।</p>
 
 <form id="whatsappForm">
-
 <label>Customer Name</label>
 <input id="waName" required placeholder="Customer name">
 
@@ -154,7 +163,6 @@ Customer UTR ନମ୍ବରକୁ ନିଜ UPI transaction history ସହି�
 <p class="small">GitHub ରୁ image URL paste କରି Customer Gallery ରେ Design ଯୋଡ଼।</p>
 
 <form id="designForm">
-
 <label>Design Name</label>
 <input id="designName" required maxlength="80" placeholder="Example: Modern Interior Design">
 
@@ -192,7 +200,6 @@ Customer UTR ନମ୍ବରକୁ ନିଜ UPI transaction history ସହି�
 <hr>
 
 <h3>Current Designs</h3>
-
 <label for="adminDesignFilter">Filter Designs by Category</label>
 <select id="adminDesignFilter">
 <option value="ALL">ALL DESIGNS</option>
@@ -242,8 +249,12 @@ import {
 
 import {
  getFirestore,collection,addDoc,doc,updateDoc,deleteDoc,
- onSnapshot,serverTimestamp
+ onSnapshot,serverTimestamp,setDoc
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+import {
+ getMessaging,isSupported,getToken,onMessage
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-messaging.js";
 
 const firebaseConfig={
  apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",
@@ -256,6 +267,9 @@ const firebaseConfig={
 
 const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 
+const VAPID_PUBLIC_KEY=
+"BBJUSzxOPQF0iXr6Wz6GMQxklaeNS-CrmZQcCzMJggzopc91YJw-WoKEBH9HCZyO5ahxpyFbnEV1Sz_XiF60PYk";
+
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 const db=getFirestore(app);
@@ -265,6 +279,8 @@ let isAdmin=false;
 let bookings=[];
 let designs=[];
 let editingDesignId=null;
+let messagingInstance=null;
+let foregroundListenerStarted=false;
 
 const designRequestCache=new Map();
 
@@ -286,6 +302,10 @@ function validImageUrl(v){
  }
 }
 
+function setAdminPushStatus(message){
+ $("adminPushStatus").textContent=message;
+}
+
 // AUTHENTICATION
 onAuthStateChanged(auth,user=>{
  if(!user){
@@ -305,6 +325,103 @@ onAuthStateChanged(auth,user=>{
  loadDesigns();
  loadDesignRequests();
  loadAdminNotifications();
+});
+
+// ADMIN PHONE NOTIFICATION REGISTRATION
+$("enableAdminPush").addEventListener("click",async()=>{
+ const btn=$("enableAdminPush");
+
+ if(!isAdmin||!auth.currentUser||
+    auth.currentUser.uid!==ADMIN_UID){
+  setAdminPushStatus("Admin login required.");
+  return;
+ }
+
+ btn.disabled=true;
+ setAdminPushStatus("Checking notification support...");
+
+ try{
+  if(!window.isSecureContext){
+   throw new Error("HTTPS connection is required.");
+  }
+
+  if(!("Notification" in window)||
+     !("serviceWorker" in navigator)){
+   throw new Error("This browser does not support notifications.");
+  }
+
+  const supported=await isSupported();
+
+  if(!supported){
+   throw new Error("Firebase Messaging is not supported in this browser.");
+  }
+
+  const permission=await Notification.requestPermission();
+
+  if(permission!=="granted"){
+   throw new Error("Notification permission was not granted.");
+  }
+
+  setAdminPushStatus("Registering service worker...");
+
+  const swUrl=new URL(
+   "firebase-messaging-sw.js",
+   window.location.href
+  );
+
+  const swScope=new URL("./",window.location.href);
+
+  const registration=await navigator.serviceWorker.register(
+   swUrl.pathname,
+   {scope:swScope.pathname}
+  );
+
+  await navigator.serviceWorker.ready;
+
+  messagingInstance=getMessaging(app);
+
+  setAdminPushStatus("Generating FCM token...");
+
+  const token=await getToken(messagingInstance,{
+   vapidKey:VAPID_PUBLIC_KEY,
+   serviceWorkerRegistration:registration
+  });
+
+  if(!token){
+   throw new Error("FCM token was not generated.");
+  }
+
+  await setDoc(
+   doc(db,"users",ADMIN_UID,"fcmTokens",token),
+   {
+    token:token,
+    platform:"web",
+    registeredAt:serverTimestamp()
+   }
+  );
+
+  if(!foregroundListenerStarted){
+   onMessage(messagingInstance,payload=>{
+    const title=payload.notification?.title||"PS POWER SERVICE";
+    const body=payload.notification?.body||"You have a new notification.";
+
+    if(Notification.permission==="granted"){
+     new Notification(title,{body});
+    }
+   });
+
+   foregroundListenerStarted=true;
+  }
+
+  setAdminPushStatus("Admin Phone Notification Registration Successful!");
+  alert("Admin Phone Notification Registration Successful!");
+
+ }catch(error){
+  console.error("Admin Push Error:",error);
+  setAdminPushStatus("Notification Error: "+error.message);
+ }finally{
+  btn.disabled=false;
+ }
 });
 
 // LOGOUT
@@ -380,30 +497,21 @@ function renderBookings(){
   return `
    <tr>
     <td>${i+1} ${i===0?"🆕 NEW":""}</td>
-
     <td>${safe(b.customerName||"Customer")}
     <br><span class="small">${isWhatsApp?"WhatsApp Booking":"Website Booking"}</span>
     </td>
-
     <td>${safe(b.customerPhone||"-")}</td>
-
     <td>${safe(b.service||"-")}</td>
-
     <td>${safe(b.bookingDate||b.date||"-")}</td>
-
     <td>₹${Number(b.bookingFee??b.fee??20)}</td>
-
     <td><span class="utr">${safe(utr)}</span></td>
-
     <td>${proofHTML}</td>
-
     <td>
      <select id="payment-${safe(b.id)}">
       <option value="pending" ${p==="pending"?"selected":""}>Pending</option>
       <option value="paid" ${p==="paid"?"selected":""}>Paid</option>
      </select>
     </td>
-
     <td>
      <select id="status-${safe(b.id)}">
       <option value="pending" ${s==="pending"?"selected":""}>Pending</option>
@@ -412,17 +520,11 @@ function renderBookings(){
       <option value="cancelled" ${s==="cancelled"?"selected":""}>Cancelled</option>
      </select>
     </td>
-
     <td>
-     <button class="green"
-      data-action="save-payment"
-      data-id="${safe(b.id)}">
+     <button class="green" data-action="save-payment" data-id="${safe(b.id)}">
       Verify & Save Payment
      </button>
-
-     <button class="dark"
-      data-action="save-status"
-      data-id="${safe(b.id)}">
+     <button class="dark" data-action="save-status" data-id="${safe(b.id)}">
       Update Status
      </button>
     </td>
@@ -431,7 +533,7 @@ function renderBookings(){
  }).join("");
 }
 
-// CUSTOMER NOTIFICATION
+// CUSTOMER DASHBOARD NOTIFICATION
 async function notifyCustomer(b,title,message){
  if(!b.userId||b.userId===ADMIN_UID)return;
 
@@ -476,9 +578,7 @@ $("bookingTableBody").addEventListener("click",async e=>{
   btn.disabled=true;
 
   try{
-   const updateData={
-    paymentStatus:p
-   };
+   const updateData={paymentStatus:p};
 
    if(p==="paid"){
     updateData.paymentProofStatus="verified";
@@ -770,7 +870,6 @@ function loadDesignRequests(){
   list.innerHTML=rs.map(r=>`
 
    <div class="item">
-
     <h4>${safe(r.designName||"Selected Design")}</h4>
 
     ${r.imageUrl?`
@@ -780,27 +879,20 @@ function loadDesignRequests(){
     `:""}
 
     <p><b>Customer:</b> ${safe(r.customerName||r.name||"Customer")}</p>
-
     <p><b>Phone:</b> ${safe(r.phone||r.customerPhone||"-")}</p>
-
     <p><b>Message:</b> ${safe(r.description||r.request||r.message||"-")}</p>
-
     <p><b>Status:</b> ${safe(r.status||"pending")}</p>
 
     <label>Update Request Status</label>
-
     <select id="request-status-${safe(r.id)}">
      <option value="pending" ${(r.status||"pending")==="pending"?"selected":""}>Pending</option>
      <option value="approved" ${r.status==="approved"?"selected":""}>Approved</option>
      <option value="rejected" ${r.status==="rejected"?"selected":""}>Rejected</option>
     </select>
 
-    <button class="green"
-     data-action="update-request"
-     data-id="${safe(r.id)}">
+    <button class="green" data-action="update-request" data-id="${safe(r.id)}">
      Save Request Status
     </button>
-
    </div>
 
   `).join("");
