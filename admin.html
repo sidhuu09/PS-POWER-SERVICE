@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="or">
 <head>
@@ -6,592 +5,85 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Dashboard | PS POWER SERVICE</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#f3f5f8;font-family:Arial,sans-serif;color:#222}
+*{box-sizing:border-box}body{margin:0;background:#f3f5f8;font-family:Arial,sans-serif;color:#222}
 header{background:#171717;color:white;padding:17px;display:flex;justify-content:space-between;align-items:center;gap:10px}
-header h2{color:#ffca28;margin:0;font-size:19px}
-main{max-width:1100px;margin:20px auto;padding:12px}
+header h2{color:#ffca28;margin:0;font-size:19px}main{max-width:1100px;margin:20px auto;padding:12px}
 .card{background:white;padding:18px;margin-bottom:18px;border-radius:12px;box-shadow:0 2px 9px #00000012}
-h3{margin-top:0}
-input,select,textarea{width:100%;padding:11px;margin:7px 0 13px;border:1px solid #ccc;border-radius:7px;font-size:15px}
-label{font-weight:bold;font-size:14px}
-button{padding:10px 14px;border:0;border-radius:7px;background:#ffca28;font-weight:bold;cursor:pointer;margin:3px}
-button:disabled{opacity:.6;cursor:not-allowed}
-.green{background:#168a45;color:white}
-.red{background:#d93636;color:white}
-.dark{background:#222;color:white}
-.logout{background:#d93636;color:white}
-.item{border:1px solid #ddd;border-radius:9px;padding:14px;margin:12px 0;overflow-wrap:anywhere}
-.small{font-size:13px;color:#666}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
-.stat{background:#fff8dc;padding:15px;border-radius:9px}
-.note{background:#fff8dc;padding:12px;border-radius:8px;font-size:13px}
-table{width:100%;min-width:1000px;border-collapse:collapse}
-th,td{padding:10px;border:1px solid #ddd;text-align:left}
-th{background:#171717;color:#ffca28}
-td select{min-width:110px}
+h3{margin-top:0}input,select,textarea{width:100%;padding:11px;margin:7px 0 13px;border:1px solid #ccc;border-radius:7px;font-size:15px}
+label{font-weight:bold;font-size:14px}button{padding:10px 14px;border:0;border-radius:7px;background:#ffca28;font-weight:bold;cursor:pointer;margin:3px}
+button:disabled{opacity:.6;cursor:not-allowed}.green{background:#168a45;color:white}.red,.logout{background:#d93636;color:white}.dark{background:#222;color:white}
+.item{border:1px solid #ddd;border-radius:9px;padding:14px;margin:12px 0;overflow-wrap:anywhere}.small{font-size:13px;color:#666}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.stat{background:#fff8dc;padding:15px;border-radius:9px}
+.note{background:#fff8dc;padding:12px;border-radius:8px;font-size:13px}table{width:100%;min-width:1000px;border-collapse:collapse}
+th,td{padding:10px;border:1px solid #ddd;text-align:left}th{background:#171717;color:#ffca28}td select{min-width:110px}
 .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
-.design-card{border:1px solid #ddd;border-radius:10px;padding:10px;overflow:hidden}
-.design-card img{width:100%;height:160px;object-fit:cover;border-radius:7px;background:#eee}
-.design-card h4{margin:9px 0 5px}
-.request-image{width:100%;max-width:280px;max-height:220px;object-fit:contain;border-radius:8px;background:#eee}
+.design-card{border:1px solid #ddd;border-radius:10px;padding:10px;overflow:hidden}.design-card img{width:100%;height:160px;object-fit:cover;border-radius:7px;background:#eee}
+.design-card h4{margin:9px 0 5px}.request-image{width:100%;max-width:280px;max-height:220px;object-fit:contain;border-radius:8px;background:#eee}
 </style>
 </head>
 <body>
-
-<header>
-<h2>PS POWER SERVICE — ADMIN</h2>
-<button class="logout" id="logoutBtn">Logout</button>
-</header>
-
+<header><h2>PS POWER SERVICE — ADMIN</h2><button class="logout" id="logoutBtn">Logout</button></header>
 <main>
-
-<section class="card">
-<h3>Welcome Admin</h3>
-<p id="adminEmail" class="small"></p>
-<div class="grid">
+<section class="card"><h3>Welcome Admin</h3><p id="adminEmail" class="small"></p><div class="grid">
 <div class="stat"><b>Total Bookings</b><h2 id="totalBookings">0</h2></div>
 <div class="stat"><b>Payment Pending</b><h2 id="pendingPayments">0</h2></div>
-<div class="stat"><b>Payment Verified</b><h2 id="paidPayments">0</h2></div>
-</div>
-</section>
+<div class="stat"><b>Payment Verified</b><h2 id="paidPayments">0</h2></div></div></section>
 
-<section class="card">
-<h3>Customer Bookings</h3>
-<div class="note">₹20 payment proof ଯାଞ୍ଚ କରିବା ପରେ ମାତ୍ର Paid କର।</div>
-<div style="width:100%;overflow-x:auto;margin-top:12px">
-<table>
-<thead>
-<tr>
-<th>No.</th><th>Customer Name</th><th>Phone</th><th>Service</th>
-<th>Date</th><th>Fee</th><th>Payment</th><th>Booking Status</th><th>Action</th>
-</tr>
-</thead>
-<tbody id="bookingTableBody">
-<tr><td colspan="9">Loading bookings...</td></tr>
-</tbody>
-</table>
-</div>
-</section>
+<section class="card"><h3>Customer Bookings</h3><div class="note">₹20 payment proof ଯାଞ୍ଚ କରିବା ପରେ ମାତ୍ର Paid କର।</div>
+<div style="width:100%;overflow-x:auto;margin-top:12px"><table><thead><tr>
+<th>No.</th><th>Customer Name</th><th>Phone</th><th>Service</th><th>Date</th><th>Fee</th><th>Payment</th><th>Booking Status</th><th>Action</th>
+</tr></thead><tbody id="bookingTableBody"><tr><td colspan="9">Loading bookings...</td></tr></tbody></table></div></section>
 
-<section class="card">
-<h3>Add WhatsApp Booking</h3>
-<p class="small">Customer WhatsApp ରେ କଥା ହେବା ପରେ details ଦିଅ। ₹20 payment pending ରହିବ।</p>
-<form id="whatsappForm">
-<label>Customer Name</label>
-<input id="waName" required placeholder="Customer name">
-<label>Phone Number</label>
-<input id="waPhone" required type="tel" placeholder="Customer phone number">
-<label>Service</label>
-<select id="waService" required>
-<option value="">Select Service</option>
-<option>Electrical Wiring</option>
-<option>House Wiring</option>
-<option>Lenter Piping</option>
-<option>Fan Repair</option>
-<option>Motor Repair</option>
-<option>Other Electrical Service</option>
-</select>
-<label>Address</label>
-<textarea id="waAddress" required placeholder="Customer address"></textarea>
-<label>Service Date</label>
-<input id="waDate" type="date" required>
-<button class="green" id="waSubmit" type="submit">Add WhatsApp Booking</button>
-</form>
-</section>
+<section class="card"><h3>Add WhatsApp Booking</h3><p class="small">Customer WhatsApp ରେ କଥା ହେବା ପରେ details ଦିଅ। ₹20 payment pending ରହିବ।</p>
+<form id="whatsappForm"><label>Customer Name</label><input id="waName" required placeholder="Customer name">
+<label>Phone Number</label><input id="waPhone" required type="tel" placeholder="Customer phone number">
+<label>Service</label><select id="waService" required><option value="">Select Service</option><option>Electrical Wiring</option><option>House Wiring</option><option>Lenter Piping</option><option>Fan Repair</option><option>Motor Repair</option><option>Other Electrical Service</option></select>
+<label>Address</label><textarea id="waAddress" required placeholder="Customer address"></textarea>
+<label>Service Date</label><input id="waDate" type="date" required><button class="green" id="waSubmit" type="submit">Add WhatsApp Booking</button></form></section>
 
-<!-- DESIGN MANAGEMENT -->
-<section class="card">
-<h3>Manage Design Gallery</h3>
-<p class="small">GitHub ରୁ image URL paste କରି Customer Gallery ରେ Design ଯୋଡ଼।</p>
-
-<form id="designForm">
-<label>Design Name</label>
-<input id="designName" required maxlength="80" placeholder="Example: Modern House Wiring">
-
-<label>Category</label>
-<select id="designCategory" required>
+<section class="card"><h3>Manage Design Gallery</h3><p class="small">GitHub ରୁ image URL paste କରି Customer Gallery ରେ Design ଯୋଡ଼।</p>
+<form id="designForm"><label>Design Name</label><input id="designName" required maxlength="80" placeholder="Example: Modern Interior Design">
+<label>Category</label><select id="designCategory" required>
 <option value="">Select Category</option>
-<option>House Wiring</option>
-<option>Electrical Panel</option>
-<option>Switch Board</option>
-<option>Fan Fitting</option>
-<option>Lenter Piping</option>
-<option>Other</option>
+<option>CEILING DESIGN</option><option>TV UNIT</option><option>KITCHEN</option><option>BEDROOM DESIGN</option><option>WALL DESIGN</option><option>POOJA ROOM</option><option>WARDROBE DESIGN</option><option>HALL DESIGN</option><option>SHOWCASE DESIGN</option><option>LED PANEL DESIGN</option><option>BATHROOM DESIGN</option><option>DOOR DESIGN</option><option>OFFICE INTERIOR</option><option>SHOP INTERIOR</option><option>3D HOME DESIGN</option>
 </select>
-
-<label>GitHub Image URL</label>
-<input id="designImageUrl" type="url" required placeholder="https://raw.githubusercontent.com/...">
-
+<label>GitHub Image URL</label><input id="designImageUrl" type="url" required placeholder="https://raw.githubusercontent.com/...">
 <p id="imagePreviewText" class="small">Image preview ଏଠାରେ ଦେଖାଯିବ।</p>
 <img id="designPreview" alt="Design preview" style="display:none;width:100%;max-width:280px;max-height:180px;object-fit:contain;border:1px solid #ddd;border-radius:8px">
+<button class="green" id="designSubmit" type="submit">Add Design</button><button class="dark" id="cancelEditBtn" type="button" style="display:none">Cancel Edit</button></form>
+<hr><h3>Current Designs</h3><div id="designGallery" class="gallery">Loading designs...</div></section>
 
-<button class="green" id="designSubmit" type="submit">Add Design</button>
-<button class="dark" id="cancelEditBtn" type="button" style="display:none">Cancel Edit</button>
-</form>
-
-<hr>
-<h3>Current Designs</h3>
-<div id="designGallery" class="gallery">Loading designs...</div>
-</section>
-
-<!-- CUSTOMER DESIGN REQUESTS -->
-<section class="card">
-<h3>Customer Design Requests</h3>
-<p class="small">Customer ବାଛିଥିବା Design ଓ Request ଏଠାରେ ଦେଖାଯିବ।</p>
-<div id="designList">Loading design requests...</div>
-</section>
-
-<section class="card">
-<h3>Admin Notifications</h3>
-<div id="adminNotifications">Loading notifications...</div>
-</section>
-
+<section class="card"><h3>Customer Design Requests</h3><p class="small">Customer ବାଛିଥିବା Design ଓ Request ଏଠାରେ ଦେଖାଯିବ।</p><div id="designList">Loading design requests...</div></section>
+<section class="card"><h3>Admin Notifications</h3><div id="adminNotifications">Loading notifications...</div></section>
 </main>
 
 <script type="module">
-import {initializeApp}
-from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-
-import {
- getAuth,onAuthStateChanged,signOut
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-
-import {
- getFirestore,collection,addDoc,doc,updateDoc,deleteDoc,
- onSnapshot,query,serverTimestamp
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
-
-const firebaseConfig={
- apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",
- authDomain:"ps-power-service-68007.firebaseapp.com",
- projectId:"ps-power-service-68007",
- storageBucket:"ps-power-service-68007.firebasestorage.app",
- messagingSenderId:"647095348680",
- appId:"1:647095348680:web:51b3833ce08d767e9d64fd"
-};
-
-const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getFirestore(app);
-const $=id=>document.getElementById(id);
-
-let isAdmin=false;
-let bookings=[];
-let designs=[];
-let editingDesignId=null;
-
-function safe(value){
- return String(value??"").replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- })[c]);
-}
-
-function validImageUrl(value){
- try{
-  const url=new URL(value);
-  return url.protocol==="https:";
- }catch{
-  return false;
- }
-}
-
-// ADMIN AUTH CHECK
-onAuthStateChanged(auth,user=>{
- if(!user){
-  location.replace("index.html");
-  return;
- }
- if(user.uid!==ADMIN_UID){
-  location.replace("customer.html");
-  return;
- }
- isAdmin=true;
- $("adminEmail").textContent=user.email||"";
- loadBookings();
- loadDesigns();
- loadDesignRequests();
- loadAdminNotifications();
-});
-
-// LOGOUT
-$("logoutBtn").addEventListener("click",async()=>{
- try{
-  await signOut(auth);
-  location.replace("index.html");
- }catch(error){
-  alert("Logout error: "+error.message);
- }
-});
-
-// LOAD BOOKINGS
-function loadBookings(){
- onSnapshot(collection(db,"bookings"),snapshot=>{
-  bookings=snapshot.docs.map(d=>({id:d.id,...d.data()}));
-  bookings.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-
-  $("totalBookings").textContent=bookings.length;
-  $("pendingPayments").textContent=bookings.filter(b=>b.paymentStatus!=="paid").length;
-  $("paidPayments").textContent=bookings.filter(b=>b.paymentStatus==="paid").length;
-  renderBookings();
- },error=>{
-  $("bookingTableBody").innerHTML=
-   `<tr><td colspan="9">Bookings load error: ${safe(error.message)}</td></tr>`;
- });
-}
-
-// DISPLAY BOOKINGS
-function renderBookings(){
- const body=$("bookingTableBody");
- if(!bookings.length){
-  body.innerHTML='<tr><td colspan="9">No bookings found.</td></tr>';
-  return;
- }
-
- body.innerHTML=bookings.map((b,index)=>{
-  const payment=b.paymentStatus||"pending";
-  const status=b.bookingStatus||b.status||"pending";
-  return `
-  <tr>
-   <td>${index+1} ${index===0?"🆕 NEW":""}</td>
-   <td>${safe(b.customerName||"Customer")}</td>
-   <td>${safe(b.customerPhone||"-")}</td>
-   <td>${safe(b.service||"-")}</td>
-   <td>${safe(b.bookingDate||b.date||"-")}</td>
-   <td>₹${Number(b.bookingFee??b.fee??20)}</td>
-   <td>
-    <select id="payment-${safe(b.id)}">
-     <option value="pending" ${payment==="pending"?"selected":""}>Pending</option>
-     <option value="paid" ${payment==="paid"?"selected":""}>Paid</option>
-    </select>
-   </td>
-   <td>
-    <select id="status-${safe(b.id)}">
-     <option value="pending" ${status==="pending"?"selected":""}>Pending</option>
-     <option value="confirmed" ${status==="confirmed"?"selected":""}>Confirmed</option>
-     <option value="completed" ${status==="completed"?"selected":""}>Completed</option>
-     <option value="cancelled" ${status==="cancelled"?"selected":""}>Cancelled</option>
-    </select>
-   </td>
-   <td>
-    <button class="green" data-action="save-payment" data-id="${safe(b.id)}">Save Payment</button>
-    <button class="dark" data-action="save-status" data-id="${safe(b.id)}">Update Status</button>
-   </td>
-  </tr>`;
- }).join("");
-}
-
-async function notifyCustomer(booking,title,message){
- if(!booking.userId || booking.userId===ADMIN_UID)return;
- await addDoc(collection(db,"notifications"),{
-  userId:booking.userId,title,message,createdAt:serverTimestamp()
- });
-}
-
-// BOOKING TABLE ACTIONS
-$("bookingTableBody").addEventListener("click",async event=>{
- const button=event.target.closest("button[data-action]");
- if(!button || !isAdmin)return;
- const id=button.dataset.id;
- const booking=bookings.find(b=>b.id===id);
- if(!booking)return;
-
- if(button.dataset.action==="save-payment"){
-  const payment=$("payment-"+id)?.value;
-  if(!payment)return;
-
-  if(payment==="paid"){
-   const confirmed=confirm("ପ୍ରକୃତ ₹20 payment ଓ proof ଯାଞ୍ଚ କରିଛ କି? ଯାଞ୍ଚ ହୋଇଥିଲେ ମାତ୍ର Paid କର।");
-   if(!confirmed)return;
-  }
-  try{
-   await updateDoc(doc(db,"bookings",id),{paymentStatus:payment});
-   alert("Payment status updated.");
-   try{
-    await notifyCustomer(booking,"Payment Status Updated",
-     payment==="paid"?"Your ₹20 booking payment has been verified.":"Your booking payment is pending.");
-   }catch(e){console.error(e);}
-  }catch(error){alert("Payment update error: "+error.message);}
- }
-
- if(button.dataset.action==="save-status"){
-  const status=$("status-"+id)?.value;
-  if(!status)return;
-  try{
-   await updateDoc(doc(db,"bookings",id),{bookingStatus:status});
-   alert("Booking status updated.");
-   try{
-    await notifyCustomer(booking,"Booking Status Updated","Your booking status is now: "+status);
-   }catch(e){console.error(e);}
-  }catch(error){alert("Status update error: "+error.message);}
- }
-});
-
-// ADD WHATSAPP BOOKING
-$("whatsappForm").addEventListener("submit",async event=>{
- event.preventDefault();
- if(!isAdmin)return;
- const button=$("waSubmit");
- button.disabled=true;
- button.textContent="Adding...";
- try{
-  await addDoc(collection(db,"bookings"),{
-   userId:ADMIN_UID,
-   customerName:$("waName").value.trim(),
-   customerPhone:$("waPhone").value.trim(),
-   customerEmail:"",
-   service:$("waService").value,
-   address:$("waAddress").value.trim(),
-   bookingDate:$("waDate").value,
-   bookingFee:20,
-   bookingSource:"whatsapp",
-   paymentStatus:"pending",
-   bookingStatus:"pending",
-   createdAt:serverTimestamp()
-  });
-  alert("WhatsApp booking added. ₹20 payment is pending until verified.");
-  $("whatsappForm").reset();
- }catch(error){
-  alert("WhatsApp booking error: "+error.message);
- }finally{
-  button.disabled=false;
-  button.textContent="Add WhatsApp Booking";
- }
-});
-
-// IMAGE PREVIEW
-$("designImageUrl").addEventListener("input",()=>{
- const url=$("designImageUrl").value.trim();
- const preview=$("designPreview");
- if(validImageUrl(url)){
-  preview.src=url;
-  preview.style.display="block";
-  $("imagePreviewText").textContent="Image preview:";
- }else{
-  preview.removeAttribute("src");
-  preview.style.display="none";
-  $("imagePreviewText").textContent="Valid HTTPS image URL paste କର।";
- }
-});
-
-// LOAD DESIGNS
-function loadDesigns(){
- onSnapshot(collection(db,"designs"),snapshot=>{
-  designs=snapshot.docs.map(d=>({id:d.id,...d.data()}));
-  designs.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-  renderDesigns();
- },error=>{
-  $("designGallery").textContent="Design load error: "+error.message;
- });
-}
-
-// DISPLAY DESIGNS
-function renderDesigns(){
- const gallery=$("designGallery");
- if(!designs.length){
-  gallery.innerHTML="<p>No designs added yet.</p>";
-  return;
- }
- gallery.innerHTML=designs.map(d=>`
-  <div class="design-card">
-   <img src="${safe(d.imageUrl)}" alt="${safe(d.name)}" loading="lazy">
-   <h4>${safe(d.name||"Design")}</h4>
-   <p class="small">${safe(d.category||"Other")}</p>
-   <button class="dark" data-action="edit-design" data-id="${safe(d.id)}">Edit</button>
-   <button class="red" data-action="delete-design" data-id="${safe(d.id)}">Delete</button>
-  </div>
- `).join("");
-}
-
-// ADD OR EDIT DESIGN
-$("designForm").addEventListener("submit",async event=>{
- event.preventDefault();
- if(!isAdmin)return;
-
- const name=$("designName").value.trim();
- const category=$("designCategory").value;
- const imageUrl=$("designImageUrl").value.trim();
-
- if(!name||!category||!validImageUrl(imageUrl)){
-  alert("Design Name, Category ଓ valid HTTPS Image URL ଦିଅ।");
-  return;
- }
-
- const button=$("designSubmit");
- button.disabled=true;
- button.textContent=editingDesignId?"Updating...":"Adding...";
-
- try{
-  if(editingDesignId){
-   await updateDoc(doc(db,"designs",editingDesignId),{
-    name,category,imageUrl,updatedAt:serverTimestamp()
-   });
-   alert("Design updated successfully.");
-  }else{
-   await addDoc(collection(db,"designs"),{
-    name,category,imageUrl,active:true,createdAt:serverTimestamp()
-   });
-   alert("New design added successfully.");
-  }
-  resetDesignForm();
- }catch(error){
-  alert("Design save error: "+error.message);
- }finally{
-  button.disabled=false;
-  button.textContent=editingDesignId?"Update Design":"Add Design";
- }
-});
-
-function resetDesignForm(){
- editingDesignId=null;
- $("designForm").reset();
- $("designPreview").removeAttribute("src");
- $("designPreview").style.display="none";
- $("imagePreviewText").textContent="Image preview ଏଠାରେ ଦେଖାଯିବ।";
- $("designSubmit").textContent="Add Design";
- $("cancelEditBtn").style.display="none";
-}
-
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {getAuth,onAuthStateChanged,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {getFirestore,collection,addDoc,doc,updateDoc,deleteDoc,onSnapshot,serverTimestamp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",authDomain:"ps-power-service-68007.firebaseapp.com",projectId:"ps-power-service-68007",storageBucket:"ps-power-service-68007.firebasestorage.app",messagingSenderId:"647095348680",appId:"1:647095348680:web:51b3833ce08d767e9d64fd"};
+const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2",app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
+let isAdmin=false,bookings=[],designs=[],editingDesignId=null;const designRequestCache=new Map();
+function safe(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function validImageUrl(v){try{return new URL(v).protocol==="https:";}catch{return false;}}
+onAuthStateChanged(auth,user=>{if(!user){location.replace("index.html");return;}if(user.uid!==ADMIN_UID){location.replace("customer.html");return;}isAdmin=true;$("adminEmail").textContent=user.email||"";loadBookings();loadDesigns();loadDesignRequests();loadAdminNotifications();});
+$("logoutBtn").addEventListener("click",async()=>{try{await signOut(auth);location.replace("index.html");}catch(e){alert("Logout error: "+e.message);}});
+function loadBookings(){onSnapshot(collection(db,"bookings"),s=>{bookings=s.docs.map(d=>({id:d.id,...d.data()}));bookings.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));$("totalBookings").textContent=bookings.length;$("pendingPayments").textContent=bookings.filter(b=>b.paymentStatus!=="paid").length;$("paidPayments").textContent=bookings.filter(b=>b.paymentStatus==="paid").length;renderBookings();},e=>{$("bookingTableBody").innerHTML=`<tr><td colspan="9">Bookings load error: ${safe(e.message)}</td></tr>`;});}
+function renderBookings(){const body=$("bookingTableBody");if(!bookings.length){body.innerHTML='<tr><td colspan="9">No bookings found.</td></tr>';return;}body.innerHTML=bookings.map((b,i)=>{let p=b.paymentStatus||"pending",s=b.bookingStatus||b.status||"pending";return `<tr><td>${i+1} ${i===0?"🆕 NEW":""}</td><td>${safe(b.customerName||"Customer")}</td><td>${safe(b.customerPhone||"-")}</td><td>${safe(b.service||"-")}</td><td>${safe(b.bookingDate||b.date||"-")}</td><td>₹${Number(b.bookingFee??b.fee??20)}</td><td><select id="payment-${safe(b.id)}"><option value="pending" ${p==="pending"?"selected":""}>Pending</option><option value="paid" ${p==="paid"?"selected":""}>Paid</option></select></td><td><select id="status-${safe(b.id)}"><option value="pending" ${s==="pending"?"selected":""}>Pending</option><option value="confirmed" ${s==="confirmed"?"selected":""}>Confirmed</option><option value="completed" ${s==="completed"?"selected":""}>Completed</option><option value="cancelled" ${s==="cancelled"?"selected":""}>Cancelled</option></select></td><td><button class="green" data-action="save-payment" data-id="${safe(b.id)}">Save Payment</button><button class="dark" data-action="save-status" data-id="${safe(b.id)}">Update Status</button></td></tr>`;}).join("");}
+async function notifyCustomer(b,title,message){if(!b.userId||b.userId===ADMIN_UID)return;await addDoc(collection(db,"notifications"),{userId:b.userId,title,message,createdAt:serverTimestamp()});}
+$("bookingTableBody").addEventListener("click",async e=>{const btn=e.target.closest("button[data-action]");if(!btn||!isAdmin)return;const id=btn.dataset.id,b=bookings.find(x=>x.id===id);if(!b)return;if(btn.dataset.action==="save-payment"){const p=$("payment-"+id)?.value;if(!p)return;if(p==="paid"&&!confirm("ପ୍ରକୃତ ₹20 payment ଓ proof ଯାଞ୍ଚ କରିଛ କି? ଯାଞ୍ଚ ହୋଇଥିଲେ ମାତ୍ର Paid କର।"))return;try{await updateDoc(doc(db,"bookings",id),{paymentStatus:p});alert("Payment status updated.");try{await notifyCustomer(b,"Payment Status Updated",p==="paid"?"Your ₹20 booking payment has been verified.":"Your booking payment is pending.");}catch(e){console.error(e);}}catch(e){alert("Payment update error: "+e.message);}}if(btn.dataset.action==="save-status"){const s=$("status-"+id)?.value;if(!s)return;try{await updateDoc(doc(db,"bookings",id),{bookingStatus:s});alert("Booking status updated.");try{await notifyCustomer(b,"Booking Status Updated","Your booking status is now: "+s);}catch(e){console.error(e);}}catch(e){alert("Status update error: "+e.message);}}});
+$("whatsappForm").addEventListener("submit",async e=>{e.preventDefault();if(!isAdmin)return;const btn=$("waSubmit");btn.disabled=true;btn.textContent="Adding...";try{await addDoc(collection(db,"bookings"),{userId:ADMIN_UID,customerName:$("waName").value.trim(),customerPhone:$("waPhone").value.trim(),customerEmail:"",service:$("waService").value,address:$("waAddress").value.trim(),bookingDate:$("waDate").value,bookingFee:20,bookingSource:"whatsapp",paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});alert("WhatsApp booking added. ₹20 payment is pending until verified.");$("whatsappForm").reset();}catch(e){alert("WhatsApp booking error: "+e.message);}finally{btn.disabled=false;btn.textContent="Add WhatsApp Booking";}});
+$("designImageUrl").addEventListener("input",()=>{const u=$("designImageUrl").value.trim(),p=$("designPreview");if(validImageUrl(u)){p.src=u;p.style.display="block";$("imagePreviewText").textContent="Image preview:";}else{p.removeAttribute("src");p.style.display="none";$("imagePreviewText").textContent="Valid HTTPS image URL paste କର।";}});
+function loadDesigns(){onSnapshot(collection(db,"designs"),s=>{designs=s.docs.map(d=>({id:d.id,...d.data()}));designs.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));renderDesigns();},e=>{$("designGallery").textContent="Design load error: "+e.message;});}
+function renderDesigns(){const g=$("designGallery");if(!designs.length){g.innerHTML="<p>No designs added yet.</p>";return;}g.innerHTML=designs.map(d=>`<div class="design-card"><img src="${safe(d.imageUrl)}" alt="${safe(d.name)}" loading="lazy"><h4>${safe(d.name||"Design")}</h4><p class="small">${safe(d.category||"Other")}</p><button class="dark" data-action="edit-design" data-id="${safe(d.id)}">Edit</button><button class="red" data-action="delete-design" data-id="${safe(d.id)}">Delete</button></div>`).join("");}
+$("designForm").addEventListener("submit",async e=>{e.preventDefault();if(!isAdmin)return;const name=$("designName").value.trim(),category=$("designCategory").value,imageUrl=$("designImageUrl").value.trim();if(!name||!category||!validImageUrl(imageUrl)){alert("Design Name, Category ଓ valid HTTPS Image URL ଦିଅ।");return;}const btn=$("designSubmit");btn.disabled=true;btn.textContent=editingDesignId?"Updating...":"Adding...";try{if(editingDesignId){await updateDoc(doc(db,"designs",editingDesignId),{name,category,imageUrl,updatedAt:serverTimestamp()});alert("Design updated successfully.");}else{await addDoc(collection(db,"designs"),{name,category,imageUrl,active:true,createdAt:serverTimestamp()});alert("New design added successfully.");}resetDesignForm();}catch(e){alert("Design save error: "+e.message);}finally{btn.disabled=false;btn.textContent=editingDesignId?"Update Design":"Add Design";}});
+function resetDesignForm(){editingDesignId=null;$("designForm").reset();$("designPreview").removeAttribute("src");$("designPreview").style.display="none";$("imagePreviewText").textContent="Image preview ଏଠାରେ ଦେଖାଯିବ।";$("designSubmit").textContent="Add Design";$("cancelEditBtn").style.display="none";}
 $("cancelEditBtn").addEventListener("click",resetDesignForm);
-
-// EDIT / DELETE DESIGN
-$("designGallery").addEventListener("click",async event=>{
- const button=event.target.closest("button[data-action]");
- if(!button || !isAdmin)return;
- const design=designs.find(d=>d.id===button.dataset.id);
- if(!design)return;
-
- if(button.dataset.action==="edit-design"){
-  editingDesignId=design.id;
-  $("designName").value=design.name||"";
-  $("designCategory").value=design.category||"";
-  $("designImageUrl").value=design.imageUrl||"";
-  $("designPreview").src=design.imageUrl||"";
-  $("designPreview").style.display=design.imageUrl?"block":"none";
-  $("designSubmit").textContent="Update Design";
-  $("cancelEditBtn").style.display="inline-block";
-  $("designForm").scrollIntoView({behavior:"smooth"});
- }
-
- if(button.dataset.action==="delete-design"){
-  if(!confirm("ଏହି Design Gallery ରୁ Delete କରିବାକୁ ଚାହୁଁଛ କି?"))return;
-  try{
-   await deleteDoc(doc(db,"designs",design.id));
-   alert("Design deleted.");
-  }catch(error){
-   alert("Delete error: "+error.message);
-  }
- }
-});
-
-// LOAD CUSTOMER DESIGN REQUESTS
-function loadDesignRequests(){
- onSnapshot(collection(db,"designRequests"),snapshot=>{
-  const list=$("designList");
-  if(snapshot.empty){
-   list.innerHTML="<p>No design requests found.</p>";
-   return;
-  }
-
-  const requests=snapshot.docs.map(d=>({id:d.id,...d.data()}));
-  requests.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-
-  list.innerHTML=requests.map(r=>`
-   <div class="item">
-    <h4>${safe(r.designName||"Selected Design")}</h4>
-    ${r.imageUrl?`<img class="request-image" src="${safe(r.imageUrl)}" alt="Selected design">`:""}
-    <p><b>Customer:</b> ${safe(r.customerName||r.name||"Customer")}</p>
-    <p><b>Phone:</b> ${safe(r.phone||r.customerPhone||"-")}</p>
-    <p><b>Message:</b> ${safe(r.description||r.request||r.message||"-")}</p>
-    <p><b>Status:</b> <span class="status">${safe(r.status||"pending")}</span></p>
-    <label>Update Request Status</label>
-    <select id="request-status-${safe(r.id)}">
-     <option value="pending" ${(r.status||"pending")==="pending"?"selected":""}>Pending</option>
-     <option value="approved" ${r.status==="approved"?"selected":""}>Approved</option>
-     <option value="rejected" ${r.status==="rejected"?"selected":""}>Rejected</option>
-    </select>
-    <button class="green" data-action="update-request" data-id="${safe(r.id)}">Save Request Status</button>
-   </div>
-  `).join("");
- },error=>{
-  $("designList").textContent="Design request error: "+error.message;
- });
-}
-
-// UPDATE REQUEST STATUS
-$("designList").addEventListener("click",async event=>{
- const button=event.target.closest("button[data-action='update-request']");
- if(!button || !isAdmin)return;
- const id=button.dataset.id;
- const status=$("request-status-"+id)?.value;
- if(!status)return;
-
- try{
-  await updateDoc(doc(db,"designRequests",id),{
-   status,updatedAt:serverTimestamp()
-  });
-
-  const requestMessage={
-   approved:"Your selected design request has been approved.",
-   rejected:"Your selected design request was not approved. Please contact us.",
-   pending:"Your design request is pending."
-  }[status];
-
-  const requestDoc=designRequestCache.get(id);
-  if(requestDoc?.userId){
-   await addDoc(collection(db,"notifications"),{
-    userId:requestDoc.userId,
-    title:"Design Request Updated",
-    message:requestMessage,
-    createdAt:serverTimestamp()
-   });
-  }
-  alert("Design request status updated.");
- }catch(error){
-  alert("Request update error: "+error.message);
- }
-});
-
-// Keep latest request data for notifications
-const designRequestCache=new Map();
-function watchRequestCache(){
- onSnapshot(collection(db,"designRequests"),snapshot=>{
-  designRequestCache.clear();
-  snapshot.docs.forEach(d=>designRequestCache.set(d.id,d.data()));
- });
-}
-watchRequestCache();
-
-// ADMIN NOTIFICATIONS
-function loadAdminNotifications(){
- onSnapshot(collection(db,"notifications"),snapshot=>{
-  const list=$("adminNotifications");
-  if(snapshot.empty){
-   list.innerHTML="<p>No notifications.</p>";
-   return;
-  }
-  const items=snapshot.docs.map(d=>d.data());
-  items.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-  list.innerHTML=items.slice(0,30).map(n=>`
-   <div class="item">
-    <b>${safe(n.title||"Notification")}</b>
-    <p>${safe(n.message||"")}</p>
-   </div>
-  `).join("");
- },error=>{
-  $("adminNotifications").textContent="Notification error: "+error.message;
- });
-}
-
-// PREVENT PAST DATES
-const today=new Date();
-const localToday=[
- today.getFullYear(),
- String(today.getMonth()+1).padStart(2,"0"),
- String(today.getDate()).padStart(2,"0")
-].join("-");
-$("waDate").min=localToday;
+$("designGallery").addEventListener("click",async e=>{const btn=e.target.closest("button[data-action]");if(!btn||!isAdmin)return;const d=designs.find(x=>x.id===btn.dataset.id);if(!d)return;if(btn.dataset.action==="edit-design"){editingDesignId=d.id;$("designName").value=d.name||"";$("designCategory").value=d.category||"";$("designImageUrl").value=d.imageUrl||"";$("designPreview").src=d.imageUrl||"";$("designPreview").style.display=d.imageUrl?"block":"none";$("designSubmit").textContent="Update Design";$("cancelEditBtn").style.display="inline-block";$("designForm").scrollIntoView({behavior:"smooth"});}if(btn.dataset.action==="delete-design"){if(!confirm("ଏହି Design Gallery ରୁ Delete କରିବାକୁ ଚାହୁଁଛ କି?"))return;try{await deleteDoc(doc(db,"designs",d.id));alert("Design deleted.");}catch(e){alert("Delete error: "+e.message);}}});
+function loadDesignRequests(){onSnapshot(collection(db,"designRequests"),s=>{const list=$("designList");designRequestCache.clear();if(s.empty){list.innerHTML="<p>No design requests found.</p>";return;}const rs=s.docs.map(d=>{const x=d.data();designRequestCache.set(d.id,x);return{id:d.id,...x};});rs.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));list.innerHTML=rs.map(r=>`<div class="item"><h4>${safe(r.designName||"Selected Design")}</h4>${r.imageUrl?`<img class="request-image" src="${safe(r.imageUrl)}" alt="Selected design">`:""}<p><b>Customer:</b> ${safe(r.customerName||r.name||"Customer")}</p><p><b>Phone:</b> ${safe(r.phone||r.customerPhone||"-")}</p><p><b>Message:</b> ${safe(r.description||r.request||r.message||"-")}</p><p><b>Status:</b> ${safe(r.status||"pending")}</p><label>Update Request Status</label><select id="request-status-${safe(r.id)}"><option value="pending" ${(r.status||"pending")==="pending"?"selected":""}>Pending</option><option value="approved" ${r.status==="approved"?"selected":""}>Approved</option><option value="rejected" ${r.status==="rejected"?"selected":""}>Rejected</option></select><button class="green" data-action="update-request" data-id="${safe(r.id)}">Save Request Status</button></div>`).join("");},e=>{$("designList").textContent="Design request error: "+e.message;});}
+$("designList").addEventListener("click",async e=>{const btn=e.target.closest("button[data-action='update-request']");if(!btn||!isAdmin)return;const id=btn.dataset.id,status=$("request-status-"+id)?.value;if(!status)return;try{await updateDoc(doc(db,"designRequests",id),{status});const msg={approved:"Your selected design request has been approved.",rejected:"Your selected design request was not approved. Please contact us.",pending:"Your design request is pending."}[status];const r=designRequestCache.get(id);if(r?.userId)await addDoc(collection(db,"notifications"),{userId:r.userId,title:"Design Request Updated",message:msg,createdAt:serverTimestamp()});alert("Design request status updated.");}catch(e){alert("Request update error: "+e.message);}});
+function loadAdminNotifications(){onSnapshot(collection(db,"notifications"),s=>{const list=$("adminNotifications");if(s.empty){list.innerHTML="<p>No notifications.</p>";return;}const items=s.docs.map(d=>d.data());items.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));list.innerHTML=items.slice(0,30).map(n=>`<div class="item"><b>${safe(n.title||"Notification")}</b><p>${safe(n.message||"")}</p></div>`).join("");},e=>{$("adminNotifications").textContent="Notification error: "+e.message;});}
+const today=new Date();$("waDate").min=[today.getFullYear(),String(today.getMonth()+1).padStart(2,"0"),String(today.getDate()).padStart(2,"0")].join("-");
 </script>
 </body>
 </html>
