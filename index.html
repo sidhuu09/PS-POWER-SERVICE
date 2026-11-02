@@ -5,6 +5,45 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PS POWER SERVICE</title>
 <style>
+  
+.contact-footer {
+  background: #171717;
+  color: #fff;
+  text-align: center;
+  padding: 35px 15px 15px;
+  border-top: 4px solid #ffd500;
+}
+.contact-footer h2 {
+  color: #ffd500;
+}
+.contact-footer h3 {
+  color: #fff;
+}
+.contact-number {
+  margin: 20px auto;
+}
+.call-btn, .whatsapp-btn {
+  display: inline-block;
+  padding: 11px 18px;
+  margin: 5px;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: bold;
+}
+.call-btn {
+  background: #ffd500;
+  color: #171717;
+}
+.whatsapp-btn {
+  background: #25D366;
+  color: #fff;
+}
+.copyright {
+  border-top: 1px solid #555;
+  padding-top: 15px;
+  font-size: 13px;
+}
+
 :root{--yellow:#ffd500;--ink:#171717;--paper:#fff;--soft:#fff9dc;--line:#e5e5e5}
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#222}
@@ -423,5 +462,28 @@ onAuthStateChanged(auth,user=>{
  location.replace("customer.html");
 });
 </script>
+<!-- CONTACT FOOTER -->
+<footer class="contact-footer">
+  <h2>⚡ PS POWER SERVICE</h2>
+  <h3>MR SIDHU ELECTRICIAN</h3>
+  <p>📍Dhadakuluguda</p>
+  <p>📧 sidharthhuika099@gmail.com</p>
+
+  <div class="contact-number">
+    <p>📞 8144722094</p>
+    <a href="tel:8144722094" class="call-btn">CALL NOW</a>
+    <a href="https://wa.me/918144722094" class="whatsapp-btn">WHATSAPP</a>
+  </div>
+
+  <div class="contact-number">
+    <p>📞 6371889102</p>
+    <a href="tel:6371889102" class="call-btn">CALL NOW</a>
+  </div>
+
+  <p class="copyright">
+    © 2026 PS POWER SERVICE | All Rights Reserved
+  </p>
+</footer>
+
 </body>
 </html>
