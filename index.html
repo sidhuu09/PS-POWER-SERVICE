@@ -186,10 +186,27 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
     &nbsp;&nbsp; ⚡💥PS POWER SERVICE💥⚡
   </span>
 </div>
+
 <header>
   <div class="logo">⚡ PS POWER SERVICE</div>
-  <nav><a href="#home">Home</a><a href="#services">Services</a><a href="#account">Account</a></nav>
+
+  <button class="menu-toggle"
+    onclick="toggleMenu()"
+    aria-label="Open menu"
+    aria-expanded="false"
+    id="menuButton">☰</button>
+
+  <nav class="menu-dropdown" id="menuDropdown">
+    <a href="#home" onclick="closeMenu()">🏠 Home</a>
+    <a href="#services" onclick="closeMenu()">⚡ Services</a>
+    <a href="#services" onclick="closeMenu()">🖼️ Our Work Gallery</a>
+    <a href="#account" onclick="showLogin();closeMenu()">👤 Customer Login</a>
+    <a href="#account" onclick="showRegister();closeMenu()">📝 Customer Register</a>
+    <a href="#account" onclick="showAdminLogin();closeMenu()">🔐 Admin Login</a>
+    <a href="#contact" onclick="closeMenu()">📞 Contact Us</a>
+  </nav>
 </header>
+
 <!-- HOME PHOTO SLIDER -->
 <div class="photo-slider" id="home">
   <div class="slide active">
@@ -522,6 +539,19 @@ onAuthStateChanged(auth,user=>{
     © 2026 PS POWER SERVICE | All Rights Reserved
   </p>
 </footer>
+<script>
+function toggleMenu() {
+  const menu = document.getElementById("menuDropdown");
+  const button = document.getElementById("menuButton");
 
+  const isOpen = menu.classList.toggle("show");
+  button.setAttribute("aria-expanded", String(isOpen));
+}
+
+function closeMenu() {
+  document.getElementById("menuDropdown").classList.remove("show");
+  document.getElementById("menuButton").setAttribute("aria-expanded", "false");
+}
+</script>
 </body>
 </html>
