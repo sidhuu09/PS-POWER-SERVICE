@@ -6,6 +6,44 @@
 <title>PS POWER SERVICE</title>
 <style>
   
+.menu-toggle {
+  background: #ffd500;
+  color: #171717;
+  border: 0;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-size: 22px;
+  cursor: pointer;
+}
+.menu-dropdown {
+  display: none;
+  position: absolute;
+  right: 5%;
+  top: 65px;
+  background: #171717;
+  border: 2px solid #ffd500;
+  border-radius: 8px;
+  min-width: 210px;
+  z-index: 1000;
+  padding: 8px;
+}
+.menu-dropdown.show {
+  display: block;
+}
+.menu-dropdown a {
+  display: block;
+  color: white;
+  padding: 12px;
+  text-decoration: none;
+}
+.menu-dropdown a:hover {
+  background: #ffd500;
+  color: #171717;
+}
+header {
+  position: relative;
+}
+
 .contact-footer {
   background: #171717;
   color: #fff;
