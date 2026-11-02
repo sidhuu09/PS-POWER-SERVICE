@@ -31,7 +31,12 @@ label{font-weight:bold;font-size:14px}
 .design-card button{width:100%;margin-top:8px}
 .selected{border:2px solid #168a45;background:#f0fff4}
 .verified{color:#168a45;font-weight:bold}
-@media(max-width:500px){header h2{font-size:16px}header{padding:13px}}
+.utr-box{border:1px solid #ddd;border-radius:9px;padding:14px;margin:12px 0}
+@media(max-width:500px){
+ header h2{font-size:16px}
+ header{padding:13px}
+ .card{padding:15px}
+}
 </style>
 </head>
 
@@ -47,11 +52,13 @@ label{font-weight:bold;font-size:14px}
 <section class="card">
 <h3>Welcome, <span id="customerName">Customer</span>!</h3>
 <p id="customerEmail" class="muted"></p>
-<p>Service Booking, Design Gallery, Payment Status ଓ Booking History ଏଠାରେ ଦେଖିପାରିବ।</p>
+<p>Service Booking, Payment, Design Gallery ଓ Booking History ଏଠାରେ ଦେଖିପାରିବ।</p>
 </section>
 
+<!-- 1. BOOKING SERVICES -->
 <section class="card">
-<h3>Book a Service</h3>
+<h3>1. Book a Service</h3>
+
 <form id="bookingForm">
 <label>Service Select କର</label>
 <select id="service" required>
@@ -72,19 +79,52 @@ label{font-weight:bold;font-size:14px}
 
 <button id="bookingSubmit" type="submit">Submit Booking</button>
 </form>
-<p class="muted">Booking submit କଲେ ₹20 booking fee pending ରହିବ। Admin payment verify କରିବା ପରେ Paid ହେବ।</p>
+
+<p class="muted">ପ୍ରତ୍ୟେକ Booking ପାଇଁ ₹20 Booking Fee ଦେବାକୁ ପଡ଼ିବ। Admin Payment Verify କରିବେ।</p>
 </section>
 
-<!-- DESIGN GALLERY -->
+<!-- 2. QR PAYMENT -->
 <section class="card">
-<h3>Our Design Gallery</h3>
+<h3>2. ₹20 Booking Fee Payment</h3>
+
+<p>PhonePe / UPI ଦ୍ୱାରା ₹20 Payment କର।</p>
+
+<img class="qr"
+src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png"
+alt="PS POWER SERVICE Booking Payment QR Code">
+
+<p style="text-align:center"><b>Booking Fee: ₹20</b></p>
+
+<p class="muted">
+Payment କରିବା ପରେ ତଳେ ଥିବା UTR Submission Section ରେ ନିଜ Booking ପାଇଁ UTR Number Submit କର।
+</p>
+
+<p class="muted">
+କେବଳ UTR Submit କଲେ Payment Paid ହେବ ନାହିଁ। Admin UPI Transaction ଯାଞ୍ଚ କରିବା ପରେ Paid କରିବେ।
+</p>
+</section>
+
+<!-- 3. UTR SUBMISSION -->
+<section class="card">
+<h3>3. Submit UTR Number</h3>
+<p class="muted">ତୁମର Booking ବାଛି UTR / Transaction Number Submit କର।</p>
+
+<div id="utrSubmissionList">Loading your bookings...</div>
+</section>
+
+<!-- 4. DESIGN GALLERY -->
+<section class="card">
+<h3>4. Our Design Gallery</h3>
 <p class="muted">ପସନ୍ଦର Design ବାଛି Request ପଠାଅ।</p>
 
 <div id="designGallery" class="gallery">Loading designs...</div>
 
 <form id="designRequestForm" style="margin-top:18px">
 <h3>Submit Design Request</h3>
-<p id="selectedDesignText" class="muted">ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।</p>
+
+<p id="selectedDesignText" class="muted">
+ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।
+</p>
 
 <label>Your Phone Number</label>
 <input id="designPhone" type="tel" maxlength="15" required placeholder="Phone number">
@@ -92,60 +132,44 @@ label{font-weight:bold;font-size:14px}
 <label>Additional Message (Optional)</label>
 <textarea id="designMessage" rows="3" maxlength="500" placeholder="କେଉଁ ପ୍ରକାର କାମ ଚାହୁଁଛ, ଲେଖ।"></textarea>
 
-<button class="green" id="designRequestSubmit" type="submit" disabled>Submit Design Request</button>
+<button class="green" id="designRequestSubmit" type="submit" disabled>
+Submit Design Request
+</button>
 </form>
 </section>
 
-<!-- MY DESIGN REQUESTS -->
+<!-- 5. MY DESIGN REQUESTS -->
 <section class="card">
-<h3>My Design Requests</h3>
+<h3>5. My Design Requests</h3>
 <div id="myDesignRequests">Loading requests...</div>
 </section>
 
-<!-- PAYMENT QR -->
+<!-- 6. BOOKING HISTORY -->
 <section class="card">
-<h3>₹20 Booking Fee Payment</h3>
-<p>PhonePe / UPI ଦ୍ୱାରା ₹20 payment କର।</p>
-
-<img class="qr"
-src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png"
-alt="Booking Payment QR Code">
-
-<p><b>Booking Fee: ₹20</b></p>
-
-<p class="muted">
-Payment କରିବା ପରେ My Booking History ରେ ନିଜ Booking ପାଇଁ UTR Number Submit କର।
-</p>
-
-<p class="muted">
-କେବଳ UTR Submit କଲେ Payment Paid ହେବ ନାହିଁ। Admin payment ଯାଞ୍ଚ କରିବା ପରେ Paid କରିବେ।
-</p>
-</section>
-
-<!-- MY BOOKING HISTORY -->
-<section class="card">
-<h3>My Booking History</h3>
-<p class="muted">ପ୍ରତ୍ୟେକ Booking ପାଇଁ ₹20 Payment କରି UTR Number Submit କର।</p>
+<h3>6. My Booking History</h3>
+<p class="muted">ତୁମର ସମସ୍ତ Booking ଓ Payment Status ଏଠାରେ ଦେଖିପାରିବ।</p>
 <div id="bookingList">Loading bookings...</div>
 </section>
 
-<!-- NOTIFICATIONS -->
+<!-- 7. NOTIFICATIONS -->
 <section class="card">
-<h3>My Notifications</h3>
+<h3>7. My Notifications</h3>
 <div id="notificationList">Loading notifications...</div>
 </section>
 
-<!-- WHATSAPP -->
+<!-- 8. WHATSAPP -->
 <section class="card">
-<h3>WhatsApp Booking</h3>
-<p>WhatsApp message ମାତ୍ର payment proof ନୁହେଁ। ₹20 payment ଓ Admin verification ଆବଶ୍ୟକ।</p>
+<h3>8. WhatsApp Booking</h3>
+<p>WhatsApp Message ମାତ୍ର Payment Proof ନୁହେଁ। ₹20 Payment ଓ Admin Verification ଆବଶ୍ୟକ।</p>
 <button class="green" id="whatsappBtn" type="button">WhatsApp Booking</button>
 </section>
 
 </main>
 
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+import {initializeApp}
+from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
 import {
  getAuth,onAuthStateChanged,signOut
@@ -176,10 +200,15 @@ const $=id=>document.getElementById(id);
 let currentCustomer=null;
 let selectedDesign=null;
 let customerProfile={};
+let customerBookings=[];
 
 function escapeHTML(value){
  return String(value??"").replace(/[&<>"']/g,char=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
  })[char]);
 }
 
@@ -190,8 +219,15 @@ function safeImageUrl(value){
  }catch{return "";}
 }
 
+function sortNewest(items){
+ return items.sort((a,b)=>
+  (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
+ );
+}
+
 // AUTHENTICATION
 onAuthStateChanged(auth,async user=>{
+
  if(!user){
   location.replace("index.html");
   return;
@@ -203,16 +239,22 @@ onAuthStateChanged(auth,async user=>{
  }
 
  currentCustomer=user;
+
  $("customerName").textContent=user.displayName||"Customer";
  $("customerEmail").textContent=user.email||"";
 
  try{
   const userDoc=await getDoc(doc(db,"users",user.uid));
+
   if(userDoc.exists()){
    customerProfile=userDoc.data();
-   $("customerName").textContent=customerProfile.name||user.displayName||"Customer";
+
+   $("customerName").textContent=
+    customerProfile.name||user.displayName||"Customer";
+
    $("designPhone").value=customerProfile.phone||"";
   }
+
  }catch(error){
   console.error("Profile error:",error);
  }
@@ -235,6 +277,7 @@ $("logoutBtn").addEventListener("click",async()=>{
 
 // BOOKING
 $("bookingForm").addEventListener("submit",async event=>{
+
  event.preventDefault();
 
  if(!currentCustomer)return alert("Please login first.");
@@ -247,6 +290,7 @@ $("bookingForm").addEventListener("submit",async event=>{
   return alert("ସମସ୍ତ ତଥ୍ୟ ପୂରଣ କର।");
 
  const today=new Date();
+
  const localToday=[
   today.getFullYear(),
   String(today.getMonth()+1).padStart(2,"0"),
@@ -261,12 +305,14 @@ $("bookingForm").addEventListener("submit",async event=>{
  button.textContent="Submitting...";
 
  try{
+
   await addDoc(collection(db,"bookings"),{
    userId:currentCustomer.uid,
    customerName:customerProfile.name||currentCustomer.displayName||"Customer",
    customerPhone:customerProfile.phone||"",
    customerEmail:currentCustomer.email||"",
-   service,address,
+   service,
+   address,
    bookingDate:date,
    bookingFee:20,
    paymentStatus:"pending",
@@ -275,7 +321,8 @@ $("bookingForm").addEventListener("submit",async event=>{
    createdAt:serverTimestamp()
   });
 
-  alert("Booking submit ହୋଇଗଲା। ₹20 payment କରି My Booking History ରେ UTR Submit କର।");
+  alert("Booking submit ହୋଇଗଲା। ₹20 Payment କରି UTR Number Submit କର।");
+
   $("bookingForm").reset();
 
  }catch(error){
@@ -286,209 +333,88 @@ $("bookingForm").addEventListener("submit",async event=>{
  }
 });
 
-// LOAD DESIGN GALLERY
-function loadDesignGallery(){
- onSnapshot(collection(db,"designs"),snapshot=>{
-  const gallery=$("designGallery");
-
-  const activeDesigns=snapshot.docs
-   .map(d=>({id:d.id,...d.data()}))
-   .filter(d=>d.active!==false);
-
-  if(!activeDesigns.length){
-   gallery.innerHTML="<p>ଏପର୍ଯ୍ୟନ୍ତ Design ଯୋଡ଼ାଯାଇନାହିଁ। ପରେ ଆସ।</p>";
-   return;
-  }
-
-  gallery.innerHTML=activeDesigns.map(d=>{
-   const image=safeImageUrl(d.imageUrl);
-
-   return `
-    <div class="design-card ${selectedDesign?.id===d.id?"selected":""}">
-     ${image?`<img src="${escapeHTML(image)}" alt="${escapeHTML(d.name)}" loading="lazy">`:"<p>Image unavailable</p>"}
-     <h4>${escapeHTML(d.name||"Design")}</h4>
-     <p class="muted">${escapeHTML(d.category||"Other")}</p>
-     <button type="button" data-select-design="${escapeHTML(d.id)}">
-      ${selectedDesign?.id===d.id?"Selected ✓":"Select Design"}
-     </button>
-    </div>`;
-  }).join("");
-
- },error=>{
-  $("designGallery").textContent="Design load error: "+error.message;
- });
-}
-
-// SELECT DESIGN
-$("designGallery").addEventListener("click",event=>{
- const button=event.target.closest("button[data-select-design]");
- if(!button)return;
-
- const designId=button.dataset.selectDesign;
- const card=button.closest(".design-card");
- const name=card?.querySelector("h4")?.textContent||"Selected Design";
- const category=card?.querySelector(".muted")?.textContent||"Other";
- const image=card?.querySelector("img")?.src||"";
-
- selectedDesign={
-  id:designId,
-  name,
-  category,
-  imageUrl:image
- };
-
- $("selectedDesignText").textContent="Selected: "+name;
- $("designRequestSubmit").disabled=false;
-
- document.querySelectorAll(".design-card")
-  .forEach(item=>item.classList.remove("selected"));
-
- card?.classList.add("selected");
-});
-
-// SUBMIT DESIGN REQUEST
-$("designRequestForm").addEventListener("submit",async event=>{
- event.preventDefault();
-
- if(!currentCustomer)return alert("Please login first.");
- if(!selectedDesign)return alert("ପ୍ରଥମେ Design Select କର।");
-
- const phone=$("designPhone").value.trim();
- const description=$("designMessage").value.trim();
-
- if(!phone)return alert("Phone number ଦିଅ।");
-
- const button=$("designRequestSubmit");
- button.disabled=true;
- button.textContent="Submitting...";
-
- try{
-  await addDoc(collection(db,"designRequests"),{
-   userId:currentCustomer.uid,
-   customerName:customerProfile.name||currentCustomer.displayName||"Customer",
-   phone,
-   designId:selectedDesign.id,
-   designName:selectedDesign.name,
-   category:selectedDesign.category,
-   imageUrl:selectedDesign.imageUrl,
-   description,
-   status:"pending",
-   createdAt:serverTimestamp()
-  });
-
-  alert("Design Request submit ହୋଇଗଲା। Admin ଯାଞ୍ଚ କରିବେ।");
-
-  $("designMessage").value="";
-  selectedDesign=null;
-  $("selectedDesignText").textContent="ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।";
-  $("designRequestSubmit").disabled=true;
-
- }catch(error){
-  alert("Design request error: "+error.message);
- }finally{
-  button.disabled=false;
-  button.textContent="Submit Design Request";
- }
-});
-
-// MY DESIGN REQUESTS
-function loadMyDesignRequests(uid){
- const q=query(collection(db,"designRequests"),where("userId","==",uid));
-
- onSnapshot(q,snapshot=>{
-  const list=$("myDesignRequests");
-
-  if(snapshot.empty){
-   list.innerHTML="<p>ତୁମେ ଏପର୍ଯ୍ୟନ୍ତ Design Request ପଠାଇନାହଁ।</p>";
-   return;
-  }
-
-  const items=snapshot.docs.map(d=>d.data());
-
-  items.sort((a,b)=>
-   (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
-  );
-
-  list.innerHTML=items.map(r=>`
-   <div class="design-request">
-    <b>${escapeHTML(r.designName||"Selected Design")}</b>
-    ${safeImageUrl(r.imageUrl)?`<p><img src="${escapeHTML(safeImageUrl(r.imageUrl))}" alt="Selected design" style="width:100%;max-width:220px;border-radius:8px"></p>`:""}
-    <p>Category: ${escapeHTML(r.category||"-")}</p>
-    <p>Message: ${escapeHTML(r.description||"-")}</p>
-    <p>Request Status: <span class="status">${escapeHTML(r.status||"pending")}</span></p>
-   </div>
-  `).join("");
-
- },error=>{
-  $("myDesignRequests").textContent="Request load error: "+error.message;
- });
-}
-
-// BOOKING HISTORY
+// LOAD BOOKINGS
 function loadBookings(uid){
- const q=query(collection(db,"bookings"),where("userId","==",uid));
+
+ const q=query(
+  collection(db,"bookings"),
+  where("userId","==",uid)
+ );
 
  onSnapshot(q,snapshot=>{
-  const list=$("bookingList");
 
-  if(snapshot.empty){
-   list.innerHTML="<p>ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି Booking ନାହିଁ।</p>";
-   return;
-  }
-
-  const bookings=snapshot.docs.map(d=>({
+  customerBookings=sortNewest(snapshot.docs.map(d=>({
    id:d.id,
    ...d.data()
-  }));
+  })));
 
-  bookings.sort((a,b)=>
-   (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
-  );
-
-  list.innerHTML=bookings.map(b=>`
-   <div class="booking">
-    <b>${escapeHTML(b.service||"Service")}</b>
-
-    <p>Date: ${escapeHTML(b.bookingDate||"-")}</p>
-    <p>Address: ${escapeHTML(b.address||"-")}</p>
-
-    <p>Booking Status:
-     <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span>
-    </p>
-
-    <p>Payment:
-     <span class="status">${escapeHTML(b.paymentStatus||"pending")}</span>
-    </p>
-
-    <p>Booking Fee: ₹${Number(b.bookingFee??20)}</p>
-
-    ${
-     b.paymentStatus==="paid"
-     ? `<p class="verified">✓ Payment Verified by Admin</p>`
-     : b.paymentProofStatus==="submitted"
-       ? `<p>UTR Number: <b>${escapeHTML(b.paymentReference||"-")}</b></p>
-          <p class="status">Admin Verification Pending</p>`
-       : `<label>UTR / Transaction Number</label>
-          <input type="text"
-           id="utr-${escapeHTML(b.id)}"
-           maxlength="50"
-           placeholder="Enter UTR Number">
-          <button type="button"
-           class="green"
-           data-submit-utr="${escapeHTML(b.id)}">
-           Submit UTR
-          </button>`
-    }
-   </div>
-  `).join("");
+  renderUTRSubmission();
+  renderBookingHistory();
 
  },error=>{
-  $("bookingList").textContent="Bookings load error: "+error.message;
+  $("utrSubmissionList").textContent="Booking load error: "+error.message;
+  $("bookingList").textContent="Booking load error: "+error.message;
  });
+}
+
+// UTR SUBMISSION LIST
+function renderUTRSubmission(){
+
+ const list=$("utrSubmissionList");
+
+ const unpaid=customerBookings.filter(b=>
+  b.paymentStatus!=="paid" &&
+  b.paymentProofStatus!=="submitted" &&
+  b.paymentProofStatus!=="verified"
+ );
+
+ if(!customerBookings.length){
+  list.innerHTML="<p>ପ୍ରଥମେ ଏକ Service Booking କର।</p>";
+  return;
+ }
+
+ if(!unpaid.length){
+  list.innerHTML="<p class='verified'>✓ ସମସ୍ତ Booking ପାଇଁ UTR Submit ହୋଇସାରିଛି କିମ୍ବା Payment Verified ହୋଇଛି।</p>";
+  return;
+ }
+
+ list.innerHTML=unpaid.map(b=>`
+
+  <div class="utr-box">
+
+   <b>${escapeHTML(b.service||"Service")}</b>
+
+   <p class="muted">
+    Booking Date: ${escapeHTML(b.bookingDate||"-")}
+   </p>
+
+   <p class="muted">
+    Booking Fee: ₹${Number(b.bookingFee??20)}
+   </p>
+
+   <label>UTR / Transaction Number</label>
+
+   <input
+    type="text"
+    id="utr-${escapeHTML(b.id)}"
+    maxlength="40"
+    placeholder="Enter UTR Number">
+
+   <button
+    type="button"
+    class="green"
+    data-submit-utr="${escapeHTML(b.id)}">
+    Submit UTR
+   </button>
+
+  </div>
+
+ `).join("");
 }
 
 // SUBMIT UTR
-$("bookingList").addEventListener("click",async event=>{
+$("utrSubmissionList").addEventListener("click",async event=>{
+
  const button=event.target.closest("button[data-submit-utr]");
  if(!button)return;
 
@@ -499,7 +425,9 @@ $("bookingList").addEventListener("click",async event=>{
  const utr=input?.value.trim();
 
  if(!utr)return alert("UTR Number ଦିଅ।");
- if(utr.length<6)return alert("ଠିକ୍ UTR Number ଦିଅ।");
+
+ if(utr.length<6||utr.length>40)
+  return alert("ଠିକ୍ UTR Number ଦିଅ।");
 
  const utrPattern=/^[A-Za-z0-9-]+$/;
 
@@ -510,6 +438,7 @@ $("bookingList").addEventListener("click",async event=>{
  button.textContent="Submitting...";
 
  try{
+
   const bookingRef=doc(db,"bookings",bookingId);
   const bookingSnap=await getDoc(bookingRef);
 
@@ -533,7 +462,7 @@ $("bookingList").addEventListener("click",async event=>{
    paymentSubmittedAt:serverTimestamp()
   });
 
-  alert("UTR Number Submit ହୋଇଗଲା। Admin payment verify କରିବେ।");
+  alert("UTR Number Submit ହୋଇଗଲା। Admin Payment Verify କରିବେ।");
 
  }catch(error){
   alert("UTR Submit Error: "+error.message);
@@ -543,11 +472,233 @@ $("bookingList").addEventListener("click",async event=>{
  }
 });
 
-// NOTIFICATIONS
-function loadNotifications(uid){
- const q=query(collection(db,"notifications"),where("userId","==",uid));
+// BOOKING HISTORY
+function renderBookingHistory(){
+
+ const list=$("bookingList");
+
+ if(!customerBookings.length){
+  list.innerHTML="<p>ଏପର୍ଯ୍ୟନ୍ତ କୌଣସି Booking ନାହିଁ।</p>";
+  return;
+ }
+
+ list.innerHTML=customerBookings.map(b=>`
+
+  <div class="booking">
+
+   <b>${escapeHTML(b.service||"Service")}</b>
+
+   <p>Date: ${escapeHTML(b.bookingDate||"-")}</p>
+
+   <p>Address: ${escapeHTML(b.address||"-")}</p>
+
+   <p>Booking Status:
+    <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span>
+   </p>
+
+   <p>Payment:
+    <span class="status">${escapeHTML(b.paymentStatus||"pending")}</span>
+   </p>
+
+   <p>Booking Fee: ₹${Number(b.bookingFee??20)}</p>
+
+   ${
+    b.paymentStatus==="paid"
+    ? `<p class="verified">✓ Payment Verified by Admin</p>`
+    : b.paymentProofStatus==="submitted"
+      ? `<p>UTR Number: <b>${escapeHTML(b.paymentReference||"-")}</b></p>
+         <p class="status">Admin Verification Pending</p>`
+      : `<p class="muted">UTR Number ଏପର୍ଯ୍ୟନ୍ତ Submit ହୋଇନାହିଁ।</p>`
+   }
+
+  </div>
+
+ `).join("");
+}
+
+// LOAD DESIGN GALLERY
+function loadDesignGallery(){
+
+ onSnapshot(collection(db,"designs"),snapshot=>{
+
+  const gallery=$("designGallery");
+
+  const activeDesigns=snapshot.docs
+   .map(d=>({id:d.id,...d.data()}))
+   .filter(d=>d.active!==false);
+
+  if(!activeDesigns.length){
+   gallery.innerHTML="<p>ଏପର୍ଯ୍ୟନ୍ତ Design ଯୋଡ଼ାଯାଇନାହିଁ। ପରେ ଆସ।</p>";
+   return;
+  }
+
+  gallery.innerHTML=activeDesigns.map(d=>{
+
+   const image=safeImageUrl(d.imageUrl);
+
+   return `
+    <div class="design-card ${selectedDesign?.id===d.id?"selected":""}">
+
+     ${image
+      ? `<img src="${escapeHTML(image)}" alt="${escapeHTML(d.name)}" loading="lazy">`
+      : "<p>Image unavailable</p>"}
+
+     <h4>${escapeHTML(d.name||"Design")}</h4>
+
+     <p class="muted">${escapeHTML(d.category||"Other")}</p>
+
+     <button type="button" data-select-design="${escapeHTML(d.id)}">
+      ${selectedDesign?.id===d.id?"Selected ✓":"Select Design"}
+     </button>
+
+    </div>
+   `;
+
+  }).join("");
+
+ },error=>{
+  $("designGallery").textContent="Design load error: "+error.message;
+ });
+}
+
+// SELECT DESIGN
+$("designGallery").addEventListener("click",event=>{
+
+ const button=event.target.closest("button[data-select-design]");
+ if(!button)return;
+
+ const designId=button.dataset.selectDesign;
+ const card=button.closest(".design-card");
+
+ const name=card?.querySelector("h4")?.textContent||"Selected Design";
+ const category=card?.querySelector(".muted")?.textContent||"Other";
+ const image=card?.querySelector("img")?.src||"";
+
+ selectedDesign={
+  id:designId,
+  name,
+  category,
+  imageUrl:image
+ };
+
+ $("selectedDesignText").textContent="Selected: "+name;
+ $("designRequestSubmit").disabled=false;
+
+ document.querySelectorAll(".design-card")
+  .forEach(item=>item.classList.remove("selected"));
+
+ card?.classList.add("selected");
+});
+
+// SUBMIT DESIGN REQUEST
+$("designRequestForm").addEventListener("submit",async event=>{
+
+ event.preventDefault();
+
+ if(!currentCustomer)return alert("Please login first.");
+ if(!selectedDesign)return alert("ପ୍ରଥମେ Design Select କର।");
+
+ const phone=$("designPhone").value.trim();
+ const description=$("designMessage").value.trim();
+
+ if(!phone)return alert("Phone number ଦିଅ।");
+
+ const button=$("designRequestSubmit");
+ button.disabled=true;
+ button.textContent="Submitting...";
+
+ try{
+
+  await addDoc(collection(db,"designRequests"),{
+   userId:currentCustomer.uid,
+   customerName:customerProfile.name||currentCustomer.displayName||"Customer",
+   phone,
+   designId:selectedDesign.id,
+   designName:selectedDesign.name,
+   category:selectedDesign.category,
+   imageUrl:selectedDesign.imageUrl,
+   description,
+   status:"pending",
+   createdAt:serverTimestamp()
+  });
+
+  alert("Design Request submit ହୋଇଗଲା। Admin ଯାଞ୍ଚ କରିବେ।");
+
+  $("designMessage").value="";
+  selectedDesign=null;
+
+  $("selectedDesignText").textContent=
+   "ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।";
+
+  $("designRequestSubmit").disabled=true;
+
+  document.querySelectorAll(".design-card")
+   .forEach(item=>item.classList.remove("selected"));
+
+ }catch(error){
+  alert("Design request error: "+error.message);
+ }finally{
+  button.disabled=false;
+  button.textContent="Submit Design Request";
+ }
+});
+
+// MY DESIGN REQUESTS
+function loadMyDesignRequests(uid){
+
+ const q=query(
+  collection(db,"designRequests"),
+  where("userId","==",uid)
+ );
 
  onSnapshot(q,snapshot=>{
+
+  const list=$("myDesignRequests");
+
+  if(snapshot.empty){
+   list.innerHTML="<p>ତୁମେ ଏପର୍ଯ୍ୟନ୍ତ Design Request ପଠାଇନାହଁ।</p>";
+   return;
+  }
+
+  const items=sortNewest(snapshot.docs.map(d=>d.data()));
+
+  list.innerHTML=items.map(r=>`
+
+   <div class="design-request">
+
+    <b>${escapeHTML(r.designName||"Selected Design")}</b>
+
+    ${safeImageUrl(r.imageUrl)
+     ? `<p><img src="${escapeHTML(safeImageUrl(r.imageUrl))}" alt="Selected design" style="width:100%;max-width:220px;border-radius:8px"></p>`
+     : ""}
+
+    <p>Category: ${escapeHTML(r.category||"-")}</p>
+
+    <p>Message: ${escapeHTML(r.description||"-")}</p>
+
+    <p>Request Status:
+     <span class="status">${escapeHTML(r.status||"pending")}</span>
+    </p>
+
+   </div>
+
+  `).join("");
+
+ },error=>{
+  $("myDesignRequests").textContent="Request load error: "+error.message;
+ });
+}
+
+// NOTIFICATIONS
+function loadNotifications(uid){
+
+ const q=query(
+  collection(db,"notifications"),
+  where("userId","==",uid)
+ );
+
+ onSnapshot(q,snapshot=>{
+
   const list=$("notificationList");
 
   if(snapshot.empty){
@@ -555,17 +706,15 @@ function loadNotifications(uid){
    return;
   }
 
-  const items=snapshot.docs.map(d=>d.data());
-
-  items.sort((a,b)=>
-   (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
-  );
+  const items=sortNewest(snapshot.docs.map(d=>d.data()));
 
   list.innerHTML=items.map(n=>`
+
    <div class="booking">
     <b>${escapeHTML(n.title||"Notification")}</b>
     <p>${escapeHTML(n.message||"")}</p>
    </div>
+
   `).join("");
 
  },error=>{
@@ -575,9 +724,13 @@ function loadNotifications(uid){
 
 // WHATSAPP BOOKING
 $("whatsappBtn").addEventListener("click",()=>{
- const message="Hello PS POWER SERVICE, I want to book a service. Please guide me for the ₹20 booking fee and payment verification. A WhatsApp message alone is not proof of payment.";
 
- const url="https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);
+ const message=
+ "Hello PS POWER SERVICE, I want to book a service. Please guide me for the ₹20 booking fee and payment verification. A WhatsApp message alone is not proof of payment.";
+
+ const url=
+ "https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);
+
  window.open(url,"_blank");
 });
 
@@ -589,7 +742,7 @@ $("date").min=[
  String(now.getMonth()+1).padStart(2,"0"),
  String(now.getDate()).padStart(2,"0")
 ].join("-");
-</script>
 
+</script>
 </body>
 </html>
