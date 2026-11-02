@@ -176,21 +176,25 @@
     }
 
     try {
-      await addDoc(collection(db, "bookings"), {
-        userId: currentCustomer.uid,
-        customerName: currentCustomer.displayName || "Customer",
-        customerPhone: "",
-        customerEmail: currentCustomer.email || "",
-        service,
-        address,
-        date,
-        source: "Website",
-        fee: 20,
-        paymentStatus: "pending",
-        status: "pending",
-        createdAt: serverTimestamp()
-      });
+      
 
+const profile = await getDoc(doc(db, "users", currentCustomer.uid));
+const profileData = profile.exists() ? profile.data() : {};
+
+await addDoc(collection(db, "bookings"), {
+  userId: currentCustomer.uid,
+  customerName: profileData.name || currentCustomer.displayName || "Customer",
+  customerPhone: profileData.phone || "",
+  customerEmail: currentCustomer.email || "",
+  service: service,
+  address: address,
+  bookingDate: date,
+  bookingFee: 20,
+  paymentStatus: "pending",
+  bookingStatus: "pending",
+  createdAt: serverTimestamp()
+});
+  
       alert("Booking submit ହୋଇଗଲା। ₹20 payment କରି proof submit କର। Admin verification ପରେ status update ହେବ।");
       $("bookingForm").reset();
     } catch (error) {
