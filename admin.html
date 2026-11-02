@@ -1,0 +1,116 @@
+
+<!DOCTYPE html>
+<html lang="or">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | PS POWER SERVICE</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6f8;
+      color: #222;
+    }
+    header {
+      background: white;
+      padding: 18px;
+      border-bottom: 4px solid #ffc400;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .container { max-width: 1000px; margin: auto; padding: 20px; }
+    .card {
+      background: white;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px #00000010;
+    }
+    button {
+      background: #ffc400;
+      border: 0;
+      padding: 11px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .dark { background: #222; color: white; }
+    .muted { color: #666; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>⚡ PS POWER SERVICE</h2>
+  <button class="dark" id="logoutBtn">Logout</button>
+</header>
+
+<main class="container">
+  <h2>Admin Dashboard</h2>
+  <p id="adminWelcome">Checking Admin Login...</p>
+
+  <section class="card">
+    <h3>📋 Customer Bookings</h3>
+    <p id="bookingList">Bookings ଏଠାରେ ଦେଖାଯିବ।</p>
+  </section>
+
+  <section class="card">
+    <h3>💳 Payment Verification</h3>
+    <p>₹20 Booking Fee — Payment ଯାଞ୍ଚ କରିବା ପରେ ମାତ୍ର Paid କରିବେ।</p>
+    <p id="paymentList">Payment details ଏଠାରେ ଦେଖାଯିବ।</p>
+  </section>
+
+  <section class="card">
+    <h3>🔔 Admin Notifications</h3>
+    <p>ନୂଆ Booking Notification ଏଠାରେ ଯୋଡ଼ାଯିବ।</p>
+  </section>
+</main>
+
+<script type="module">
+  import { initializeApp } from
+    "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    // ଏଠାରେ ପୁରୁଣା index.html ର Firebase config ରଖିବା
+  };
+
+  const ADMIN_UID = "UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    if (user.uid !== ADMIN_UID) {
+      alert("Admin access only!");
+      signOut(auth).then(() => {
+        window.location.href = "index.html";
+      });
+      return;
+    }
+
+    document.getElementById("adminWelcome").textContent =
+      "Welcome Admin: " + user.email;
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await signOut(auth);
+    window.location.href = "index.html";
+  });
+</script>
+
+</body>
+</html>
