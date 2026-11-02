@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="or">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard | PS POWER SERVICE</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f6f8;
+      color: #222;
+    }
+    header {
+      background: #fff;
+      padding: 18px;
+      border-bottom: 4px solid #ffc400;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h2 { margin: 0; }
+    .container { max-width: 900px; margin: auto; padding: 20px; }
+    .card {
+      background: white;
+      padding: 20px;
+      margin: 15px 0;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px #00000010;
+    }
+    .btn {
+      background: #ffc400;
+      border: 0;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .dark { background: #222; color: white; }
+    .muted { color: #666; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>⚡ PS POWER SERVICE</h2>
+  <button class="btn dark" id="logoutBtn">Logout</button>
+</header>
+
+<main class="container">
+  <h2>Customer Dashboard</h2>
+  <p id="welcome">Loading customer details...</p>
+
+  <section class="card">
+    <h3>📋 Book a Service</h3>
+    <p>Electrical Service Booking</p>
+    <p>Booking Fee: <strong>₹20</strong></p>
+    <p class="muted">Booking ପରେ Admin payment verify କରିବେ।</p>
+    <button class="btn" id="bookingBtn">Book a Service</button>
+  </section>
+
+  <section class="card">
+    <h3>💳 Payment Status</h3>
+    <p id="paymentStatus">ଏଠାରେ Payment Status ଦେଖାଯିବ।</p>
+  </section>
+
+  <section class="card">
+    <h3>📚 Booking History</h3>
+    <p id="bookingHistory">Booking History ଏଠାରେ ଦେଖାଯିବ।</p>
+  </section>
+
+  <section class="card">
+    <h3>🔔 Notifications</h3>
+    <p id="notifications">Notifications ଏଠାରେ ଦେଖାଯିବ।</p>
+  </section>
+</main>
+
+<script type="module">
+  import { initializeApp } from
+    "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+  import {
+    getAuth,
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    // ଏଠାରେ ପୁରୁଣା index.html ର Firebase config ରଖିବା
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "index.html";
+      return;
+    }
+
+    document.getElementById("welcome").textContent =
+      "Welcome, " + (user.displayName || user.email);
+  });
+
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    await signOut(auth);
+    window.location.href = "index.html";
+  });
+
+  document.getElementById("bookingBtn").addEventListener("click", () => {
+    alert("ପରବର୍ତ୍ତୀ Step ରେ Booking Form ଯୋଡ଼ିବା।");
+  });
+</script>
+
+</body>
+</html>
