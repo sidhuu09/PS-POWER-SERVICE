@@ -452,7 +452,8 @@ window.enableAdminNotifications = async function() {
     return;
   }
 
-  if (!("Notification" in window)) {
+  if (!("Notification" in window) ||
+      !("serviceWorker" in navigator)) {
     alert("This browser does not support notifications.");
     return;
   }
@@ -460,35 +461,32 @@ window.enableAdminNotifications = async function() {
   try {
     const permission = await Notification.requestPermission();
 
-    if (permission === "granted") {
-      new Notification("PS POWER SERVICE", {
-        body: "Admin notifications enabled successfully!"
-      });
-
-      alert("Mobile Notification Enabled!");
-    } else {
+    if (permission !== "granted") {
       alert("Notification permission allow କର।");
+      return;
     }
+
+    const registration =
+      await navigator.serviceWorker.register(
+        "./notification-sw.js"
+      );
+
+    await navigator.serviceWorker.ready;
+
+    await registration.showNotification(
+      "PS POWER SERVICE",
+      {
+        body: "Admin notifications enabled successfully!"
+      }
+    );
+
+    alert("Mobile Notification Enabled!");
   } catch (error) {
+    console.error(error);
     alert("Notification Error: " + error.message);
   }
 };
 
-const $ = id => document.getElementById(id);
-
-let currentUser = null;
-let currentCustomer = null;
-
-let designUnsubscribe = null;
-let requestUnsubscribe = null;
-let bookingUnsubscribe = null;
-let customerBookingUnsubscribe = null;
-let notificationUnsubscribe = null;
-let customerRequestUnsubscribe = null;
-
-let selectedDesignCategory = "All";
-let currentBookings = [];
-let currentNotifications = [];
 
 /* COMMON HELPERS */
 
