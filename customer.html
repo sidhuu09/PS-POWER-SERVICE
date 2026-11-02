@@ -15,6 +15,7 @@ button{border:0;border-radius:7px;padding:11px 16px;background:#ffca28;color:#17
 button:disabled{opacity:.6;cursor:not-allowed}
 .logout{background:#e53935;color:white}
 .green{background:#168a45;color:white}
+.blue{background:#1769aa;color:white}
 main{max-width:1000px;margin:22px auto;padding:12px}
 .card{background:white;padding:20px;margin-bottom:17px;border-radius:12px;box-shadow:0 2px 9px #00000012}
 h3{margin-top:0;color:#222}
@@ -32,6 +33,7 @@ label{font-weight:bold;font-size:14px}
 .selected{border:2px solid #168a45;background:#f0fff4}
 .verified{color:#168a45;font-weight:bold}
 .utr-box{border:1px solid #ddd;border-radius:9px;padding:14px;margin:12px 0}
+.push-status{padding:12px;border-radius:8px;background:#f4f6fa;margin-top:10px;font-size:14px}
 @media(max-width:500px){
  header h2{font-size:16px}
  header{padding:13px}
@@ -53,6 +55,20 @@ label{font-weight:bold;font-size:14px}
 <h3>Welcome, <span id="customerName">Customer</span>!</h3>
 <p id="customerEmail" class="muted"></p>
 <p>Service Booking, Payment, Design Gallery ଓ Booking History ଏଠାରେ ଦେଖିପାରିବ।</p>
+</section>
+
+<!-- PHONE NOTIFICATIONS -->
+<section class="card">
+<h3>Phone Notifications</h3>
+<p class="muted">
+Booking Status, Payment Verification ଓ ଅନ୍ୟ Update ପାଇଁ Phone Notification Enable କର।
+</p>
+<button class="blue" id="enableNotificationsBtn" type="button">
+Enable Phone Notifications
+</button>
+<div id="pushStatus" class="push-status">
+Notification ଏପର୍ଯ୍ୟନ୍ତ Enable ହୋଇନାହିଁ।
+</div>
 </section>
 
 <!-- 1. BOOKING SERVICES -->
@@ -86,7 +102,6 @@ label{font-weight:bold;font-size:14px}
 <!-- 2. QR PAYMENT -->
 <section class="card">
 <h3>2. ₹20 Booking Fee Payment</h3>
-
 <p>PhonePe / UPI ଦ୍ୱାରା ₹20 Payment କର।</p>
 
 <img class="qr"
@@ -96,11 +111,10 @@ alt="PS POWER SERVICE Booking Payment QR Code">
 <p style="text-align:center"><b>Booking Fee: ₹20</b></p>
 
 <p class="muted">
-Payment କରିବା ପରେ ତଳେ ଥିବା UTR Submission Section ରେ ନିଜ Booking ପାଇଁ UTR Number Submit କର।
+Payment କରିବା ପରେ UTR Submission Section ରେ UTR Number Submit କର।
 </p>
-
 <p class="muted">
-କେବଳ UTR Submit କଲେ Payment Paid ହେବ ନାହିଁ। Admin UPI Transaction ଯାଞ୍ଚ କରିବା ପରେ Paid କରିବେ।
+କେବଳ UTR Submit କଲେ Payment Paid ହେବ ନାହିଁ। Admin Transaction ଯାଞ୍ଚ କରିବା ପରେ Paid କରିବେ।
 </p>
 </section>
 
@@ -108,7 +122,6 @@ Payment କରିବା ପରେ ତଳେ ଥିବା UTR Submission Section 
 <section class="card">
 <h3>3. Submit UTR Number</h3>
 <p class="muted">ତୁମର Booking ବାଛି UTR / Transaction Number Submit କର।</p>
-
 <div id="utrSubmissionList">Loading your bookings...</div>
 </section>
 
@@ -121,10 +134,7 @@ Payment କରିବା ପରେ ତଳେ ଥିବା UTR Submission Section 
 
 <form id="designRequestForm" style="margin-top:18px">
 <h3>Submit Design Request</h3>
-
-<p id="selectedDesignText" class="muted">
-ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।
-</p>
+<p id="selectedDesignText" class="muted">ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।</p>
 
 <label>Your Phone Number</label>
 <input id="designPhone" type="tel" maxlength="15" required placeholder="Phone number">
@@ -177,8 +187,12 @@ import {
 
 import {
  getFirestore,collection,addDoc,query,where,onSnapshot,
- serverTimestamp,getDoc,doc,updateDoc
+ serverTimestamp,getDoc,doc,updateDoc,setDoc
 } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+import {
+ getMessaging,getToken,onMessage,isSupported
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-messaging.js";
 
 const firebaseConfig={
  apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",
@@ -192,6 +206,15 @@ const firebaseConfig={
 const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 const WHATSAPP_NUMBER="918144722094";
 
+/*
+ IMPORTANT:
+ Firebase Console > Project Settings > Cloud Messaging
+ > Web Push certificates > Key pair
+ ର Public Key ଏଠାରେ ବସାଅ।
+ Private Key ନୁହେଁ।
+*/
+const VAPID_PUBLIC_KEY="BBJUSzxOPQF0iXr6Wz6GMQxklaeNS-CrmZQcCzMJggzopc91YJw-WoKEBH9HCZyO5ahxpyFbnEV1Sz_XiF60PYk";
+
 const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 const db=getFirestore(app);
@@ -201,14 +224,12 @@ let currentCustomer=null;
 let selectedDesign=null;
 let customerProfile={};
 let customerBookings=[];
+let messagingInstance=null;
+let foregroundMessageStarted=false;
 
 function escapeHTML(value){
  return String(value??"").replace(/[&<>"']/g,char=>({
-  "&":"&amp;",
-  "<":"&lt;",
-  ">":"&gt;",
-  '"':"&quot;",
-  "'":"&#39;"
+  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
  })[char]);
 }
 
@@ -254,7 +275,6 @@ onAuthStateChanged(auth,async user=>{
 
    $("designPhone").value=customerProfile.phone||"";
   }
-
  }catch(error){
   console.error("Profile error:",error);
  }
@@ -263,6 +283,8 @@ onAuthStateChanged(auth,async user=>{
  loadNotifications(user.uid);
  loadDesignGallery();
  loadMyDesignRequests(user.uid);
+
+ checkNotificationStatus();
 });
 
 // LOGOUT
@@ -272,6 +294,152 @@ $("logoutBtn").addEventListener("click",async()=>{
   location.replace("index.html");
  }catch(error){
   alert("Logout failed: "+error.message);
+ }
+});
+
+// ==================================
+// FIREBASE CLOUD MESSAGING
+// ==================================
+
+function setPushStatus(message){
+ $("pushStatus").textContent=message;
+}
+
+function checkNotificationStatus(){
+ if(!("Notification" in window)){
+  setPushStatus("ଏହି Browser Notification Support କରୁନାହିଁ।");
+  return;
+ }
+
+ if(Notification.permission==="granted"){
+  setPushStatus("Notification Permission ଦିଆଯାଇଛି।");
+ }else if(Notification.permission==="denied"){
+  setPushStatus("Notification Block ହୋଇଛି। Browser Settings ରୁ Allow କରିବାକୁ ପଡ଼ିବ।");
+ }else{
+  setPushStatus("Phone Notification Enable କରିବା ପାଇଁ Button ଦବାଅ।");
+ }
+}
+
+$("enableNotificationsBtn").addEventListener("click",async()=>{
+
+ const button=$("enableNotificationsBtn");
+
+ if(!currentCustomer){
+  alert("Please login first.");
+  return;
+ }
+
+ if(!("Notification" in window)){
+  setPushStatus("ଏହି Browser Notification Support କରୁନାହିଁ।");
+  return;
+ }
+
+ if(!("serviceWorker" in navigator)){
+  setPushStatus("Service Worker Support ନାହିଁ।");
+  return;
+ }
+
+ if(!VAPID_PUBLIC_KEY){
+  setPushStatus("Public VAPID Key ଦିଅ।");
+  return;
+}
+
+ button.disabled=true;
+ button.textContent="Enabling...";
+
+ try{
+
+  const supported=await isSupported();
+
+  if(!supported){
+   throw new Error("Firebase Messaging ଏହି Browser ରେ Support ହେଉନାହିଁ।");
+  }
+
+  const permission=await Notification.requestPermission();
+
+  if(permission!=="granted"){
+   throw new Error("Notification Permission ମିଳିଲା ନାହିଁ।");
+  }
+
+  messagingInstance=getMessaging(app);
+
+  /*
+   GitHub Pages repository path:
+   /PS-POWER-SERVICE/firebase-messaging-sw.js
+  */
+  const swUrl=new URL(
+   "firebase-messaging-sw.js",
+   window.location.href
+  );
+
+  const swScope=new URL("./",window.location.href);
+
+  const registration=await navigator.serviceWorker.register(
+   swUrl.pathname,
+   {scope:swScope.pathname}
+  );
+
+  await navigator.serviceWorker.ready;
+
+  const token=await getToken(messagingInstance,{
+   vapidKey:VAPID_PUBLIC_KEY,
+   serviceWorkerRegistration:registration
+  });
+
+  if(!token){
+   throw new Error("FCM Token Generate ହୋଇନାହିଁ।");
+  }
+
+  /*
+   Token is stored under the logged-in user's
+   own Firestore subcollection.
+  */
+  await setDoc(
+   doc(db,"users",currentCustomer.uid,"fcmTokens",token),
+   {
+    token:token,
+    platform:"web",
+    userAgent:navigator.userAgent,
+    updatedAt:serverTimestamp()
+   }
+  );
+
+  setPushStatus("✓ Phone Notification Registration ସଫଳ ହୋଇଛି।");
+  button.textContent="Notifications Enabled";
+
+  if(!foregroundMessageStarted){
+   onMessage(messagingInstance,payload=>{
+
+    const title=
+     payload.notification?.title||"PS POWER SERVICE";
+
+    const body=
+     payload.notification?.body||"New update received.";
+
+    setPushStatus(title+": "+body);
+
+    /*
+     Page is already open, so show an in-page alert.
+     Background notifications are handled by the service worker.
+    */
+    alert(title+"\n"+body);
+   });
+
+   foregroundMessageStarted=true;
+  }
+
+ }catch(error){
+
+  console.error("FCM setup error:",error);
+
+  setPushStatus("Notification Error: "+error.message);
+
+  button.textContent="Try Again";
+
+ }finally{
+
+  button.disabled=false;
+
  }
 });
 
@@ -381,32 +549,12 @@ function renderUTRSubmission(){
  list.innerHTML=unpaid.map(b=>`
 
   <div class="utr-box">
-
    <b>${escapeHTML(b.service||"Service")}</b>
-
-   <p class="muted">
-    Booking Date: ${escapeHTML(b.bookingDate||"-")}
-   </p>
-
-   <p class="muted">
-    Booking Fee: ₹${Number(b.bookingFee??20)}
-   </p>
-
+   <p class="muted">Booking Date: ${escapeHTML(b.bookingDate||"-")}</p>
+   <p class="muted">Booking Fee: ₹${Number(b.bookingFee??20)}</p>
    <label>UTR / Transaction Number</label>
-
-   <input
-    type="text"
-    id="utr-${escapeHTML(b.id)}"
-    maxlength="40"
-    placeholder="Enter UTR Number">
-
-   <button
-    type="button"
-    class="green"
-    data-submit-utr="${escapeHTML(b.id)}">
-    Submit UTR
-   </button>
-
+   <input type="text" id="utr-${escapeHTML(b.id)}" maxlength="40" placeholder="Enter UTR Number">
+   <button type="button" class="green" data-submit-utr="${escapeHTML(b.id)}">Submit UTR</button>
   </div>
 
  `).join("");
@@ -429,9 +577,7 @@ $("utrSubmissionList").addEventListener("click",async event=>{
  if(utr.length<6||utr.length>40)
   return alert("ଠିକ୍ UTR Number ଦିଅ।");
 
- const utrPattern=/^[A-Za-z0-9-]+$/;
-
- if(!utrPattern.test(utr))
+ if(!/^[A-Za-z0-9-]+$/.test(utr))
   return alert("UTR Number ରେ କେବଳ English letters, numbers ଓ hyphen ବ୍ୟବହାର କର।");
 
  button.disabled=true;
@@ -485,23 +631,16 @@ function renderBookingHistory(){
  list.innerHTML=customerBookings.map(b=>`
 
   <div class="booking">
-
    <b>${escapeHTML(b.service||"Service")}</b>
-
    <p>Date: ${escapeHTML(b.bookingDate||"-")}</p>
-
    <p>Address: ${escapeHTML(b.address||"-")}</p>
-
    <p>Booking Status:
     <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span>
    </p>
-
    <p>Payment:
     <span class="status">${escapeHTML(b.paymentStatus||"pending")}</span>
    </p>
-
    <p>Booking Fee: ₹${Number(b.bookingFee??20)}</p>
-
    ${
     b.paymentStatus==="paid"
     ? `<p class="verified">✓ Payment Verified by Admin</p>`
@@ -510,7 +649,6 @@ function renderBookingHistory(){
          <p class="status">Admin Verification Pending</p>`
       : `<p class="muted">UTR Number ଏପର୍ଯ୍ୟନ୍ତ Submit ହୋଇନାହିଁ।</p>`
    }
-
   </div>
 
  `).join("");
@@ -538,22 +676,16 @@ function loadDesignGallery(){
 
    return `
     <div class="design-card ${selectedDesign?.id===d.id?"selected":""}">
-
      ${image
       ? `<img src="${escapeHTML(image)}" alt="${escapeHTML(d.name)}" loading="lazy">`
       : "<p>Image unavailable</p>"}
-
      <h4>${escapeHTML(d.name||"Design")}</h4>
-
      <p class="muted">${escapeHTML(d.category||"Other")}</p>
-
      <button type="button" data-select-design="${escapeHTML(d.id)}">
       ${selectedDesign?.id===d.id?"Selected ✓":"Select Design"}
      </button>
-
     </div>
    `;
-
   }).join("");
 
  },error=>{
@@ -665,21 +797,15 @@ function loadMyDesignRequests(uid){
   list.innerHTML=items.map(r=>`
 
    <div class="design-request">
-
     <b>${escapeHTML(r.designName||"Selected Design")}</b>
-
     ${safeImageUrl(r.imageUrl)
      ? `<p><img src="${escapeHTML(safeImageUrl(r.imageUrl))}" alt="Selected design" style="width:100%;max-width:220px;border-radius:8px"></p>`
      : ""}
-
     <p>Category: ${escapeHTML(r.category||"-")}</p>
-
     <p>Message: ${escapeHTML(r.description||"-")}</p>
-
     <p>Request Status:
      <span class="status">${escapeHTML(r.status||"pending")}</span>
     </p>
-
    </div>
 
   `).join("");
