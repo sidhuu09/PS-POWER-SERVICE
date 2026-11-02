@@ -63,6 +63,17 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
 .slider-dot.active{background:var(--yellow);opacity:1;transform:scale(1.25)}
 @media(max-width:600px){.photo-slider{height:440px}.slide-content{left:13%;right:13%}.slide-content p{font-size:15px}.slider-arrow{width:36px;height:36px;font-size:19px}}
 
+
+/* SERVICE PHOTO GALLERY */
+.gallery-title{margin:34px 0 16px}
+.service-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:18px}
+.gallery-item{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 3px 12px #00000012;text-align:left}
+.gallery-item img{display:block;width:100%;height:190px;object-fit:cover;transition:transform .35s ease}
+.gallery-item:hover img{transform:scale(1.04)}
+.gallery-item figcaption{padding:12px 14px;font-weight:bold;color:var(--ink)}
+.gallery-item figcaption span{display:block;margin-top:4px;font-size:12px;font-weight:normal;color:#666}
+@media(max-width:600px){.service-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gallery-item img{height:135px}.gallery-item figcaption{padding:9px;font-size:13px}}
+
 </style>
 </head>
 <body>
@@ -100,7 +111,20 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
 <section id="services"><h2>Our Services</h2><div class="services">
   <div class="service">⚡ Electrical Work</div><div class="service">🏠 Home Wiring</div>
   <div class="service">🔧 Repair & Maintenance</div><div class="service">💡 Lenter Piping</div>
-</div></section>
+</div>
+
+<h2 class="gallery-title">Our Work Gallery</h2>
+<p class="small-note">A look at our electrical and installation work.</p>
+<div class="service-gallery">
+  <figure class="gallery-item"><img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring" loading="lazy"><figcaption>Distribution Board Wiring<span>Electrical installation</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/electrical-panel-testing.jpg" alt="Electrical Panel Testing" loading="lazy"><figcaption>Electrical Panel Testing<span>Panel inspection and testing</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/fan-fitting.jpg" alt="Fan Fitting" loading="lazy"><figcaption>Fan Fitting<span>Fan installation service</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/house-wiring.jpg" alt="House Wiring" loading="lazy"><figcaption>House Wiring<span>Home electrical wiring</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/lenter-pipe-fitting.jpg" alt="Lenter Pipe Fitting" loading="lazy"><figcaption>Lenter Pipe Fitting<span>Conduit pipe installation</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting" loading="lazy"><figcaption>Switch Board Fitting<span>Switch board installation</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/wall-cutting.jpg" alt="Wall Cutting" loading="lazy"><figcaption>Wall Cutting<span>Electrical fitting preparation</span></figcaption></figure>
+</div>
+</section>
 <section id="account"><h2>Account</h2>
 <div class="panel auth-panel" id="registerPanel">
   <h3>Customer Registration</h3>
