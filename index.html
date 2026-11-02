@@ -439,7 +439,24 @@ const ADMIN_UID = "UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+const db = getFirestore(app);/* COMMON VARIABLES */
+
+function $(id) {
+  return document.getElementById(id);
+}
+
+let currentUser = null;
+let currentCustomer = null;
+let currentBookings = [];
+let currentNotifications = [];
+let selectedDesignCategory = "All";
+
+let designUnsubscribe = null;
+let requestUnsubscribe = null;
+let bookingUnsubscribe = null;
+let customerBookingUnsubscribe = null;
+let notificationUnsubscribe = null;
+let customerRequestUnsubscribe = null;
 
 /* ENABLE ADMIN NOTIFICATIONS */
 
@@ -1443,16 +1460,22 @@ function checkNewAdminBookings(snapshot) {
       "Notification" in window &&
       Notification.permission === "granted"
     ) {
-      new Notification("⚡ New Customer Booking!", {
-        body:
-          (booking.customerName || "Customer") +
-          " - " +
-          (booking.service || "Service") +
-          " - ₹20 payment pending"
-      });
+      navigator.serviceWorker.ready.then(registration => {
+        registration.showNotification(
+          "⚡ New Customer Booking!",
+          {
+            body:
+              (booking.customerName || "Customer") +
+              " - " +
+              (booking.service || "Service") +
+              " - ₹20 payment pending"
+          }
+        );
+      }).catch(error => console.error(error));
     }
   });
-}
+  }
+
 
 function startAdminListener() {
   if (bookingUnsubscribe) bookingUnsubscribe();
