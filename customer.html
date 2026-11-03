@@ -34,20 +34,111 @@ label{font-weight:bold;font-size:14px}
 .verified{color:#168a45;font-weight:bold}
 .utr-box{border:1px solid #ddd;border-radius:9px;padding:14px;margin:12px 0}
 .push-status{padding:12px;border-radius:8px;background:#f4f6fa;margin-top:10px;font-size:14px;overflow-wrap:anywhere}
-.receipt-card{border:1px solid #d5d5d5;border-radius:10px;padding:15px;margin-top:12px;background:#fffdf5}
-.receipt-card h4{text-align:center;color:#171717;margin:5px 0}
-.receipt-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed #ddd;overflow-wrap:anywhere}
-.receipt-row span{color:#555}
-.receipt-pending{color:#b36b00;font-weight:bold}
-.receipt-verified{color:#168a45;font-weight:bold}
+
+/* BLACK + GOLD PREMIUM RECEIPT */
+.receipt-card{
+ background:#101010;
+ color:#f5f5f5;
+ border:2px solid #b89442;
+ border-radius:14px;
+ padding:20px;
+ margin-top:15px;
+ box-shadow:0 5px 18px #00000025;
+}
+.receipt-header{
+ text-align:center;
+ padding:12px 5px 18px;
+ border-bottom:1px solid #b89442;
+}
+.receipt-header h2{
+ color:#d6b45c;
+ font-size:23px;
+ margin:5px 0;
+ letter-spacing:1px;
+}
+.receipt-header p{
+ color:#ddd0a8;
+ font-size:12px;
+ margin:5px 0;
+}
+.receipt-title{
+ text-align:center;
+ color:#d6b45c;
+ font-size:19px;
+ font-weight:bold;
+ margin:18px 0;
+ letter-spacing:1px;
+}
+.receipt-section{
+ color:#d6b45c;
+ font-weight:bold;
+ margin:16px 0 5px;
+}
+.receipt-row{
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+ padding:10px 0;
+ border-bottom:1px dashed #65552f;
+ overflow-wrap:anywhere;
+ font-size:14px;
+}
+.receipt-row span{color:#c8c8c8}
+.receipt-row b{color:#fff;text-align:right}
+.receipt-amount{
+ background:#282116;
+ border:1px solid #b89442;
+ border-radius:10px;
+ padding:15px;
+ text-align:center;
+ margin:15px 0;
+}
+.receipt-amount span{
+ display:block;
+ color:#e8d8ad;
+ font-size:12px;
+}
+.receipt-amount strong{
+ display:block;
+ color:#d6b45c;
+ font-size:30px;
+ margin-top:5px;
+}
+.receipt-verified{
+ background:#173b29;
+ color:#6ee7a0;
+ border:1px solid #42a56b;
+ border-radius:9px;
+ padding:13px;
+ text-align:center;
+ font-weight:bold;
+ margin-top:15px;
+}
+.receipt-pending{
+ background:#382b12;
+ color:#facc15;
+ border:1px solid #b89442;
+ border-radius:9px;
+ padding:12px;
+ font-weight:bold;
+ text-align:center;
+}
+.receipt-note{
+ text-align:center;
+ font-size:12px;
+ color:#c8c8c8;
+ margin-top:15px;
+}
 .receipt-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.receipt-actions button{flex:1}
-.receipt-note{text-align:center;font-size:12px;color:#666;margin-top:12px}
+.receipt-actions button{flex:1;background:#b89442;color:#111}
+
 @media(max-width:500px){
  header h2{font-size:16px}
  header{padding:13px}
  .card{padding:15px}
- .receipt-row{font-size:13px}
+ .receipt-card{padding:14px}
+ .receipt-row{font-size:12px}
+ .receipt-header h2{font-size:20px}
 }
 </style>
 </head>
@@ -150,7 +241,6 @@ label{font-weight:bold;font-size:14px}
 </main>
 
 <script type="module">
-
 import {initializeApp}
 from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
@@ -306,7 +396,6 @@ async function startForegroundNotifications(){
 
   setPushStatus(title+": "+body);
 
-  // Show a notification while the website is open.
   if(Notification.permission==="granted"){
    try{
     new Notification(title,{
@@ -361,7 +450,6 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
 
   messagingInstance=getMessaging(app);
 
-  // Register Service Worker inside the GitHub Pages project folder.
   const basePath=new URL("./",window.location.href);
 
   const registration=await navigator.serviceWorker.register(
@@ -371,7 +459,6 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
 
   await navigator.serviceWorker.ready;
 
-  // Generate FCM token using VAPID Public Key.
   const token=await getToken(messagingInstance,{
    vapidKey:VAPID_PUBLIC_KEY,
    serviceWorkerRegistration:registration
@@ -381,7 +468,6 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
    throw new Error("FCM Token Generate ହୋଇନାହିଁ।");
   }
 
-  // Save token under the logged-in customer's profile.
   await setDoc(
    doc(db,"users",currentCustomer.uid,"fcmTokens",token),
    {
@@ -400,7 +486,6 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
  }catch(error){
 
   console.error("FCM setup error:",error);
-
   setPushStatus("Notification Error: "+error.message);
   button.textContent="Try Again";
 
@@ -635,7 +720,7 @@ $("utrSubmissionList").addEventListener("click",async event=>{
  }
 });
 
-// BOOKING HISTORY + PAYMENT RECEIPTS
+// BOOKING HISTORY + PREMIUM RECEIPTS
 function renderBookingHistory(){
 
  const list=$("bookingList");
@@ -651,36 +736,110 @@ function renderBookingHistory(){
 
   const receipt=paid?`
    <div class="receipt-card" id="receipt-${escapeHTML(b.id)}">
-    <h4>PS POWER SERVICE</h4>
-    <p style="text-align:center;font-weight:bold">PAYMENT RECEIPT</p>
-    <p class="receipt-verified">✓ PAYMENT VERIFIED</p>
-    <div class="receipt-row"><span>Receipt / Booking ID</span><b>${escapeHTML(b.id)}</b></div>
-    <div class="receipt-row"><span>Customer Name</span><b>${escapeHTML(b.customerName||"Customer")}</b></div>
-    <div class="receipt-row"><span>Service</span><b>${escapeHTML(b.service||"-")}</b></div>
-    <div class="receipt-row"><span>Booking Date</span><b>${escapeHTML(b.bookingDate||"-")}</b></div>
-    <div class="receipt-row"><span>Payment Amount</span><b>₹${Number(b.bookingFee??20)}</b></div>
-    <div class="receipt-row"><span>Payment Method</span><b>UPI</b></div>
-    <div class="receipt-row"><span>Payment App</span><b>${escapeHTML(b.paymentAppName||"Not recorded")}</b></div>
-    <div class="receipt-row"><span>UTR Number</span><b>${escapeHTML(b.paymentReference||"-")}</b></div>
-    <div class="receipt-row"><span>Verification Date</span><b>${escapeHTML(formatDate(b.paymentVerifiedAt))}</b></div>
-    <p class="receipt-verified">Payment successfully verified by Admin.</p>
-    <p class="receipt-note">This receipt confirms that the payment was marked verified in PS POWER SERVICE.</p>
+
+    <div class="receipt-header">
+     <h2>PS POWER SERVICE</h2>
+     <p>ELECTRICAL SERVICE & REPAIR</p>
+     <p>Dakuluguda</p>
+     <p>WhatsApp: +91 81447 22094</p>
+    </div>
+
+    <div class="receipt-title">PAYMENT RECEIPT</div>
+
+    <div class="receipt-row">
+     <span>Receipt / Booking ID</span>
+     <b>${escapeHTML(b.id)}</b>
+    </div>
+
+    <div class="receipt-section">CUSTOMER DETAILS</div>
+
+    <div class="receipt-row">
+     <span>Customer Name</span>
+     <b>${escapeHTML(b.customerName||"Customer")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Phone Number</span>
+     <b>${escapeHTML(b.customerPhone||"-")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Service</span>
+     <b>${escapeHTML(b.service||"-")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Booking Date</span>
+     <b>${escapeHTML(b.bookingDate||"-")}</b>
+    </div>
+
+    <div class="receipt-section">PAYMENT DETAILS</div>
+
+    <div class="receipt-amount">
+     <span>BOOKING FEE</span>
+     <strong>₹${Number(b.bookingFee??20).toFixed(2)}</strong>
+    </div>
+
+    <div class="receipt-row">
+     <span>Payment Method</span>
+     <b>UPI</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Payment App</span>
+     <b>${escapeHTML(b.paymentAppName||"Not recorded")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>UTR Number</span>
+     <b>${escapeHTML(b.paymentReference||"-")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Verification Date</span>
+     <b>${escapeHTML(formatDate(b.paymentVerifiedAt))}</b>
+    </div>
+
+    <div class="receipt-verified">
+     ✓ PAYMENT VERIFIED
+     <p style="margin:6px 0 0;font-size:12px">
+      Payment successfully verified by Admin
+     </p>
+    </div>
+
+    <p class="receipt-note">
+     Thank You for Choosing PS POWER SERVICE!
+    </p>
+
+    <p class="receipt-note">
+     This receipt confirms payment verification.
+    </p>
+
    </div>
+
    <div class="receipt-actions">
-    <button type="button" class="green" data-print-receipt="${escapeHTML(b.id)}">Print / Save PDF</button>
+    <button type="button"
+     data-print-receipt="${escapeHTML(b.id)}">
+     Print / Save PDF
+    </button>
    </div>
   `:"";
 
   const pendingReceipt=b.paymentProofStatus==="submitted"&&!paid?`
-   <div class="receipt-card">
-    <h4>PS POWER SERVICE</h4>
-    <p style="text-align:center;font-weight:bold">UTR SUBMISSION ACKNOWLEDGEMENT</p>
-    <p class="receipt-pending">⏳ PENDING VERIFICATION</p>
+   <div class="receipt-card" id="pending-${escapeHTML(b.id)}">
+    <div class="receipt-header">
+     <h2>PS POWER SERVICE</h2>
+     <p>ELECTRICAL SERVICE & REPAIR</p>
+     <p>Dakuluguda</p>
+     <p>WhatsApp: +91 81447 22094</p>
+    </div>
+    <div class="receipt-title">UTR SUBMISSION ACKNOWLEDGEMENT</div>
+    <p class="receipt-pending">PENDING VERIFICATION</p>
     <div class="receipt-row"><span>Booking ID</span><b>${escapeHTML(b.id)}</b></div>
     <div class="receipt-row"><span>Service</span><b>${escapeHTML(b.service||"-")}</b></div>
     <div class="receipt-row"><span>Payment App</span><b>${escapeHTML(b.paymentAppName||"Not recorded")}</b></div>
     <div class="receipt-row"><span>Submitted UTR</span><b>${escapeHTML(b.paymentReference||"-")}</b></div>
-    <div class="receipt-row"><span>Amount Submitted</span><b>₹${Number(b.bookingFee??20)}</b></div>
+    <div class="receipt-row"><span>Amount Submitted</span><b>₹${Number(b.bookingFee??20).toFixed(2)}</b></div>
     <p class="receipt-pending">Admin ଙ୍କ Payment Verification ଅପେକ୍ଷାରେ ଅଛି।</p>
     <p class="receipt-note">ଏହା UTR Submission Acknowledgement ମାତ୍ର; Verified Payment Receipt ନୁହେଁ।</p>
    </div>
@@ -703,7 +862,7 @@ function renderBookingHistory(){
  }).join("");
 }
 
-// PRINT / SAVE RECEIPT AS PDF
+// PRINT / SAVE PREMIUM RECEIPT AS PDF
 $("bookingList").addEventListener("click",event=>{
 
  const button=event.target.closest("[data-print-receipt]");
@@ -734,13 +893,84 @@ $("bookingList").addEventListener("click",event=>{
    <title>PS POWER SERVICE Payment Receipt</title>
    <meta name="viewport" content="width=device-width,initial-scale=1">
    <style>
-    body{font-family:Arial,sans-serif;padding:20px;color:#222}
-    .receipt-card{max-width:600px;margin:auto;border:1px solid #ccc;border-radius:10px;padding:20px}
-    h4{text-align:center}
-    .receipt-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed #ccc;overflow-wrap:anywhere}
-    .receipt-verified{color:green;font-weight:bold;text-align:center}
-    .receipt-note{text-align:center;font-size:12px;color:#666}
-    @media print{body{padding:0}}
+    *{box-sizing:border-box}
+    body{
+     font-family:Arial,sans-serif;
+     padding:20px;
+     background:#fff;
+     color:#fff;
+    }
+    .receipt-card{
+     max-width:600px;
+     margin:auto;
+     padding:22px;
+     background:#101010 !important;
+     color:#fff !important;
+     border:2px solid #b89442;
+     border-radius:14px;
+     -webkit-print-color-adjust:exact;
+     print-color-adjust:exact;
+    }
+    .receipt-header{
+     text-align:center;
+     border-bottom:1px solid #b89442;
+     padding-bottom:15px;
+    }
+    .receipt-header h2{color:#d6b45c !important}
+    .receipt-header p{color:#ddd0a8 !important;font-size:12px}
+    .receipt-title{
+     color:#d6b45c !important;
+     text-align:center;
+     font-weight:bold;
+     margin:18px 0;
+    }
+    .receipt-section{
+     color:#d6b45c !important;
+     font-weight:bold;
+     margin:15px 0 5px;
+    }
+    .receipt-row{
+     display:flex;
+     justify-content:space-between;
+     gap:12px;
+     padding:10px 0;
+     border-bottom:1px dashed #65552f;
+     font-size:13px;
+    }
+    .receipt-row span{color:#ccc !important}
+    .receipt-row b{color:#fff !important;text-align:right}
+    .receipt-amount{
+     background:#282116 !important;
+     border:1px solid #b89442;
+     padding:15px;
+     text-align:center;
+     margin:15px 0;
+    }
+    .receipt-amount span{color:#e8d8ad !important}
+    .receipt-amount strong{
+     color:#d6b45c !important;
+     font-size:28px;
+    }
+    .receipt-verified{
+     background:#173b29 !important;
+     color:#6ee7a0 !important;
+     border:1px solid #42a56b;
+     text-align:center;
+     padding:13px;
+     font-weight:bold;
+    }
+    .receipt-note{
+     color:#ccc !important;
+     text-align:center;
+     font-size:12px;
+    }
+    @media print{
+     body{padding:0}
+     .receipt-card{
+      -webkit-print-color-adjust:exact;
+      print-color-adjust:exact;
+     }
+    }
    </style>
   </head>
   <body>
@@ -952,7 +1182,6 @@ $("date").min=[
  String(now.getMonth()+1).padStart(2,"0"),
  String(now.getDate()).padStart(2,"0")
 ].join("-");
-
 </script>
 </body>
 </html>
