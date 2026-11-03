@@ -27,7 +27,7 @@ button:disabled{opacity:.6;cursor:not-allowed}
 .stat{background:#fff8dc;padding:15px;border-radius:9px}
 .note{background:#fff8dc;padding:12px;border-radius:8px;font-size:13px}
 .table-wrap{width:100%;overflow-x:auto;margin-top:12px}
-table{width:100%;min-width:1200px;border-collapse:collapse}
+table{width:100%;min-width:1350px;border-collapse:collapse}
 th,td{padding:10px;border:1px solid #ddd;text-align:left;vertical-align:top}
 th{background:#171717;color:#ffca28}
 td select{min-width:110px}
@@ -110,20 +110,29 @@ td select{min-width:110px}
 <h3>Customer Bookings & Payment Verification</h3>
 <div class="note">
 ₹20 payment ଯାଞ୍ଚ କରିବା ପରେ ମାତ୍ର Paid କର।
-Customer UTR ନମ୍ବରକୁ ନିଜ UPI transaction history ସହିତ ମେଳ କର।
+Customer UTR ନମ୍ବର ଓ Payment App Name ନିଜ UPI transaction history ସହିତ ମେଳ କର।
 </div>
 
 <div class="table-wrap">
 <table>
 <thead>
 <tr>
-<th>No.</th><th>Customer Name</th><th>Phone</th><th>Service</th>
-<th>Date</th><th>Fee</th><th>UTR Number</th><th>Proof Status</th>
-<th>Payment</th><th>Booking Status</th><th>Action</th>
+<th>No.</th>
+<th>Customer Name</th>
+<th>Phone</th>
+<th>Service</th>
+<th>Date</th>
+<th>Fee</th>
+<th>Payment App</th>
+<th>UTR Number</th>
+<th>Proof Status</th>
+<th>Payment</th>
+<th>Booking Status</th>
+<th>Action</th>
 </tr>
 </thead>
 <tbody id="bookingTableBody">
-<tr><td colspan="11">Loading bookings...</td></tr>
+<tr><td colspan="12">Loading bookings...</td></tr>
 </tbody>
 </table>
 </div>
@@ -431,7 +440,7 @@ function loadBookings(){
 
  },e=>{
   $("bookingTableBody").innerHTML=
-   `<tr><td colspan="11">Bookings load error: ${safe(e.message)}</td></tr>`;
+   `<tr><td colspan="12">Bookings load error: ${safe(e.message)}</td></tr>`;
  });
 }
 
@@ -440,7 +449,7 @@ function renderBookings(){
  const body=$("bookingTableBody");
 
  if(!bookings.length){
-  body.innerHTML='<tr><td colspan="11">No bookings found.</td></tr>';
+  body.innerHTML='<tr><td colspan="12">No bookings found.</td></tr>';
   return;
  }
 
@@ -449,6 +458,7 @@ function renderBookings(){
   const p=b.paymentStatus||"pending";
   const s=b.bookingStatus||b.status||"pending";
   const utr=b.paymentReference||"Not submitted";
+  const paymentAppName=b.paymentAppName||"Not recorded";
   const proof=b.paymentProofStatus||"not_submitted";
 
   let proofHTML="";
@@ -473,6 +483,7 @@ function renderBookings(){
     <td>${safe(b.service||"-")}</td>
     <td>${safe(b.bookingDate||b.date||"-")}</td>
     <td>₹${Number(b.bookingFee??b.fee??20)}</td>
+    <td>${safe(paymentAppName)}</td>
     <td><span class="utr">${safe(utr)}</span></td>
     <td>${proofHTML}</td>
     <td>
@@ -526,6 +537,7 @@ function showAdminReceipt(b){
   service:b.service||"-",
   bookingDate:b.bookingDate||b.date||"-",
   amount:Number(b.bookingFee??b.fee??20),
+  paymentAppName:b.paymentAppName||"Not recorded",
   utr:b.paymentReference||"Not recorded",
   verifiedDate
  };
@@ -542,6 +554,7 @@ function showAdminReceipt(b){
    <div class="receipt-row"><b>Service</b><span>${safe(receiptData.service)}</span></div>
    <div class="receipt-row"><b>Booking Date</b><span>${safe(receiptData.bookingDate)}</span></div>
    <div class="receipt-row"><b>Payment Amount</b><b>₹${receiptData.amount}</b></div>
+   <div class="receipt-row"><b>Payment App</b><span>${safe(receiptData.paymentAppName)}</span></div>
    <div class="receipt-row"><b>Payment UTR</b><span>${safe(receiptData.utr)}</span></div>
    <div class="receipt-row"><b>Payment Status</b><span class="verified-label">VERIFIED / PAID</span></div>
    <div class="receipt-row"><b>Verified Date</b><span>${safe(receiptData.verifiedDate)}</span></div>
