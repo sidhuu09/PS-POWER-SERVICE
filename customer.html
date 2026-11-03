@@ -33,7 +33,7 @@ label{font-weight:bold;font-size:14px}
 .selected{border:2px solid #168a45;background:#f0fff4}
 .verified{color:#168a45;font-weight:bold}
 .utr-box{border:1px solid #ddd;border-radius:9px;padding:14px;margin:12px 0}
-.push-status{padding:12px;border-radius:8px;background:#f4f6fa;margin-top:10px;font-size:14px}
+.push-status{padding:12px;border-radius:8px;background:#f4f6fa;margin-top:10px;font-size:14px;overflow-wrap:anywhere}
 .receipt-card{border:1px solid #d5d5d5;border-radius:10px;padding:15px;margin-top:12px;background:#fffdf5}
 .receipt-card h4{text-align:center;color:#171717;margin:5px 0}
 .receipt-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed #ddd;overflow-wrap:anywhere}
@@ -86,13 +86,10 @@ label{font-weight:bold;font-size:14px}
 <option>Motor Repair</option>
 <option>Other Electrical Service</option>
 </select>
-
 <label>Full Address</label>
 <textarea id="address" rows="3" required placeholder="ତୁମର ସମ୍ପୂର୍ଣ୍ଣ ଠିକଣା"></textarea>
-
 <label>Service Date</label>
 <input type="date" id="date" required>
-
 <button id="bookingSubmit" type="submit">Submit Booking</button>
 </form>
 <p class="muted">ପ୍ରତ୍ୟେକ Booking ପାଇଁ ₹20 Booking Fee ଦେବାକୁ ପଡ଼ିବ। Admin Payment Verify କରିବେ।</p>
@@ -117,7 +114,6 @@ label{font-weight:bold;font-size:14px}
 <h3>4. Our Design Gallery</h3>
 <p class="muted">ପସନ୍ଦର Design ବାଛି Request ପଠାଅ।</p>
 <div id="designGallery" class="gallery">Loading designs...</div>
-
 <form id="designRequestForm" style="margin-top:18px">
 <h3>Submit Design Request</h3>
 <p id="selectedDesignText" class="muted">ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।</p>
@@ -182,6 +178,7 @@ const firebaseConfig={
 
 const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 const WHATSAPP_NUMBER="918144722094";
+
 const VAPID_PUBLIC_KEY="BBJUSzxOPQF0iXr6Wz6GMQxklaeNS-CrmZQcCzMJggzopc91YJw-WoKEBH9HCZyO5ahxpyFbnEV1Sz_XiF60PYk";
 
 const app=initializeApp(firebaseConfig);
@@ -271,26 +268,61 @@ $("logoutBtn").addEventListener("click",async()=>{
  }
 });
 
-// FIREBASE CLOUD MESSAGING
+// NOTIFICATION STATUS
 function setPushStatus(message){
  $("pushStatus").textContent=message;
 }
 
 function checkNotificationStatus(){
+
  if(!("Notification" in window)){
   setPushStatus("ଏହି Browser Notification Support କରୁନାହିଁ।");
   return;
  }
 
  if(Notification.permission==="granted"){
-  setPushStatus("Notification Permission ଦିଆଯାଇଛି।");
+  setPushStatus("Notification Permission Allow ଅଛି। Enable Button ଦବାଇ Token Registration କର।");
  }else if(Notification.permission==="denied"){
-  setPushStatus("Notification Block ହୋଇଛି। Browser Settings ରୁ Allow କରିବାକୁ ପଡ଼ିବ।");
+  setPushStatus("Notification Block ହୋଇଛି। Chrome Site Settings ରୁ Allow କର।");
  }else{
   setPushStatus("Phone Notification Enable କରିବା ପାଇଁ Button ଦବାଅ।");
  }
 }
 
+// FOREGROUND NOTIFICATION LISTENER
+async function startForegroundNotifications(){
+
+ if(foregroundMessageStarted||!messagingInstance)return;
+
+ onMessage(messagingInstance,payload=>{
+
+  const title=payload.notification?.title||
+   payload.data?.title||
+   "PS POWER SERVICE";
+
+  const body=payload.notification?.body||
+   payload.data?.body||
+   "You have a new notification.";
+
+  setPushStatus(title+": "+body);
+
+  // Show a notification while the website is open.
+  if(Notification.permission==="granted"){
+   try{
+    new Notification(title,{
+     body,
+     icon:"/PS-POWER-SERVICE/favicon.ico"
+    });
+   }catch(error){
+    console.warn("Foreground notification display:",error);
+   }
+  }
+ });
+
+ foregroundMessageStarted=true;
+}
+
+// ENABLE NOTIFICATIONS
 $("enableNotificationsBtn").addEventListener("click",async()=>{
 
  const button=$("enableNotificationsBtn");
@@ -310,15 +342,11 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
   return;
  }
 
- if(!VAPID_PUBLIC_KEY){
-  setPushStatus("Public VAPID Key ଦିଅ।");
-  return;
- }
-
  button.disabled=true;
  button.textContent="Enabling...";
 
  try{
+
   const supported=await isSupported();
 
   if(!supported){
@@ -333,16 +361,17 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
 
   messagingInstance=getMessaging(app);
 
-  const swUrl=new URL("firebase-messaging-sw.js",window.location.href);
-  const swScope=new URL("./",window.location.href);
+  // Register Service Worker inside the GitHub Pages project folder.
+  const basePath=new URL("./",window.location.href);
 
   const registration=await navigator.serviceWorker.register(
-   swUrl.pathname,
-   {scope:swScope.pathname}
+   new URL("firebase-messaging-sw.js",basePath).pathname,
+   {scope:basePath.pathname}
   );
 
   await navigator.serviceWorker.ready;
 
+  // Generate FCM token using VAPID Public Key.
   const token=await getToken(messagingInstance,{
    vapidKey:VAPID_PUBLIC_KEY,
    serviceWorkerRegistration:registration
@@ -352,6 +381,7 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
    throw new Error("FCM Token Generate ହୋଇନାହିଁ।");
   }
 
+  // Save token under the logged-in customer's profile.
   await setDoc(
    doc(db,"users",currentCustomer.uid,"fcmTokens",token),
    {
@@ -362,23 +392,18 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
    }
   );
 
-  setPushStatus("✓ Phone Notification Registration ସଫଳ ହୋଇଛି।");
+  await startForegroundNotifications();
+
+  setPushStatus("✓ Customer FCM Token Generate ଓ Firestore ରେ Save ହୋଇଛି।");
   button.textContent="Notifications Enabled";
 
-  if(!foregroundMessageStarted){
-   onMessage(messagingInstance,payload=>{
-    const title=payload.notification?.title||"PS POWER SERVICE";
-    const body=payload.notification?.body||"New update received.";
-    setPushStatus(title+": "+body);
-    alert(title+"\n"+body);
-   });
-   foregroundMessageStarted=true;
-  }
-
  }catch(error){
+
   console.error("FCM setup error:",error);
+
   setPushStatus("Notification Error: "+error.message);
   button.textContent="Try Again";
+
  }finally{
   button.disabled=false;
  }
@@ -413,6 +438,7 @@ $("bookingForm").addEventListener("submit",async event=>{
  button.textContent="Submitting...";
 
  try{
+
   await addDoc(collection(db,"bookings"),{
    userId:currentCustomer.uid,
    customerName:customerProfile.name||currentCustomer.displayName||"Customer",
@@ -558,9 +584,7 @@ $("utrSubmissionList").addEventListener("click",async event=>{
 
  if(paymentAppName==="Other"){
   paymentAppName=$("other-"+bookingId)?.value.trim()||"";
-
-  if(!paymentAppName)
-   return alert("Other UPI App ର ନାମ ଲେଖ।");
+  if(!paymentAppName)return alert("Other UPI App ର ନାମ ଲେଖ।");
  }
 
  if(!utr)return alert("UTR Number ଦିଅ।");
@@ -575,6 +599,7 @@ $("utrSubmissionList").addEventListener("click",async event=>{
  button.textContent="Submitting...";
 
  try{
+
   const bookingRef=doc(db,"bookings",bookingId);
   const bookingSnap=await getDoc(bookingRef);
 
@@ -602,6 +627,7 @@ $("utrSubmissionList").addEventListener("click",async event=>{
   alert("UTR ଓ Payment App Name Submit ହୋଇଗଲା। Admin Verification ପରେ Final Receipt ମିଳିବ।");
 
  }catch(error){
+  console.error("UTR submission error:",error);
   alert("UTR Submit Error: "+error.message);
  }finally{
   button.disabled=false;
@@ -628,7 +654,6 @@ function renderBookingHistory(){
     <h4>PS POWER SERVICE</h4>
     <p style="text-align:center;font-weight:bold">PAYMENT RECEIPT</p>
     <p class="receipt-verified">✓ PAYMENT VERIFIED</p>
-
     <div class="receipt-row"><span>Receipt / Booking ID</span><b>${escapeHTML(b.id)}</b></div>
     <div class="receipt-row"><span>Customer Name</span><b>${escapeHTML(b.customerName||"Customer")}</b></div>
     <div class="receipt-row"><span>Service</span><b>${escapeHTML(b.service||"-")}</b></div>
@@ -638,11 +663,9 @@ function renderBookingHistory(){
     <div class="receipt-row"><span>Payment App</span><b>${escapeHTML(b.paymentAppName||"Not recorded")}</b></div>
     <div class="receipt-row"><span>UTR Number</span><b>${escapeHTML(b.paymentReference||"-")}</b></div>
     <div class="receipt-row"><span>Verification Date</span><b>${escapeHTML(formatDate(b.paymentVerifiedAt))}</b></div>
-
     <p class="receipt-verified">Payment successfully verified by Admin.</p>
     <p class="receipt-note">This receipt confirms that the payment was marked verified in PS POWER SERVICE.</p>
    </div>
-
    <div class="receipt-actions">
     <button type="button" class="green" data-print-receipt="${escapeHTML(b.id)}">Print / Save PDF</button>
    </div>
@@ -813,6 +836,7 @@ $("designRequestForm").addEventListener("submit",async event=>{
  button.textContent="Submitting...";
 
  try{
+
   await addDoc(collection(db,"designRequests"),{
    userId:currentCustomer.uid,
    customerName:customerProfile.name||currentCustomer.displayName||"Customer",
@@ -879,7 +903,7 @@ function loadMyDesignRequests(uid){
  });
 }
 
-// NOTIFICATIONS
+// IN-APP NOTIFICATIONS
 function loadNotifications(uid){
 
  const q=query(
