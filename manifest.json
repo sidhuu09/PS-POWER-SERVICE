@@ -1,0 +1,27 @@
+
+{
+  "id": "/PS-POWER-SERVICE/",
+  "name": "PS POWER SERVICE",
+  "short_name": "PS POWER",
+  "description": "Electrical Service and Repair Booking",
+  "start_url": "/PS-POWER-SERVICE/",
+  "scope": "/PS-POWER-SERVICE/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#101010",
+  "theme_color": "#D6B45C",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
