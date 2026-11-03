@@ -34,44 +34,15 @@ label{font-weight:bold;font-size:14px}
 .verified{color:#168a45;font-weight:bold}
 .utr-box{border:1px solid #ddd;border-radius:9px;padding:14px;margin:12px 0}
 .push-status{padding:12px;border-radius:8px;background:#f4f6fa;margin-top:10px;font-size:14px}
-
-/* PAYMENT RECEIPT */
-.receipt-card{
- border:1px solid #d5d5d5;
- border-radius:10px;
- padding:15px;
- margin-top:12px;
- background:#fffdf5;
-}
-.receipt-card h4{
- text-align:center;
- color:#171717;
- margin:5px 0;
-}
-.receipt-row{
- display:flex;
- justify-content:space-between;
- gap:10px;
- padding:8px 0;
- border-bottom:1px dashed #ddd;
- overflow-wrap:anywhere;
-}
+.receipt-card{border:1px solid #d5d5d5;border-radius:10px;padding:15px;margin-top:12px;background:#fffdf5}
+.receipt-card h4{text-align:center;color:#171717;margin:5px 0}
+.receipt-row{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px dashed #ddd;overflow-wrap:anywhere}
 .receipt-row span{color:#555}
 .receipt-pending{color:#b36b00;font-weight:bold}
 .receipt-verified{color:#168a45;font-weight:bold}
-.receipt-actions{
- display:flex;
- gap:8px;
- flex-wrap:wrap;
- margin-top:12px;
-}
+.receipt-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .receipt-actions button{flex:1}
-.receipt-note{
- text-align:center;
- font-size:12px;
- color:#666;
- margin-top:12px;
-}
+.receipt-note{text-align:center;font-size:12px;color:#666;margin-top:12px}
 @media(max-width:500px){
  header h2{font-size:16px}
  header{padding:13px}
@@ -82,7 +53,6 @@ label{font-weight:bold;font-size:14px}
 </head>
 
 <body>
-
 <header>
 <h2>PS POWER SERVICE</h2>
 <button class="logout" id="logoutBtn">Logout</button>
@@ -130,16 +100,16 @@ label{font-weight:bold;font-size:14px}
 
 <section class="card">
 <h3>2. ₹20 Booking Fee Payment</h3>
-<p>PhonePe / UPI ଦ୍ୱାରା ₹20 Payment କର।</p>
+<p>UPI App ଦ୍ୱାରା ₹20 Payment କର।</p>
 <img class="qr" src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png" alt="PS POWER SERVICE Booking Payment QR Code">
 <p style="text-align:center"><b>Booking Fee: ₹20</b></p>
-<p class="muted">Payment କରିବା ପରେ UTR Submission Section ରେ UTR Number Submit କର।</p>
+<p class="muted">Payment କରିବା ପରେ UTR Submission Section ରେ UTR Number ଓ Payment App ର ନାମ Submit କର।</p>
 <p class="muted">କେବଳ UTR Submit କଲେ Payment Paid ହେବ ନାହିଁ। Admin Transaction ଯାଞ୍ଚ କରିବା ପରେ Paid କରିବେ।</p>
 </section>
 
 <section class="card">
 <h3>3. Submit UTR Number</h3>
-<p class="muted">ତୁମର Booking ବାଛି UTR / Transaction Number Submit କର।</p>
+<p class="muted">ତୁମର Booking ବାଛି UTR / Transaction Number ଓ Payment App Submit କର।</p>
 <div id="utrSubmissionList">Loading your bookings...</div>
 </section>
 
@@ -276,10 +246,8 @@ onAuthStateChanged(auth,async user=>{
 
   if(userDoc.exists()){
    customerProfile=userDoc.data();
-
    $("customerName").textContent=
     customerProfile.name||user.displayName||"Customer";
-
    $("designPhone").value=customerProfile.phone||"";
   }
  }catch(error){
@@ -522,12 +490,53 @@ function renderUTRSubmission(){
    <p class="muted">Booking ID: ${escapeHTML(b.id)}</p>
    <p class="muted">Booking Date: ${escapeHTML(b.bookingDate||"-")}</p>
    <p class="muted">Booking Fee: ₹${Number(b.bookingFee??20)}</p>
+
+   <label>Payment App Select କର</label>
+   <select id="app-${escapeHTML(b.id)}" required>
+    <option value="">Select Payment App</option>
+    <option value="Google Pay">Google Pay</option>
+    <option value="PhonePe">PhonePe</option>
+    <option value="Paytm">Paytm</option>
+    <option value="BHIM UPI">BHIM UPI</option>
+    <option value="Navi">Navi</option>
+    <option value="Other">Other</option>
+   </select>
+
+   <div id="other-wrap-${escapeHTML(b.id)}" style="display:none">
+    <label>Other UPI App Name</label>
+    <input type="text" id="other-${escapeHTML(b.id)}"
+     maxlength="50" placeholder="ନିଜ Payment App ର ନାମ ଲେଖ">
+   </div>
+
    <label>UTR / Transaction Number</label>
-   <input type="text" id="utr-${escapeHTML(b.id)}" maxlength="40" placeholder="Enter UTR Number">
-   <button type="button" class="green" data-submit-utr="${escapeHTML(b.id)}">Submit UTR</button>
+   <input type="text" id="utr-${escapeHTML(b.id)}"
+    maxlength="40" placeholder="Enter UTR Number">
+
+   <button type="button" class="green"
+    data-submit-utr="${escapeHTML(b.id)}">Submit UTR</button>
   </div>
  `).join("");
 }
+
+// SHOW / HIDE OTHER APP INPUT
+$("utrSubmissionList").addEventListener("change",event=>{
+
+ const select=event.target.closest("select[id^='app-']");
+ if(!select)return;
+
+ const bookingId=select.id.replace("app-","");
+ const wrap=$("other-wrap-"+bookingId);
+ const input=$("other-"+bookingId);
+
+ if(select.value==="Other"){
+  wrap.style.display="block";
+  input.required=true;
+ }else{
+  wrap.style.display="none";
+  input.required=false;
+  input.value="";
+ }
+});
 
 // SUBMIT UTR
 $("utrSubmissionList").addEventListener("click",async event=>{
@@ -540,6 +549,19 @@ $("utrSubmissionList").addEventListener("click",async event=>{
  const bookingId=button.dataset.submitUtr;
  const input=$("utr-"+bookingId);
  const utr=input?.value.trim();
+ const appSelect=$("app-"+bookingId);
+
+ if(!appSelect?.value)
+  return alert("Payment App Select କର।");
+
+ let paymentAppName=appSelect.value;
+
+ if(paymentAppName==="Other"){
+  paymentAppName=$("other-"+bookingId)?.value.trim()||"";
+
+  if(!paymentAppName)
+   return alert("Other UPI App ର ନାମ ଲେଖ।");
+ }
 
  if(!utr)return alert("UTR Number ଦିଅ।");
 
@@ -572,11 +594,12 @@ $("utrSubmissionList").addEventListener("click",async event=>{
 
   await updateDoc(bookingRef,{
    paymentReference:utr,
+   paymentAppName:paymentAppName,
    paymentProofStatus:"submitted",
    paymentSubmittedAt:serverTimestamp()
   });
 
-  alert("UTR Number Submit ହୋଇଗଲା। Pending Verification Acknowledgement Booking History ରେ ଦେଖିପାରିବ।");
+  alert("UTR ଓ Payment App Name Submit ହୋଇଗଲା। Admin Verification ପରେ Final Receipt ମିଳିବ।");
 
  }catch(error){
   alert("UTR Submit Error: "+error.message);
@@ -602,59 +625,26 @@ function renderBookingHistory(){
 
   const receipt=paid?`
    <div class="receipt-card" id="receipt-${escapeHTML(b.id)}">
-
     <h4>PS POWER SERVICE</h4>
     <p style="text-align:center;font-weight:bold">PAYMENT RECEIPT</p>
     <p class="receipt-verified">✓ PAYMENT VERIFIED</p>
 
-    <div class="receipt-row">
-     <span>Receipt / Booking ID</span>
-     <b>${escapeHTML(b.id)}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Customer Name</span>
-     <b>${escapeHTML(b.customerName||"Customer")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Service</span>
-     <b>${escapeHTML(b.service||"-")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Booking Date</span>
-     <b>${escapeHTML(b.bookingDate||"-")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Payment Amount</span>
-     <b>₹${Number(b.bookingFee??20)}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Payment Method</span>
-     <b>UPI</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>UTR Number</span>
-     <b>${escapeHTML(b.paymentReference||"-")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Verification Date</span>
-     <b>${escapeHTML(formatDate(b.paymentVerifiedAt))}</b>
-    </div>
+    <div class="receipt-row"><span>Receipt / Booking ID</span><b>${escapeHTML(b.id)}</b></div>
+    <div class="receipt-row"><span>Customer Name</span><b>${escapeHTML(b.customerName||"Customer")}</b></div>
+    <div class="receipt-row"><span>Service</span><b>${escapeHTML(b.service||"-")}</b></div>
+    <div class="receipt-row"><span>Booking Date</span><b>${escapeHTML(b.bookingDate||"-")}</b></div>
+    <div class="receipt-row"><span>Payment Amount</span><b>₹${Number(b.bookingFee??20)}</b></div>
+    <div class="receipt-row"><span>Payment Method</span><b>UPI</b></div>
+    <div class="receipt-row"><span>Payment App</span><b>${escapeHTML(b.paymentAppName||"Not recorded")}</b></div>
+    <div class="receipt-row"><span>UTR Number</span><b>${escapeHTML(b.paymentReference||"-")}</b></div>
+    <div class="receipt-row"><span>Verification Date</span><b>${escapeHTML(formatDate(b.paymentVerifiedAt))}</b></div>
 
     <p class="receipt-verified">Payment successfully verified by Admin.</p>
     <p class="receipt-note">This receipt confirms that the payment was marked verified in PS POWER SERVICE.</p>
    </div>
 
    <div class="receipt-actions">
-    <button type="button" class="green" data-print-receipt="${escapeHTML(b.id)}">
-     Print / Save PDF
-    </button>
+    <button type="button" class="green" data-print-receipt="${escapeHTML(b.id)}">Print / Save PDF</button>
    </div>
   `:"";
 
@@ -663,22 +653,11 @@ function renderBookingHistory(){
     <h4>PS POWER SERVICE</h4>
     <p style="text-align:center;font-weight:bold">UTR SUBMISSION ACKNOWLEDGEMENT</p>
     <p class="receipt-pending">⏳ PENDING VERIFICATION</p>
-    <div class="receipt-row">
-     <span>Booking ID</span>
-     <b>${escapeHTML(b.id)}</b>
-    </div>
-    <div class="receipt-row">
-     <span>Service</span>
-     <b>${escapeHTML(b.service||"-")}</b>
-    </div>
-    <div class="receipt-row">
-     <span>Submitted UTR</span>
-     <b>${escapeHTML(b.paymentReference||"-")}</b>
-    </div>
-    <div class="receipt-row">
-     <span>Amount Submitted</span>
-     <b>₹${Number(b.bookingFee??20)}</b>
-    </div>
+    <div class="receipt-row"><span>Booking ID</span><b>${escapeHTML(b.id)}</b></div>
+    <div class="receipt-row"><span>Service</span><b>${escapeHTML(b.service||"-")}</b></div>
+    <div class="receipt-row"><span>Payment App</span><b>${escapeHTML(b.paymentAppName||"Not recorded")}</b></div>
+    <div class="receipt-row"><span>Submitted UTR</span><b>${escapeHTML(b.paymentReference||"-")}</b></div>
+    <div class="receipt-row"><span>Amount Submitted</span><b>₹${Number(b.bookingFee??20)}</b></div>
     <p class="receipt-pending">Admin ଙ୍କ Payment Verification ଅପେକ୍ଷାରେ ଅଛି।</p>
     <p class="receipt-note">ଏହା UTR Submission Acknowledgement ମାତ୍ର; Verified Payment Receipt ନୁହେଁ।</p>
    </div>
@@ -690,24 +669,12 @@ function renderBookingHistory(){
     <p>Booking ID: ${escapeHTML(b.id)}</p>
     <p>Date: ${escapeHTML(b.bookingDate||"-")}</p>
     <p>Address: ${escapeHTML(b.address||"-")}</p>
-
-    <p>Booking Status:
-     <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span>
-    </p>
-
-    <p>Payment:
-     <span class="${paid?"verified":"status"}">
-      ${paid?"PAID":"PENDING"}
-     </span>
-    </p>
-
+    <p>Booking Status: <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span></p>
+    <p>Payment: <span class="${paid?"verified":"status"}">${paid?"PAID":"PENDING"}</span></p>
     <p>Booking Fee: ₹${Number(b.bookingFee??20)}</p>
-
     ${paid?receipt:pendingReceipt}
-
     ${!paid&&b.paymentProofStatus!=="submitted"
-     ? `<p class="muted">UTR Number ଏପର୍ଯ୍ୟନ୍ତ Submit ହୋଇନାହିଁ।</p>`
-     : ""}
+     ? `<p class="muted">UTR Number ଏପର୍ଯ୍ୟନ୍ତ Submit ହୋଇନାହିଁ।</p>`:""}
    </div>
   `;
  }).join("");
@@ -722,7 +689,7 @@ $("bookingList").addEventListener("click",event=>{
  const bookingId=button.dataset.printReceipt;
  const booking=customerBookings.find(b=>b.id===bookingId);
 
- if(!booking||booking.paymentStatus!=="paid"){
+ if(!booking||booking.paymentStatus!=="paid"||booking.paymentProofStatus!=="verified"){
   alert("Payment ଏପର୍ଯ୍ୟନ୍ତ Admin Verify କରିନାହାନ୍ତି।");
   return;
  }
@@ -863,7 +830,6 @@ $("designRequestForm").addEventListener("submit",async event=>{
 
   $("designMessage").value="";
   selectedDesign=null;
-
   $("selectedDesignText").textContent="ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।";
   $("designRequestSubmit").disabled=true;
 
@@ -901,13 +867,10 @@ function loadMyDesignRequests(uid){
    <div class="design-request">
     <b>${escapeHTML(r.designName||"Selected Design")}</b>
     ${safeImageUrl(r.imageUrl)
-     ? `<p><img src="${escapeHTML(safeImageUrl(r.imageUrl))}" alt="Selected design" style="width:100%;max-width:220px;border-radius:8px"></p>`
-     : ""}
+     ? `<p><img src="${escapeHTML(safeImageUrl(r.imageUrl))}" alt="Selected design" style="width:100%;max-width:220px;border-radius:8px"></p>`:""}
     <p>Category: ${escapeHTML(r.category||"-")}</p>
     <p>Message: ${escapeHTML(r.description||"-")}</p>
-    <p>Request Status:
-     <span class="status">${escapeHTML(r.status||"pending")}</span>
-    </p>
+    <p>Request Status: <span class="status">${escapeHTML(r.status||"pending")}</span></p>
    </div>
   `).join("");
 
@@ -954,7 +917,6 @@ $("whatsappBtn").addEventListener("click",()=>{
  "Hello PS POWER SERVICE, I want to book a service. Please guide me for the ₹20 booking fee and payment verification. A WhatsApp message alone is not proof of payment.";
 
  const url="https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);
-
  window.open(url,"_blank");
 });
 
