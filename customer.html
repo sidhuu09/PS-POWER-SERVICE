@@ -34,10 +34,49 @@ label{font-weight:bold;font-size:14px}
 .verified{color:#168a45;font-weight:bold}
 .utr-box{border:1px solid #ddd;border-radius:9px;padding:14px;margin:12px 0}
 .push-status{padding:12px;border-radius:8px;background:#f4f6fa;margin-top:10px;font-size:14px}
+
+/* PAYMENT RECEIPT */
+.receipt-card{
+ border:1px solid #d5d5d5;
+ border-radius:10px;
+ padding:15px;
+ margin-top:12px;
+ background:#fffdf5;
+}
+.receipt-card h4{
+ text-align:center;
+ color:#171717;
+ margin:5px 0;
+}
+.receipt-row{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+ padding:8px 0;
+ border-bottom:1px dashed #ddd;
+ overflow-wrap:anywhere;
+}
+.receipt-row span{color:#555}
+.receipt-pending{color:#b36b00;font-weight:bold}
+.receipt-verified{color:#168a45;font-weight:bold}
+.receipt-actions{
+ display:flex;
+ gap:8px;
+ flex-wrap:wrap;
+ margin-top:12px;
+}
+.receipt-actions button{flex:1}
+.receipt-note{
+ text-align:center;
+ font-size:12px;
+ color:#666;
+ margin-top:12px;
+}
 @media(max-width:500px){
  header h2{font-size:16px}
  header{padding:13px}
  .card{padding:15px}
+ .receipt-row{font-size:13px}
 }
 </style>
 </head>
@@ -57,24 +96,15 @@ label{font-weight:bold;font-size:14px}
 <p>Service Booking, Payment, Design Gallery ଓ Booking History ଏଠାରେ ଦେଖିପାରିବ।</p>
 </section>
 
-<!-- PHONE NOTIFICATIONS -->
 <section class="card">
 <h3>Phone Notifications</h3>
-<p class="muted">
-Booking Status, Payment Verification ଓ ଅନ୍ୟ Update ପାଇଁ Phone Notification Enable କର।
-</p>
-<button class="blue" id="enableNotificationsBtn" type="button">
-Enable Phone Notifications
-</button>
-<div id="pushStatus" class="push-status">
-Notification ଏପର୍ଯ୍ୟନ୍ତ Enable ହୋଇନାହିଁ।
-</div>
+<p class="muted">Booking Status, Payment Verification ଓ ଅନ୍ୟ Update ପାଇଁ Phone Notification Enable କର।</p>
+<button class="blue" id="enableNotificationsBtn" type="button">Enable Phone Notifications</button>
+<div id="pushStatus" class="push-status">Notification ଏପର୍ଯ୍ୟନ୍ତ Enable ହୋଇନାହିଁ।</div>
 </section>
 
-<!-- 1. BOOKING SERVICES -->
 <section class="card">
 <h3>1. Book a Service</h3>
-
 <form id="bookingForm">
 <label>Service Select କର</label>
 <select id="service" required>
@@ -95,79 +125,56 @@ Notification ଏପର୍ଯ୍ୟନ୍ତ Enable ହୋଇନାହିଁ।
 
 <button id="bookingSubmit" type="submit">Submit Booking</button>
 </form>
-
 <p class="muted">ପ୍ରତ୍ୟେକ Booking ପାଇଁ ₹20 Booking Fee ଦେବାକୁ ପଡ଼ିବ। Admin Payment Verify କରିବେ।</p>
 </section>
 
-<!-- 2. QR PAYMENT -->
 <section class="card">
 <h3>2. ₹20 Booking Fee Payment</h3>
 <p>PhonePe / UPI ଦ୍ୱାରା ₹20 Payment କର।</p>
-
-<img class="qr"
-src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png"
-alt="PS POWER SERVICE Booking Payment QR Code">
-
+<img class="qr" src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png" alt="PS POWER SERVICE Booking Payment QR Code">
 <p style="text-align:center"><b>Booking Fee: ₹20</b></p>
-
-<p class="muted">
-Payment କରିବା ପରେ UTR Submission Section ରେ UTR Number Submit କର।
-</p>
-<p class="muted">
-କେବଳ UTR Submit କଲେ Payment Paid ହେବ ନାହିଁ। Admin Transaction ଯାଞ୍ଚ କରିବା ପରେ Paid କରିବେ।
-</p>
+<p class="muted">Payment କରିବା ପରେ UTR Submission Section ରେ UTR Number Submit କର।</p>
+<p class="muted">କେବଳ UTR Submit କଲେ Payment Paid ହେବ ନାହିଁ। Admin Transaction ଯାଞ୍ଚ କରିବା ପରେ Paid କରିବେ।</p>
 </section>
 
-<!-- 3. UTR SUBMISSION -->
 <section class="card">
 <h3>3. Submit UTR Number</h3>
 <p class="muted">ତୁମର Booking ବାଛି UTR / Transaction Number Submit କର।</p>
 <div id="utrSubmissionList">Loading your bookings...</div>
 </section>
 
-<!-- 4. DESIGN GALLERY -->
 <section class="card">
 <h3>4. Our Design Gallery</h3>
 <p class="muted">ପସନ୍ଦର Design ବାଛି Request ପଠାଅ।</p>
-
 <div id="designGallery" class="gallery">Loading designs...</div>
 
 <form id="designRequestForm" style="margin-top:18px">
 <h3>Submit Design Request</h3>
 <p id="selectedDesignText" class="muted">ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।</p>
-
 <label>Your Phone Number</label>
 <input id="designPhone" type="tel" maxlength="15" required placeholder="Phone number">
-
 <label>Additional Message (Optional)</label>
 <textarea id="designMessage" rows="3" maxlength="500" placeholder="କେଉଁ ପ୍ରକାର କାମ ଚାହୁଁଛ, ଲେଖ।"></textarea>
-
-<button class="green" id="designRequestSubmit" type="submit" disabled>
-Submit Design Request
-</button>
+<button class="green" id="designRequestSubmit" type="submit" disabled>Submit Design Request</button>
 </form>
 </section>
 
-<!-- 5. MY DESIGN REQUESTS -->
 <section class="card">
 <h3>5. My Design Requests</h3>
 <div id="myDesignRequests">Loading requests...</div>
 </section>
 
-<!-- 6. BOOKING HISTORY -->
 <section class="card">
-<h3>6. My Booking History</h3>
-<p class="muted">ତୁମର ସମସ୍ତ Booking ଓ Payment Status ଏଠାରେ ଦେଖିପାରିବ।</p>
+<h3>6. My Booking History & Payment Receipts</h3>
+<p class="muted">ତୁମର ସମସ୍ତ Booking ଓ Payment Receipt ଏଠାରେ ଦେଖିପାରିବ।</p>
 <div id="bookingList">Loading bookings...</div>
 </section>
 
-<!-- 7. NOTIFICATIONS -->
 <section class="card">
 <h3>7. My Notifications</h3>
 <div id="notificationList">Loading notifications...</div>
 </section>
 
-<!-- 8. WHATSAPP -->
 <section class="card">
 <h3>8. WhatsApp Booking</h3>
 <p>WhatsApp Message ମାତ୍ର Payment Proof ନୁହେଁ। ₹20 Payment ଓ Admin Verification ଆବଶ୍ୟକ।</p>
@@ -205,14 +212,6 @@ const firebaseConfig={
 
 const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 const WHATSAPP_NUMBER="918144722094";
-
-/*
- IMPORTANT:
- Firebase Console > Project Settings > Cloud Messaging
- > Web Push certificates > Key pair
- ର Public Key ଏଠାରେ ବସାଅ।
- Private Key ନୁହେଁ।
-*/
 const VAPID_PUBLIC_KEY="BBJUSzxOPQF0iXr6Wz6GMQxklaeNS-CrmZQcCzMJggzopc91YJw-WoKEBH9HCZyO5ahxpyFbnEV1Sz_XiF60PYk";
 
 const app=initializeApp(firebaseConfig);
@@ -244,6 +243,14 @@ function sortNewest(items){
  return items.sort((a,b)=>
   (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
  );
+}
+
+function formatDate(value){
+ if(!value)return "-";
+ try{
+  const date=value.toDate?value.toDate():new Date(value);
+  return date.toLocaleString("en-IN");
+ }catch{return "-";}
 }
 
 // AUTHENTICATION
@@ -283,7 +290,6 @@ onAuthStateChanged(auth,async user=>{
  loadNotifications(user.uid);
  loadDesignGallery();
  loadMyDesignRequests(user.uid);
-
  checkNotificationStatus();
 });
 
@@ -297,10 +303,7 @@ $("logoutBtn").addEventListener("click",async()=>{
  }
 });
 
-// ==================================
 // FIREBASE CLOUD MESSAGING
-// ==================================
-
 function setPushStatus(message){
  $("pushStatus").textContent=message;
 }
@@ -342,13 +345,12 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
  if(!VAPID_PUBLIC_KEY){
   setPushStatus("Public VAPID Key ଦିଅ।");
   return;
-}
+ }
 
  button.disabled=true;
  button.textContent="Enabling...";
 
  try{
-
   const supported=await isSupported();
 
   if(!supported){
@@ -363,15 +365,7 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
 
   messagingInstance=getMessaging(app);
 
-  /*
-   GitHub Pages repository path:
-   /PS-POWER-SERVICE/firebase-messaging-sw.js
-  */
-  const swUrl=new URL(
-   "firebase-messaging-sw.js",
-   window.location.href
-  );
-
+  const swUrl=new URL("firebase-messaging-sw.js",window.location.href);
   const swScope=new URL("./",window.location.href);
 
   const registration=await navigator.serviceWorker.register(
@@ -390,10 +384,6 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
    throw new Error("FCM Token Generate ହୋଇନାହିଁ।");
   }
 
-  /*
-   Token is stored under the logged-in user's
-   own Firestore subcollection.
-  */
   await setDoc(
    doc(db,"users",currentCustomer.uid,"fcmTokens",token),
    {
@@ -409,37 +399,20 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
 
   if(!foregroundMessageStarted){
    onMessage(messagingInstance,payload=>{
-
-    const title=
-     payload.notification?.title||"PS POWER SERVICE";
-
-    const body=
-     payload.notification?.body||"New update received.";
-
+    const title=payload.notification?.title||"PS POWER SERVICE";
+    const body=payload.notification?.body||"New update received.";
     setPushStatus(title+": "+body);
-
-    /*
-     Page is already open, so show an in-page alert.
-     Background notifications are handled by the service worker.
-    */
     alert(title+"\n"+body);
    });
-
    foregroundMessageStarted=true;
   }
 
  }catch(error){
-
   console.error("FCM setup error:",error);
-
   setPushStatus("Notification Error: "+error.message);
-
   button.textContent="Try Again";
-
  }finally{
-
   button.disabled=false;
-
  }
 });
 
@@ -458,7 +431,6 @@ $("bookingForm").addEventListener("submit",async event=>{
   return alert("ସମସ୍ତ ତଥ୍ୟ ପୂରଣ କର।");
 
  const today=new Date();
-
  const localToday=[
   today.getFullYear(),
   String(today.getMonth()+1).padStart(2,"0"),
@@ -473,7 +445,6 @@ $("bookingForm").addEventListener("submit",async event=>{
  button.textContent="Submitting...";
 
  try{
-
   await addDoc(collection(db,"bookings"),{
    userId:currentCustomer.uid,
    customerName:customerProfile.name||currentCustomer.displayName||"Customer",
@@ -490,7 +461,6 @@ $("bookingForm").addEventListener("submit",async event=>{
   });
 
   alert("Booking submit ହୋଇଗଲା। ₹20 Payment କରି UTR Number Submit କର।");
-
   $("bookingForm").reset();
 
  }catch(error){
@@ -547,16 +517,15 @@ function renderUTRSubmission(){
  }
 
  list.innerHTML=unpaid.map(b=>`
-
   <div class="utr-box">
    <b>${escapeHTML(b.service||"Service")}</b>
+   <p class="muted">Booking ID: ${escapeHTML(b.id)}</p>
    <p class="muted">Booking Date: ${escapeHTML(b.bookingDate||"-")}</p>
    <p class="muted">Booking Fee: ₹${Number(b.bookingFee??20)}</p>
    <label>UTR / Transaction Number</label>
    <input type="text" id="utr-${escapeHTML(b.id)}" maxlength="40" placeholder="Enter UTR Number">
    <button type="button" class="green" data-submit-utr="${escapeHTML(b.id)}">Submit UTR</button>
   </div>
-
  `).join("");
 }
 
@@ -584,7 +553,6 @@ $("utrSubmissionList").addEventListener("click",async event=>{
  button.textContent="Submitting...";
 
  try{
-
   const bookingRef=doc(db,"bookings",bookingId);
   const bookingSnap=await getDoc(bookingRef);
 
@@ -608,7 +576,7 @@ $("utrSubmissionList").addEventListener("click",async event=>{
    paymentSubmittedAt:serverTimestamp()
   });
 
-  alert("UTR Number Submit ହୋଇଗଲା। Admin Payment Verify କରିବେ।");
+  alert("UTR Number Submit ହୋଇଗଲା। Pending Verification Acknowledgement Booking History ରେ ଦେଖିପାରିବ।");
 
  }catch(error){
   alert("UTR Submit Error: "+error.message);
@@ -618,7 +586,7 @@ $("utrSubmissionList").addEventListener("click",async event=>{
  }
 });
 
-// BOOKING HISTORY
+// BOOKING HISTORY + PAYMENT RECEIPTS
 function renderBookingHistory(){
 
  const list=$("bookingList");
@@ -628,31 +596,174 @@ function renderBookingHistory(){
   return;
  }
 
- list.innerHTML=customerBookings.map(b=>`
+ list.innerHTML=customerBookings.map(b=>{
 
-  <div class="booking">
-   <b>${escapeHTML(b.service||"Service")}</b>
-   <p>Date: ${escapeHTML(b.bookingDate||"-")}</p>
-   <p>Address: ${escapeHTML(b.address||"-")}</p>
-   <p>Booking Status:
-    <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span>
-   </p>
-   <p>Payment:
-    <span class="status">${escapeHTML(b.paymentStatus||"pending")}</span>
-   </p>
-   <p>Booking Fee: ₹${Number(b.bookingFee??20)}</p>
-   ${
-    b.paymentStatus==="paid"
-    ? `<p class="verified">✓ Payment Verified by Admin</p>`
-    : b.paymentProofStatus==="submitted"
-      ? `<p>UTR Number: <b>${escapeHTML(b.paymentReference||"-")}</b></p>
-         <p class="status">Admin Verification Pending</p>`
-      : `<p class="muted">UTR Number ଏପର୍ଯ୍ୟନ୍ତ Submit ହୋଇନାହିଁ।</p>`
-   }
-  </div>
+  const paid=b.paymentStatus==="paid";
 
- `).join("");
+  const receipt=paid?`
+   <div class="receipt-card" id="receipt-${escapeHTML(b.id)}">
+
+    <h4>PS POWER SERVICE</h4>
+    <p style="text-align:center;font-weight:bold">PAYMENT RECEIPT</p>
+    <p class="receipt-verified">✓ PAYMENT VERIFIED</p>
+
+    <div class="receipt-row">
+     <span>Receipt / Booking ID</span>
+     <b>${escapeHTML(b.id)}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Customer Name</span>
+     <b>${escapeHTML(b.customerName||"Customer")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Service</span>
+     <b>${escapeHTML(b.service||"-")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Booking Date</span>
+     <b>${escapeHTML(b.bookingDate||"-")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Payment Amount</span>
+     <b>₹${Number(b.bookingFee??20)}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Payment Method</span>
+     <b>UPI</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>UTR Number</span>
+     <b>${escapeHTML(b.paymentReference||"-")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Verification Date</span>
+     <b>${escapeHTML(formatDate(b.paymentVerifiedAt))}</b>
+    </div>
+
+    <p class="receipt-verified">Payment successfully verified by Admin.</p>
+    <p class="receipt-note">This receipt confirms that the payment was marked verified in PS POWER SERVICE.</p>
+   </div>
+
+   <div class="receipt-actions">
+    <button type="button" class="green" data-print-receipt="${escapeHTML(b.id)}">
+     Print / Save PDF
+    </button>
+   </div>
+  `:"";
+
+  const pendingReceipt=b.paymentProofStatus==="submitted"&&!paid?`
+   <div class="receipt-card">
+    <h4>PS POWER SERVICE</h4>
+    <p style="text-align:center;font-weight:bold">UTR SUBMISSION ACKNOWLEDGEMENT</p>
+    <p class="receipt-pending">⏳ PENDING VERIFICATION</p>
+    <div class="receipt-row">
+     <span>Booking ID</span>
+     <b>${escapeHTML(b.id)}</b>
+    </div>
+    <div class="receipt-row">
+     <span>Service</span>
+     <b>${escapeHTML(b.service||"-")}</b>
+    </div>
+    <div class="receipt-row">
+     <span>Submitted UTR</span>
+     <b>${escapeHTML(b.paymentReference||"-")}</b>
+    </div>
+    <div class="receipt-row">
+     <span>Amount Submitted</span>
+     <b>₹${Number(b.bookingFee??20)}</b>
+    </div>
+    <p class="receipt-pending">Admin ଙ୍କ Payment Verification ଅପେକ୍ଷାରେ ଅଛି।</p>
+    <p class="receipt-note">ଏହା UTR Submission Acknowledgement ମାତ୍ର; Verified Payment Receipt ନୁହେଁ।</p>
+   </div>
+  `:"";
+
+  return `
+   <div class="booking">
+    <b>${escapeHTML(b.service||"Service")}</b>
+    <p>Booking ID: ${escapeHTML(b.id)}</p>
+    <p>Date: ${escapeHTML(b.bookingDate||"-")}</p>
+    <p>Address: ${escapeHTML(b.address||"-")}</p>
+
+    <p>Booking Status:
+     <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span>
+    </p>
+
+    <p>Payment:
+     <span class="${paid?"verified":"status"}">
+      ${paid?"PAID":"PENDING"}
+     </span>
+    </p>
+
+    <p>Booking Fee: ₹${Number(b.bookingFee??20)}</p>
+
+    ${paid?receipt:pendingReceipt}
+
+    ${!paid&&b.paymentProofStatus!=="submitted"
+     ? `<p class="muted">UTR Number ଏପର୍ଯ୍ୟନ୍ତ Submit ହୋଇନାହିଁ।</p>`
+     : ""}
+   </div>
+  `;
+ }).join("");
 }
+
+// PRINT / SAVE RECEIPT AS PDF
+$("bookingList").addEventListener("click",event=>{
+
+ const button=event.target.closest("[data-print-receipt]");
+ if(!button)return;
+
+ const bookingId=button.dataset.printReceipt;
+ const booking=customerBookings.find(b=>b.id===bookingId);
+
+ if(!booking||booking.paymentStatus!=="paid"){
+  alert("Payment ଏପର୍ଯ୍ୟନ୍ତ Admin Verify କରିନାହାନ୍ତି।");
+  return;
+ }
+
+ const receipt=$("receipt-"+bookingId);
+ if(!receipt)return;
+
+ const printWindow=window.open("","_blank");
+
+ if(!printWindow){
+  alert("Popup Block ହୋଇଛି। Browser ରେ Popup Allow କର।");
+  return;
+ }
+
+ printWindow.document.write(`
+  <!DOCTYPE html>
+  <html>
+  <head>
+   <title>PS POWER SERVICE Payment Receipt</title>
+   <meta name="viewport" content="width=device-width,initial-scale=1">
+   <style>
+    body{font-family:Arial,sans-serif;padding:20px;color:#222}
+    .receipt-card{max-width:600px;margin:auto;border:1px solid #ccc;border-radius:10px;padding:20px}
+    h4{text-align:center}
+    .receipt-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed #ccc;overflow-wrap:anywhere}
+    .receipt-verified{color:green;font-weight:bold;text-align:center}
+    .receipt-note{text-align:center;font-size:12px;color:#666}
+    @media print{body{padding:0}}
+   </style>
+  </head>
+  <body>
+   ${receipt.outerHTML}
+   <script>
+    window.onload=function(){window.print();};
+   <\/script>
+  </body>
+  </html>
+ `);
+
+ printWindow.document.close();
+});
 
 // LOAD DESIGN GALLERY
 function loadDesignGallery(){
@@ -706,12 +817,7 @@ $("designGallery").addEventListener("click",event=>{
  const category=card?.querySelector(".muted")?.textContent||"Other";
  const image=card?.querySelector("img")?.src||"";
 
- selectedDesign={
-  id:designId,
-  name,
-  category,
-  imageUrl:image
- };
+ selectedDesign={id:designId,name,category,imageUrl:image};
 
  $("selectedDesignText").textContent="Selected: "+name;
  $("designRequestSubmit").disabled=false;
@@ -740,7 +846,6 @@ $("designRequestForm").addEventListener("submit",async event=>{
  button.textContent="Submitting...";
 
  try{
-
   await addDoc(collection(db,"designRequests"),{
    userId:currentCustomer.uid,
    customerName:customerProfile.name||currentCustomer.displayName||"Customer",
@@ -759,9 +864,7 @@ $("designRequestForm").addEventListener("submit",async event=>{
   $("designMessage").value="";
   selectedDesign=null;
 
-  $("selectedDesignText").textContent=
-   "ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।";
-
+  $("selectedDesignText").textContent="ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।";
   $("designRequestSubmit").disabled=true;
 
   document.querySelectorAll(".design-card")
@@ -795,7 +898,6 @@ function loadMyDesignRequests(uid){
   const items=sortNewest(snapshot.docs.map(d=>d.data()));
 
   list.innerHTML=items.map(r=>`
-
    <div class="design-request">
     <b>${escapeHTML(r.designName||"Selected Design")}</b>
     ${safeImageUrl(r.imageUrl)
@@ -807,7 +909,6 @@ function loadMyDesignRequests(uid){
      <span class="status">${escapeHTML(r.status||"pending")}</span>
     </p>
    </div>
-
   `).join("");
 
  },error=>{
@@ -835,12 +936,10 @@ function loadNotifications(uid){
   const items=sortNewest(snapshot.docs.map(d=>d.data()));
 
   list.innerHTML=items.map(n=>`
-
    <div class="booking">
     <b>${escapeHTML(n.title||"Notification")}</b>
     <p>${escapeHTML(n.message||"")}</p>
    </div>
-
   `).join("");
 
  },error=>{
@@ -854,8 +953,7 @@ $("whatsappBtn").addEventListener("click",()=>{
  const message=
  "Hello PS POWER SERVICE, I want to book a service. Please guide me for the ₹20 booking fee and payment verification. A WhatsApp message alone is not proof of payment.";
 
- const url=
- "https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);
+ const url="https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);
 
  window.open(url,"_blank");
 });
