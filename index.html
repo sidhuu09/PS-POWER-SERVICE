@@ -7,16 +7,20 @@
 <style>
 :root{--yellow:#ffd500;--ink:#171717;--paper:#fff;--soft:#fff9dc;--line:#e5e5e5}
 *{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
 body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#222}
-header{background:var(--ink);color:white;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.logo{font-size:21px;font-weight:bold;color:var(--yellow)}
-nav a{color:white;text-decoration:none;margin:7px}
+.main-header{background:var(--ink);color:white;padding:14px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;position:sticky;top:0;z-index:1000}
+.logo{font-size:21px;font-weight:bold;color:var(--yellow);white-space:nowrap}
+.main-header nav{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:3px}
+.main-header nav a{color:white;text-decoration:none;padding:9px 10px;border-radius:5px;font-size:13px}
+.main-header nav a:hover,.main-header nav a:focus{background:var(--yellow);color:var(--ink)}
+.menu-toggle{display:none;background:var(--yellow);color:var(--ink);border:0;padding:8px 13px;border-radius:5px;font-size:23px;cursor:pointer}
 .hero{background:linear-gradient(120deg,#171717,#393939);color:white;text-align:center;padding:64px 15px}
 .hero h1{font-size:clamp(28px,5vw,42px);color:var(--yellow)}
 .btn{border:0;background:var(--yellow);color:var(--ink);padding:11px 17px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px}
 .btn.dark{background:var(--ink);color:var(--yellow)}
 .btn:disabled{opacity:.5;cursor:not-allowed}
-section{padding:28px 5%;text-align:center}
+section{padding:28px 5%;text-align:center;scroll-margin-top:85px}
 .services{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
 .service{padding:22px;background:var(--soft);border:1px solid #f1df85;border-radius:10px;font-weight:bold}
 .panel{max-width:1100px;margin:15px auto;background:white;padding:20px;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 12px #00000010}
@@ -45,7 +49,14 @@ tr:nth-child(even) td{background:#fffdf2}
 .status{font-weight:bold;text-transform:capitalize}
 footer{background:var(--ink);color:white;text-align:center;padding:20px}
 .small-note{font-size:13px;color:#666}
-@media(max-width:600px){header{justify-content:center;text-align:center}.hero{padding:45px 12px}section{padding:22px 12px}.panel{padding:14px}}
+@media(max-width:900px){
+ .main-header{flex-wrap:wrap}
+ .menu-toggle{display:block}
+ .main-header nav{display:none;width:100%;flex-direction:column;align-items:stretch}
+ .main-header nav.show{display:flex}
+ .main-header nav a{padding:12px;border-bottom:1px solid #444}
+}
+@media(max-width:600px){.hero{padding:45px 12px}section{padding:22px 12px}.panel{padding:14px}}
 
 /* PREMIUM PHOTO SLIDER */
 .photo-slider{position:relative;width:100%;height:clamp(330px,65vh,580px);overflow:hidden;background:#171717}
@@ -63,7 +74,6 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
 .slider-dot.active{background:var(--yellow);opacity:1;transform:scale(1.25)}
 @media(max-width:600px){.photo-slider{height:440px}.slide-content{left:13%;right:13%}.slide-content p{font-size:15px}.slider-arrow{width:36px;height:36px;font-size:19px}}
 
-
 /* SERVICE PHOTO GALLERY */
 .gallery-title{margin:34px 0 16px}
 .service-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:18px}
@@ -73,14 +83,26 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
 .gallery-item figcaption{padding:12px 14px;font-weight:bold;color:var(--ink)}
 .gallery-item figcaption span{display:block;margin-top:4px;font-size:12px;font-weight:normal;color:#666}
 @media(max-width:600px){.service-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gallery-item img{height:135px}.gallery-item figcaption{padding:9px;font-size:13px}}
-
 </style>
 </head>
 <body>
-<header>
+
+<header class="main-header">
   <div class="logo">⚡ PS POWER SERVICE</div>
-  <nav><a href="#home">Home</a><a href="#services">Services</a><a href="#account">Account</a></nav>
+  <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="Open navigation menu" aria-expanded="false">☰</button>
+  <nav id="mainNav">
+    <a href="#home" onclick="closeMenu()">Home</a>
+    <a href="#about" onclick="closeMenu()">About Us</a>
+    <a href="#services" onclick="closeMenu()">Services</a>
+    <a href="#gallery" onclick="closeMenu()">Gallery</a>
+    <a href="#account" onclick="showLogin();closeMenu()">Online Booking</a>
+    <a href="#contact" onclick="closeMenu()">Contact Us</a>
+    <a href="#account" onclick="showRegister();closeMenu()">Customer Registration</a>
+    <a href="#account" onclick="showLogin();closeMenu()">Customer Login</a>
+    <a href="#account" onclick="showAdminLogin();closeMenu()">Admin Login</a>
+  </nav>
 </header>
+
 <!-- HOME PHOTO SLIDER -->
 <div class="photo-slider" id="home">
   <div class="slide active">
@@ -108,24 +130,43 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
     <button class="slider-dot" onclick="goToSlide(6)" aria-label="Slide 7"></button>
   </div>
 </div>
-<section id="services"><h2>Our Services</h2><div class="services">
-  <div class="service">⚡ Electrical Work</div><div class="service">🏠 Home Wiring</div>
-  <div class="service">🔧 Repair & Maintenance</div><div class="service">💡 Lenter Piping</div>
-</div>
 
-<h2 class="gallery-title">Our Work Gallery</h2>
-<p class="small-note">A look at our electrical and installation work.</p>
-<div class="service-gallery">
-  <figure class="gallery-item"><img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring" loading="lazy"><figcaption>Distribution Board Wiring<span>Electrical installation</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/electrical-panel-testing.jpg" alt="Electrical Panel Testing" loading="lazy"><figcaption>Electrical Panel Testing<span>Panel inspection and testing</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/fan-fitting.jpg" alt="Fan Fitting" loading="lazy"><figcaption>Fan Fitting<span>Fan installation service</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/house-wiring.jpg" alt="House Wiring" loading="lazy"><figcaption>House Wiring<span>Home electrical wiring</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/lenter-pipe-fitting.jpg" alt="Lenter Pipe Fitting" loading="lazy"><figcaption>Lenter Pipe Fitting<span>Conduit pipe installation</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting" loading="lazy"><figcaption>Switch Board Fitting<span>Switch board installation</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/wall-cutting.jpg" alt="Wall Cutting" loading="lazy"><figcaption>Wall Cutting<span>Electrical fitting preparation</span></figcaption></figure>
-</div>
+<section id="about">
+  <h2>About Us</h2>
+  <div class="panel">
+    <h3>Welcome to PS POWER SERVICE</h3>
+    <p>PS POWER SERVICE provides electrical installation, home wiring, fan fitting, switch board fitting, repair and maintenance services.</p>
+    <p>Our aim is to provide reliable electrical solutions with a focus on quality, careful workmanship and safety.</p>
+    <p><strong>Location:</strong> Muniguda, Odisha, India</p>
+  </div>
 </section>
-<section id="account"><h2>Account</h2>
+
+<section id="services">
+  <h2>Our Services</h2>
+  <div class="services">
+    <div class="service">⚡ Electrical Work</div>
+    <div class="service">🏠 Home Wiring</div>
+    <div class="service">🔧 Repair &amp; Maintenance</div>
+    <div class="service">💡 Lenter Piping</div>
+    <div class="service">🌀 Fan Fitting</div>
+    <div class="service">🔌 Switch Board Fitting</div>
+  </div>
+
+  <h2 class="gallery-title" id="gallery">Our Work Gallery</h2>
+  <p class="small-note">A look at our electrical and installation work.</p>
+  <div class="service-gallery">
+    <figure class="gallery-item"><img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring" loading="lazy"><figcaption>Distribution Board Wiring<span>Electrical installation</span></figcaption></figure>
+    <figure class="gallery-item"><img src="images/electrical-panel-testing.jpg" alt="Electrical Panel Testing" loading="lazy"><figcaption>Electrical Panel Testing<span>Panel inspection and testing</span></figcaption></figure>
+    <figure class="gallery-item"><img src="images/fan-fitting.jpg" alt="Fan Fitting" loading="lazy"><figcaption>Fan Fitting<span>Fan installation service</span></figcaption></figure>
+    <figure class="gallery-item"><img src="images/house-wiring.jpg" alt="House Wiring" loading="lazy"><figcaption>House Wiring<span>Home electrical wiring</span></figcaption></figure>
+    <figure class="gallery-item"><img src="images/lenter-pipe-fitting.jpg" alt="Lenter Pipe Fitting" loading="lazy"><figcaption>Lenter Pipe Fitting<span>Conduit pipe installation</span></figcaption></figure>
+    <figure class="gallery-item"><img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting" loading="lazy"><figcaption>Switch Board Fitting<span>Switch board installation</span></figcaption></figure>
+    <figure class="gallery-item"><img src="images/wall-cutting.jpg" alt="Wall Cutting" loading="lazy"><figcaption>Wall Cutting<span>Electrical fitting preparation</span></figcaption></figure>
+  </div>
+</section>
+
+<section id="account">
+<h2>Customer Account &amp; Online Booking</h2>
 <div class="panel auth-panel" id="registerPanel">
   <h3>Customer Registration</h3>
   <input id="regName" placeholder="Full Name" autocomplete="name">
@@ -142,22 +183,23 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
   <button class="btn" onclick="loginCustomer()">Login</button>
   <button class="btn dark" onclick="resetPassword()">Forgot Password?</button>
   <button class="btn" onclick="showRegister()">Create Account</button>
-  <div class="message" id="loginMessage"></div>
+  <div class="message" id="loginMessage" aria-live="polite"></div>
 </div>
 <div class="panel auth-panel hidden" id="adminLoginPanel">
   <h3>🔐 Admin Login</h3><input id="adminEmail" type="email" placeholder="Admin Email">
   <input id="adminPassword" type="password" placeholder="Admin Password">
   <button class="btn" onclick="loginAdmin()">Admin Login</button>
   <button class="btn dark" onclick="showRegister()">Back</button>
-  <div class="message" id="adminLoginMessage"></div>
+  <div class="message" id="adminLoginMessage" aria-live="polite"></div>
 </div>
+
 <div class="panel hidden" id="dashboard">
   <h3>Welcome, <span id="customerName"></span>!</h3>
   <p>Email: <span id="customerEmail"></span> | Mobile: <span id="customerPhone"></span></p><hr>
   <h3>⚡ Book a Service</h3>
   <form id="bookingForm">
     <label>Choose Service</label><select id="serviceName" required>
-      <option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option>
+      <option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair &amp; Maintenance</option>
     </select>
     <label>Full Address</label><textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
     <label>Booking Date</label><input id="bookingDate" type="date" required>
@@ -184,13 +226,14 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
   <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Service</th><th>Date</th><th>Address</th><th>Fee</th><th>Payment</th><th>Booking Status</th><th>Receipt</th></tr></thead><tbody id="customerBookingRows"><tr><td colspan="8">No bookings yet.</td></tr></tbody></table></div>
   <button class="btn dark" onclick="logoutUser()">Logout</button>
 </div>
+
 <div class="panel hidden" id="adminDashboard">
   <h2>⚡ Admin Dashboard</h2><p>Welcome, Administrator</p>
   <div class="booking"><h3>📱 Add WhatsApp Booking</h3>
     <form id="whatsappBookingForm">
       <input id="waCustomerName" placeholder="Customer Name" required>
       <input id="waCustomerPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric" required>
-      <select id="waService" required><option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option></select>
+      <select id="waService" required><option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair &amp; Maintenance</option></select>
       <textarea id="waAddress" placeholder="Customer Full Address" required></textarea>
       <input id="waBookingDate" type="date" required><p class="price">Booking Fee: ₹20</p>
       <p class="payment-note">Payment remains Pending until Admin verifies the payment.</p>
@@ -204,7 +247,19 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
   <button class="btn dark" onclick="logoutUser()">Admin Logout</button>
 </div>
 </section>
-<footer><p>PS POWER SERVICE</p><p>Powering Your Home, Safely.</p></footer>
+
+<section id="contact">
+  <h2>Contact Us</h2>
+  <div class="panel">
+    <h3>PS POWER SERVICE</h3>
+    <p>📍 Muniguda, Odisha, India</p>
+    <p>📞 8144722094</p>
+    <a class="btn dark" href="https://wa.me/918144722094" target="_blank" rel="noopener noreferrer">Contact on WhatsApp</a>
+  </div>
+</section>
+
+<footer><p>⚡ PS POWER SERVICE</p><p>Powering Your Home, Safely.</p><p>Muniguda, Odisha | 8144722094</p></footer>
+
 <!-- PHOTO SLIDER JAVASCRIPT -->
 <script>
 const slides=document.querySelectorAll(".slide");
@@ -221,12 +276,27 @@ function goToSlide(index){showSlide(index);restartSlider()}
 function startSlider(){sliderTimer=setInterval(()=>showSlide(currentSlide+1),5000)}
 function restartSlider(){clearInterval(sliderTimer);startSlider()}
 startSlider();
+
+function toggleMenu(){
+ const nav=document.getElementById("mainNav");
+ const btn=document.getElementById("menuToggle");
+ const opened=nav.classList.toggle("show");
+ btn.setAttribute("aria-expanded",String(opened));
+ btn.textContent=opened?"✕":"☰";
+}
+function closeMenu(){
+ const nav=document.getElementById("mainNav");
+ const btn=document.getElementById("menuToggle");
+ nav.classList.remove("show");
+ btn.setAttribute("aria-expanded","false");
+ btn.textContent="☰";
+}
 </script>
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,sendPasswordResetEmail,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {getFirestore,doc,setDoc,getDoc,collection,addDoc,query,where,getDocs,updateDoc,serverTimestamp,onSnapshot} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import {getFirestore,doc,setDoc,getDoc,collection,addDoc,query,where,updateDoc,serverTimestamp,onSnapshot} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig={apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",authDomain:"ps-power-service-68007.firebaseapp.com",projectId:"ps-power-service-68007",storageBucket:"ps-power-service-68007.firebasestorage.app",messagingSenderId:"647095348680",appId:"1:647095348680:web:51b3833ce08d767e9d64fd"};
 const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
