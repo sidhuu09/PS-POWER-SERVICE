@@ -2,368 +2,394 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#171717">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PS POWER SERVICE</title>
 <style>
 :root{--yellow:#ffd500;--ink:#171717;--paper:#fff;--soft:#fff9dc;--line:#e5e5e5}
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#222}
-header{position:relative;background:var(--ink);color:#fff;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;z-index:20}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#fff;color:#222}
+header{background:var(--ink);color:white;padding:16px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .logo{font-size:21px;font-weight:bold;color:var(--yellow)}
-.menu-toggle{background:var(--yellow);color:var(--ink);border:0;padding:10px 15px;border-radius:6px;font-size:22px;cursor:pointer}
-.menu-dropdown{display:none;position:absolute;right:5%;top:65px;background:var(--ink);border:2px solid var(--yellow);border-radius:8px;min-width:210px;z-index:1000;padding:8px}
-.menu-dropdown.show{display:block}.menu-dropdown a{display:block;color:#fff;padding:12px;text-decoration:none}.menu-dropdown a:hover{background:var(--yellow);color:var(--ink)}
-.welcome-marquee{overflow:hidden;background:#008000;color:var(--yellow);padding:13px 0;white-space:nowrap;font-weight:bold;font-size:17px;border-bottom:2px solid var(--ink)}
-.welcome-marquee span{display:inline-block;padding-left:100%;animation:welcomeScroll 18s linear infinite}
-@keyframes welcomeScroll{to{transform:translateX(-100%)}}
-.photo-slider{position:relative;width:100%;height:clamp(330px,65vh,580px);overflow:hidden;background:var(--ink)}
-.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .8s}.slide.active{opacity:1;visibility:visible}
-.slide img{width:100%;height:100%;object-fit:cover}.slide:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000c,#0005 65%,#0002)}
-.slide-content{position:absolute;z-index:2;top:50%;left:9%;right:9%;transform:translateY(-50%);color:#fff;max-width:700px}
-.slide-content h1{font-size:clamp(30px,5vw,52px);color:var(--yellow);margin:0 0 12px}.slide-content p{font-size:18px;line-height:1.6}
-.slider-arrow{position:absolute;z-index:5;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;background:var(--yellow);color:var(--ink);font-size:23px;cursor:pointer}
-.slider-prev{left:15px}.slider-next{right:15px}.slider-dots{position:absolute;z-index:5;bottom:18px;left:0;right:0;display:flex;justify-content:center;gap:10px}
-.slider-dot{width:12px;height:12px;padding:0;border:0;border-radius:50%;background:#fff;opacity:.65;cursor:pointer}.slider-dot.active{background:var(--yellow);opacity:1;transform:scale(1.25)}
-section{padding:28px 5%;text-align:center}.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
-.service{padding:22px;background:var(--soft);border:1px solid #f1df85;border-radius:10px;font-weight:bold}
-.panel{max-width:1100px;margin:15px auto;background:#fff;padding:20px;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 12px #00000010}
-.auth-panel{max-width:600px}input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:6px;font:inherit}
-textarea{min-height:80px}.hidden{display:none!important}.message{font-size:14px;color:#a00018;min-height:20px;overflow-wrap:anywhere}
+nav a{color:white;text-decoration:none;margin:7px}
+.hero{background:linear-gradient(120deg,#171717,#393939);color:white;text-align:center;padding:64px 15px}
+.hero h1{font-size:clamp(28px,5vw,42px);color:var(--yellow)}
 .btn{border:0;background:var(--yellow);color:var(--ink);padding:11px 17px;border-radius:6px;font-weight:bold;cursor:pointer;margin:5px}
-.btn.dark{background:var(--ink);color:var(--yellow)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn.dark{background:var(--ink);color:var(--yellow)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+section{padding:28px 5%;text-align:center}
+.services{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.service{padding:22px;background:var(--soft);border:1px solid #f1df85;border-radius:10px;font-weight:bold}
+.panel{max-width:1100px;margin:15px auto;background:white;padding:20px;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 12px #00000010}
+.auth-panel{max-width:600px}
+input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:6px;font:inherit}
+textarea{min-height:80px}
+.hidden{display:none!important}
+.message{font-size:14px;color:#a00018;min-height:20px;overflow-wrap:anywhere}
 .booking{border:1px solid var(--line);border-radius:8px;padding:14px;margin:12px 0;text-align:left;background:#fffdf4;overflow-wrap:anywhere}
-.price{font-size:22px;font-weight:bold;color:#927000}.payment-box{background:var(--soft);border:1px solid #f0d45c;border-radius:12px;padding:16px;margin:16px 0;text-align:center}
-.payment-box img{width:210px;max-width:100%;display:block;margin:12px auto;border:1px solid #ddd;border-radius:8px;background:#fff;padding:5px}
-.payment-note,.small-note{font-size:13px;color:#555;line-height:1.5}.payment-upload-btn{display:inline-block;background:var(--ink);color:var(--yellow);text-decoration:none;padding:12px 18px;border-radius:6px;font-weight:bold;margin:10px auto}
+.price{font-size:22px;font-weight:bold;color:#927000}
+.payment-box{background:var(--soft);border:1px solid #f0d45c;border-radius:12px;padding:16px;margin:16px 0;text-align:center}
+.payment-box img{width:210px;max-width:100%;display:block;margin:12px auto;border:1px solid #ddd;border-radius:8px;background:white;padding:5px}
+.payment-note{font-size:14px;color:#555;line-height:1.5}
+.payment-upload-btn{display:inline-block;background:var(--ink);color:var(--yellow);text-decoration:none;padding:12px 18px;border-radius:6px;font-weight:bold;margin:10px auto}
 .booking-id{font-weight:bold;overflow-wrap:anywhere;color:var(--ink);background:var(--soft);padding:10px;border-radius:6px}
 .notification{border-left:5px solid var(--yellow);background:var(--soft);padding:12px;margin:10px 0;border-radius:8px;text-align:left}
-.notification.read{opacity:.7;background:#f3f3f3;border-left-color:#999}.notification-tools{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
-.notification-status{font-size:13px;color:#555}.table-wrap{width:100%;overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:8px}
-table{border-collapse:collapse;width:100%;min-width:850px;text-align:left;background:#fff}th,td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}
-th{background:var(--ink);color:var(--yellow);position:sticky;top:0}tr:nth-child(even) td{background:#fffdf2}
+.notification strong{display:block;margin-bottom:5px}
+.notification.read{opacity:.7;background:#f3f3f3;border-left-color:#999}
+.notification-tools{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.notification-status{font-size:13px;color:#555}
+.table-wrap{width:100%;overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:8px}
+table{border-collapse:collapse;width:100%;min-width:850px;text-align:left;background:white}
+th,td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;font-size:14px}
+th{background:var(--ink);color:var(--yellow);position:sticky;top:0}
+tr:nth-child(even) td{background:#fffdf2}
+.status{font-weight:bold;text-transform:capitalize}
+footer{background:var(--ink);color:white;text-align:center;padding:20px}
+.small-note{font-size:13px;color:#666}
+@media(max-width:600px){header{justify-content:center;text-align:center}.hero{padding:45px 12px}section{padding:22px 12px}.panel{padding:14px}}
+
+/* PREMIUM PHOTO SLIDER */
+.photo-slider{position:relative;width:100%;height:clamp(330px,65vh,580px);overflow:hidden;background:#171717}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .8s ease,visibility .8s}
+.slide.active{opacity:1;visibility:visible}
+.slide img{width:100%;height:100%;object-fit:cover}
+.slide::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#000c,#0005 65%,#0002)}
+.slide-content{position:absolute;z-index:2;top:50%;left:9%;right:9%;transform:translateY(-50%);color:white;text-align:left;max-width:700px}
+.slide-content h1{font-size:clamp(30px,5vw,52px);color:var(--yellow);margin:0 0 12px}
+.slide-content p{font-size:18px;line-height:1.6}
+.slider-arrow{position:absolute;z-index:5;top:50%;transform:translateY(-50%);width:44px;height:44px;border:0;border-radius:50%;background:var(--yellow);color:var(--ink);font-size:23px;cursor:pointer}
+.slider-prev{left:15px}.slider-next{right:15px}
+.slider-dots{position:absolute;z-index:5;bottom:18px;left:0;right:0;display:flex;justify-content:center;gap:10px}
+.slider-dot{width:12px;height:12px;padding:0;border:0;border-radius:50%;background:white;opacity:.65;cursor:pointer}
+.slider-dot.active{background:var(--yellow);opacity:1;transform:scale(1.25)}
+@media(max-width:600px){.photo-slider{height:440px}.slide-content{left:13%;right:13%}.slide-content p{font-size:15px}.slider-arrow{width:36px;height:36px;font-size:19px}}
+
+
+/* SERVICE PHOTO GALLERY */
+.gallery-title{margin:34px 0 16px}
 .service-gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:18px}
 .gallery-item{margin:0;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 3px 12px #00000012;text-align:left}
-.gallery-item img{display:block;width:100%;height:190px;object-fit:cover}.gallery-item figcaption{padding:12px 14px;font-weight:bold;color:var(--ink)}
+.gallery-item img{display:block;width:100%;height:190px;object-fit:cover;transition:transform .35s ease}
+.gallery-item:hover img{transform:scale(1.04)}
+.gallery-item figcaption{padding:12px 14px;font-weight:bold;color:var(--ink)}
 .gallery-item figcaption span{display:block;margin-top:4px;font-size:12px;font-weight:normal;color:#666}
-.contact-footer{background:var(--ink);color:#fff;text-align:center;padding:35px 15px 15px;border-top:4px solid var(--yellow)}
-.contact-footer h2{color:var(--yellow)}.call-btn,.whatsapp-btn{display:inline-block;padding:11px 18px;margin:5px;border-radius:6px;text-decoration:none;font-weight:bold}
-.call-btn{background:var(--yellow);color:var(--ink)}.whatsapp-btn{background:#25D366;color:#fff}.copyright{border-top:1px solid #555;padding-top:15px;font-size:13px}
-@media(max-width:600px){header{justify-content:space-between}.photo-slider{height:440px}.slide-content{left:13%;right:13%}.slide-content p{font-size:15px}.slider-arrow{width:36px;height:36px;font-size:19px}section{padding:22px 12px}.panel{padding:14px}.service-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gallery-item img{height:135px}.gallery-item figcaption{padding:9px;font-size:13px}}
-@media(prefers-reduced-motion:reduce){.welcome-marquee span{animation:none;padding-left:0}.slide{transition:none}}
+@media(max-width:600px){.service-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gallery-item img{height:135px}.gallery-item figcaption{padding:9px;font-size:13px}}
 
-.customer-design-wrap{max-width:1100px;margin:18px auto 0;padding:20px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 12px #00000010}
-.design-filters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
-.design-filter{border:1px solid var(--ink);background:#fff;color:var(--ink);padding:9px 13px;border-radius:20px;font-weight:bold;cursor:pointer}
-.design-filter.active{background:var(--yellow);border-color:var(--yellow)}
-.customer-design-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;text-align:left}
-.customer-design-card{border:1px solid var(--line);border-radius:10px;padding:10px;overflow:hidden;background:#fff}
-.customer-design-card img{display:block;width:100%;height:175px;object-fit:cover;border-radius:7px;background:#f3f3f3}
-.customer-design-card h4{margin:10px 0 4px}.customer-design-card p{font-size:12px;color:#666;margin:4px 0 9px}
-.design-empty{grid-column:1/-1;padding:18px;background:#fff9dc;border-radius:8px;text-align:center;color:#555}
-@media(max-width:600px){.customer-design-wrap{padding:13px}.customer-design-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.customer-design-card{padding:7px}.customer-design-card img{height:125px}.customer-design-card h4{font-size:14px}}
 </style>
 </head>
 <body>
-<div class="welcome-marquee"><span>💐⚡ WELCOME TO MY ELECTRICAL WEBSITE ⚡💐 &nbsp;&nbsp; 🛠️ MR SIDHU ELECTRICIAN &nbsp;&nbsp; 📒 BOOK YOUR SERVICE NOW &nbsp;&nbsp; ⚡ PS POWER SERVICE ⚡</span></div>
 <header>
   <div class="logo">⚡ PS POWER SERVICE</div>
-  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open menu" aria-expanded="false" id="menuButton">☰</button>
-  <nav class="menu-dropdown" id="menuDropdown">
-    <a href="#home" onclick="closeMenu()">🏠 Home</a><a href="#services" onclick="closeMenu()">⚡ Services</a>
-    <a href="#gallery" onclick="closeMenu()">🖼️ Our Work Gallery</a><a href="#customerDesignGallery" onclick="closeMenu()">🏠 Customer Design Gallery</a><a href="#account" onclick="showLogin();closeMenu()">👤 Customer Login</a>
-    <a href="#account" onclick="showRegister();closeMenu()">📝 Customer Register</a><a href="#account" onclick="showAdminLogin();closeMenu()">🔐 Admin Login</a>
-    <a href="#contact" onclick="closeMenu()">📞 Contact Us</a>
-  </nav>
+  <nav><a href="#home">Home</a><a href="#services">Services</a><a href="#account">Account</a></nav>
 </header>
-
+<!-- HOME PHOTO SLIDER -->
 <div class="photo-slider" id="home">
-  <div class="slide active"><img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring"><div class="slide-content"><h1>PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p><p>Electrical Work • Home Wiring • Lenter Piping • Repair</p><button class="btn" onclick="showLogin()">Customer Login</button><button class="btn" onclick="showRegister()">Customer Register</button><button class="btn dark" onclick="showAdminLogin()">Admin Login</button></div></div>
+  <div class="slide active">
+    <img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring">
+    <div class="slide-content"><h1>PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p><p>Electrical Work • Home Wiring • Lenter Piping • Repair</p>
+      <button class="btn" onclick="showLogin()">Customer Login</button>
+      <button class="btn" onclick="showRegister()">Customer Register</button>
+      <button class="btn dark" onclick="showAdminLogin()">Admin Login</button></div>
+  </div>
   <div class="slide"><img src="images/electrical-panel-testing.jpg" alt="Electrical Panel Testing"><div class="slide-content"><h1>Professional Service</h1><p>Reliable Electrical Solutions for Your Home.</p><button class="btn" onclick="showLogin()">Book a Service</button></div></div>
-  <div class="slide"><img src="images/fan-fitting.jpg" alt="Fan Fitting"><div class="slide-content"><h1>Fan Fitting Service</h1><p>Professional Fan Installation.</p></div></div>
+  <div class="slide"><img src="images/fan-fitting.jpg" alt="Fan Fitting"><div class="slide-content"><h1>Fan Fitting Service</h1><p>Professional Fan Installation.</p><button class="btn" onclick="showRegister()">Get Started</button></div></div>
   <div class="slide"><img src="images/house-wiring.jpg" alt="House Wiring"><div class="slide-content"><h1>House Wiring</h1><p>Safe and Reliable Home Wiring.</p></div></div>
   <div class="slide"><img src="images/lenter-pipe-fitting.jpg" alt="Lenter Pipe Fitting"><div class="slide-content"><h1>Lenter Piping</h1><p>Quality Lenter Pipe Fitting Service.</p></div></div>
   <div class="slide"><img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting"><div class="slide-content"><h1>Switch Board Fitting</h1><p>Electrical Installation and Repair.</p></div></div>
   <div class="slide"><img src="images/wall-cutting.jpg" alt="Wall Cutting"><div class="slide-content"><h1>Wall Cutting Service</h1><p>Professional Electrical Work.</p></div></div>
-  <button class="slider-arrow slider-prev" onclick="changeSlide(-1)" aria-label="Previous photo">❮</button><button class="slider-arrow slider-next" onclick="changeSlide(1)" aria-label="Next photo">❯</button>
-  <div class="slider-dots" id="sliderDots"><button class="slider-dot active" onclick="goToSlide(0)" aria-label="Slide 1"></button><button class="slider-dot" onclick="goToSlide(1)" aria-label="Slide 2"></button><button class="slider-dot" onclick="goToSlide(2)" aria-label="Slide 3"></button><button class="slider-dot" onclick="goToSlide(3)" aria-label="Slide 4"></button><button class="slider-dot" onclick="goToSlide(4)" aria-label="Slide 5"></button><button class="slider-dot" onclick="goToSlide(5)" aria-label="Slide 6"></button><button class="slider-dot" onclick="goToSlide(6)" aria-label="Slide 7"></button></div>
+  <button class="slider-arrow slider-prev" onclick="changeSlide(-1)" aria-label="Previous photo">❮</button>
+  <button class="slider-arrow slider-next" onclick="changeSlide(1)" aria-label="Next photo">❯</button>
+  <div class="slider-dots" id="sliderDots">
+    <button class="slider-dot active" onclick="goToSlide(0)" aria-label="Slide 1"></button>
+    <button class="slider-dot" onclick="goToSlide(1)" aria-label="Slide 2"></button>
+    <button class="slider-dot" onclick="goToSlide(2)" aria-label="Slide 3"></button>
+    <button class="slider-dot" onclick="goToSlide(3)" aria-label="Slide 4"></button>
+    <button class="slider-dot" onclick="goToSlide(4)" aria-label="Slide 5"></button>
+    <button class="slider-dot" onclick="goToSlide(5)" aria-label="Slide 6"></button>
+    <button class="slider-dot" onclick="goToSlide(6)" aria-label="Slide 7"></button>
+  </div>
+</div>
+<section id="services"><h2>Our Services</h2><div class="services">
+  <div class="service">⚡ Electrical Work</div><div class="service">🏠 Home Wiring</div>
+  <div class="service">🔧 Repair & Maintenance</div><div class="service">💡 Lenter Piping</div>
 </div>
 
-<section id="services"><h2>Our Services</h2><div class="services"><div class="service">⚡ Electrical Work</div><div class="service">🏠 Home Wiring</div><div class="service">🔧 Repair & Maintenance</div><div class="service">💡 Lenter Piping</div></div>
-<h2 id="gallery" style="margin-top:34px">Our Work Gallery</h2><p class="small-note">A look at our electrical and installation work.</p>
+<h2 class="gallery-title">Our Work Gallery</h2>
+<p class="small-note">A look at our electrical and installation work.</p>
 <div class="service-gallery">
-<figure class="gallery-item"><img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring" loading="lazy"><figcaption>Distribution Board Wiring<span>Electrical installation</span></figcaption></figure>
-<figure class="gallery-item"><img src="images/electrical-panel-testing.jpg" alt="Electrical Panel Testing" loading="lazy"><figcaption>Electrical Panel Testing<span>Panel inspection and testing</span></figcaption></figure>
-<figure class="gallery-item"><img src="images/fan-fitting.jpg" alt="Fan Fitting" loading="lazy"><figcaption>Fan Fitting<span>Fan installation service</span></figcaption></figure>
-<figure class="gallery-item"><img src="images/house-wiring.jpg" alt="House Wiring" loading="lazy"><figcaption>House Wiring<span>Home electrical wiring</span></figcaption></figure>
-<figure class="gallery-item"><img src="images/lenter-pipe-fitting.jpg" alt="Lenter Pipe Fitting" loading="lazy"><figcaption>Lenter Pipe Fitting<span>Conduit pipe installation</span></figcaption></figure>
-<figure class="gallery-item"><img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting" loading="lazy"><figcaption>Switch Board Fitting<span>Switch board installation</span></figcaption></figure>
-<figure class="gallery-item"><img src="images/wall-cutting.jpg" alt="Wall Cutting" loading="lazy"><figcaption>Wall Cutting<span>Electrical fitting preparation</span></figcaption></figure>
-</div></section>
-
-<section id="customerDesignGallery" class="customer-design-wrap">
-<h2>🏠 Customer Design Gallery</h2>
-<p class="small-note">Admin Gallery ରେ ଯୋଡ଼ାଯାଇଥିବା Design ଏଠାରେ Live ଦେଖନ୍ତୁ। ପସନ୍ଦର Design ବାଛି Request ପଠାନ୍ତୁ।</p>
-<div id="designFilters" class="design-filters"><button class="design-filter active" type="button" data-category="ALL">ALL</button></div>
-<div id="customerDesignGrid" class="customer-design-grid"><p class="design-empty">Design Loading...</p></div>
-<p id="designRequestMessage" class="message" aria-live="polite"></p>
+  <figure class="gallery-item"><img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring" loading="lazy"><figcaption>Distribution Board Wiring<span>Electrical installation</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/electrical-panel-testing.jpg" alt="Electrical Panel Testing" loading="lazy"><figcaption>Electrical Panel Testing<span>Panel inspection and testing</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/fan-fitting.jpg" alt="Fan Fitting" loading="lazy"><figcaption>Fan Fitting<span>Fan installation service</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/house-wiring.jpg" alt="House Wiring" loading="lazy"><figcaption>House Wiring<span>Home electrical wiring</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/lenter-pipe-fitting.jpg" alt="Lenter Pipe Fitting" loading="lazy"><figcaption>Lenter Pipe Fitting<span>Conduit pipe installation</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting" loading="lazy"><figcaption>Switch Board Fitting<span>Switch board installation</span></figcaption></figure>
+  <figure class="gallery-item"><img src="images/wall-cutting.jpg" alt="Wall Cutting" loading="lazy"><figcaption>Wall Cutting<span>Electrical fitting preparation</span></figcaption></figure>
+</div>
 </section>
-
 <section id="account"><h2>Account</h2>
-<div class="panel auth-panel" id="registerPanel"><h3>Customer Registration</h3>
-<input id="regName" placeholder="Full Name" autocomplete="name"><input id="regPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric">
-<input id="regEmail" type="email" placeholder="Email Address" autocomplete="email"><input id="regPassword" type="password" placeholder="Create Password (min 6 characters)" autocomplete="new-password">
-<button class="btn" onclick="registerCustomer()">Register</button><p>Already have an account?</p><button class="btn dark" onclick="showLogin()">Login</button><div class="message" id="regMessage" aria-live="polite"></div></div>
-
-<div class="panel auth-panel hidden" id="loginPanel"><h3>Customer Login</h3><input id="loginEmail" type="email" placeholder="Email Address"><input id="loginPassword" type="password" placeholder="Password">
-<button class="btn" onclick="loginCustomer()">Login</button><button class="btn dark" onclick="resetPassword()">Forgot Password?</button><button class="btn" onclick="showRegister()">Create Account</button><div class="message" id="loginMessage" aria-live="polite"></div></div>
-
-<div class="panel auth-panel hidden" id="adminLoginPanel"><h3>🔐 Admin Login</h3><input id="adminEmail" type="email" placeholder="Admin Email"><input id="adminPassword" type="password" placeholder="Admin Password">
-<button class="btn" onclick="loginAdmin()">Admin Login</button><button class="btn dark" onclick="showRegister()">Back</button><div class="message" id="adminLoginMessage" aria-live="polite"></div></div>
-
-<div class="panel hidden" id="dashboard"><h3>Welcome, <span id="customerName"></span>!</h3><p>Email: <span id="customerEmail"></span> | Mobile: <span id="customerPhone"></span></p><hr>
-<h3>⚡ Book a Service</h3><form id="bookingForm">
-<label>Choose Service</label><select id="serviceName" required><option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option></select>
-<label>Full Address</label><textarea id="bookingAddress" placeholder="Enter your full address" required></textarea><label>Booking Date</label><input id="bookingDate" type="date" required>
-<p>Booking Fee</p><div class="price">₹20 Fixed</div>
-<div class="payment-box"><h3>📱 Pay ₹20 via PhonePe</h3><img src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png" alt="PS POWER SERVICE PhonePe QR Code">
-<p><strong>Scan the QR code and pay ₹20 booking fee.</strong></p><p class="payment-note">After submitting your booking, use the Booking ID to upload your payment screenshot. Payment remains Pending until Admin verifies it.</p></div>
-<button class="btn" type="submit" id="bookingButton">Submit Website Booking</button><button class="btn dark" type="button" onclick="sendBookingWhatsApp()">Save & Send WhatsApp Booking</button></form>
-<div class="message" id="bookingMessage" aria-live="polite"></div>
-<div class="booking hidden" id="paymentProofPanel"><h3>Upload Payment Screenshot</h3><p>Your Booking ID:</p><p class="booking-id" id="latestBookingId"></p>
-<p class="payment-note">Copy this ID and enter it in the Google Form with your payment screenshot.</p><a class="payment-upload-btn" href="https://forms.gle/7dnzHW8AopbkGpJL9" target="_blank" rel="noopener noreferrer">Upload Payment Screenshot</a></div>
-<hr><h3>🔔 Notifications <span id="unreadNotificationCount" class="notification-status">(0 unread)</span></h3><div class="notification-tools"><button class="btn" type="button" onclick="markAllNotificationsRead()">Mark All as Read</button></div><div id="customerNotifications">Your booking updates will appear here.</div>
-<h3>📋 My Booking History</h3><p class="small-note">Booking status updates automatically when Admin changes it.</p><button class="btn" onclick="loadBookings()">Refresh Bookings</button>
-<div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Service</th><th>Date</th><th>Address</th><th>Fee</th><th>Payment</th><th>Booking Status</th><th>Receipt</th></tr></thead><tbody id="customerBookingRows"><tr><td colspan="8">No bookings yet.</td></tr></tbody></table></div><button class="btn dark" onclick="logoutUser()">Logout</button></div>
-
-<div class="panel hidden" id="adminDashboard"><h2>⚡ Admin Dashboard</h2><p>Welcome, Administrator</p>
-<div class="booking"><h3>📱 Add WhatsApp Booking</h3><form id="whatsappBookingForm">
-<input id="waCustomerName" placeholder="Customer Name" required><input id="waCustomerPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric" required>
-<select id="waService" required><option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option></select>
-<textarea id="waAddress" placeholder="Customer Full Address" required></textarea><input id="waBookingDate" type="date" required><p class="price">Booking Fee: ₹20</p><p class="payment-note">Payment remains Pending until Admin verifies the payment.</p>
-<button class="btn" type="submit" id="waSaveButton">Save WhatsApp Booking</button></form></div>
-<h3>🎨 Customer Design Requests</h3><p class="small-note">Customer Design Gallery ରୁ ଆସିଥିବା Request ଏଠାରେ Live ଦେଖାଯିବ।</p>
-<div id="adminDesignRequests" class="customer-design-grid"><p class="design-empty">Loading design requests...</p></div>
-<h3>All Customer Bookings</h3><p class="small-note">Live table: new bookings and status changes appear automatically.</p><button class="btn" onclick="loadAdminBookings()">Refresh All Bookings</button><div id="adminMessage" class="message" aria-live="polite"></div>
-<div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Customer</th><th>Mobile</th><th>Email</th><th>Service</th><th>Address</th><th>Date</th><th>Source</th><th>Fee</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adminBookingRows"><tr><td colspan="12">Loading bookings...</td></tr></tbody></table></div><button class="btn dark" onclick="logoutUser()">Admin Logout</button></div>
+<div class="panel auth-panel" id="registerPanel">
+  <h3>Customer Registration</h3>
+  <input id="regName" placeholder="Full Name" autocomplete="name">
+  <input id="regPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric">
+  <input id="regEmail" type="email" placeholder="Email Address" autocomplete="email">
+  <input id="regPassword" type="password" placeholder="Create Password" autocomplete="new-password">
+  <button class="btn" onclick="registerCustomer()">Register</button>
+  <p>Already have an account?</p><button class="btn dark" onclick="showLogin()">Login</button>
+  <div class="message" id="regMessage" aria-live="polite"></div>
+</div>
+<div class="panel auth-panel hidden" id="loginPanel">
+  <h3>Customer Login</h3><input id="loginEmail" type="email" placeholder="Email Address">
+  <input id="loginPassword" type="password" placeholder="Password">
+  <button class="btn" onclick="loginCustomer()">Login</button>
+  <button class="btn dark" onclick="resetPassword()">Forgot Password?</button>
+  <button class="btn" onclick="showRegister()">Create Account</button>
+  <div class="message" id="loginMessage"></div>
+</div>
+<div class="panel auth-panel hidden" id="adminLoginPanel">
+  <h3>🔐 Admin Login</h3><input id="adminEmail" type="email" placeholder="Admin Email">
+  <input id="adminPassword" type="password" placeholder="Admin Password">
+  <button class="btn" onclick="loginAdmin()">Admin Login</button>
+  <button class="btn dark" onclick="showRegister()">Back</button>
+  <div class="message" id="adminLoginMessage"></div>
+</div>
+<div class="panel hidden" id="dashboard">
+  <h3>Welcome, <span id="customerName"></span>!</h3>
+  <p>Email: <span id="customerEmail"></span> | Mobile: <span id="customerPhone"></span></p><hr>
+  <h3>⚡ Book a Service</h3>
+  <form id="bookingForm">
+    <label>Choose Service</label><select id="serviceName" required>
+      <option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option>
+    </select>
+    <label>Full Address</label><textarea id="bookingAddress" placeholder="Enter your full address" required></textarea>
+    <label>Booking Date</label><input id="bookingDate" type="date" required>
+    <p>Booking Fee</p><div class="price">₹20 Fixed</div>
+    <div class="payment-box"><h3>📱 Pay ₹20 via PhonePe</h3>
+      <img src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png" alt="PS POWER SERVICE PhonePe QR Code">
+      <p><strong>Scan the QR code and pay ₹20 booking fee.</strong></p>
+      <p class="payment-note">After submitting your booking, use the Booking ID to upload your payment screenshot. Payment stays Pending until Admin verifies it.</p>
+    </div>
+    <button class="btn" type="submit" id="bookingButton">Submit Booking</button>
+    <button class="btn dark" type="button" onclick="sendBookingWhatsApp()">WhatsApp Booking</button>
+  </form>
+  <div class="message" id="bookingMessage" aria-live="polite"></div>
+  <div class="booking hidden" id="paymentProofPanel"><h3>Upload Payment Screenshot</h3>
+    <p>Your Booking ID:</p><p class="booking-id" id="latestBookingId"></p>
+    <p class="payment-note">Copy this ID and enter it in the Google Form with your payment screenshot.</p>
+    <a class="payment-upload-btn" href="https://forms.gle/7dnzHW8AopbkGpJL9" target="_blank" rel="noopener noreferrer">Upload Payment Screenshot</a>
+  </div>
+  <hr><h3>🔔 Notifications <span id="unreadNotificationCount" class="notification-status">(0 unread)</span></h3>
+  <div class="notification-tools"><button class="btn" type="button" onclick="markAllNotificationsRead()">Mark All as Read</button></div>
+  <div id="customerNotifications">Your booking updates will appear here.</div>
+  <h3>📋 My Booking History</h3><p class="small-note">Booking status updates automatically when Admin changes it.</p>
+  <button class="btn" onclick="loadBookings()">Refresh Bookings</button>
+  <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Service</th><th>Date</th><th>Address</th><th>Fee</th><th>Payment</th><th>Booking Status</th><th>Receipt</th></tr></thead><tbody id="customerBookingRows"><tr><td colspan="8">No bookings yet.</td></tr></tbody></table></div>
+  <button class="btn dark" onclick="logoutUser()">Logout</button>
+</div>
+<div class="panel hidden" id="adminDashboard">
+  <h2>⚡ Admin Dashboard</h2><p>Welcome, Administrator</p>
+  <div class="booking"><h3>📱 Add WhatsApp Booking</h3>
+    <form id="whatsappBookingForm">
+      <input id="waCustomerName" placeholder="Customer Name" required>
+      <input id="waCustomerPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric" required>
+      <select id="waService" required><option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option></select>
+      <textarea id="waAddress" placeholder="Customer Full Address" required></textarea>
+      <input id="waBookingDate" type="date" required><p class="price">Booking Fee: ₹20</p>
+      <p class="payment-note">Payment remains Pending until Admin verifies the payment.</p>
+      <button class="btn" type="submit" id="waSaveButton">Save WhatsApp Booking</button>
+    </form>
+  </div>
+  <h3>All Customer Bookings</h3><p class="small-note">Live table: new bookings and status changes appear automatically.</p>
+  <button class="btn" onclick="loadAdminBookings()">Refresh All Bookings</button>
+  <div id="adminMessage" class="message" aria-live="polite"></div>
+  <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Customer</th><th>Mobile</th><th>Email</th><th>Service</th><th>Address</th><th>Date</th><th>Source</th><th>Fee</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adminBookingRows"><tr><td colspan="12">Loading bookings...</td></tr></tbody></table></div>
+  <button class="btn dark" onclick="logoutUser()">Admin Logout</button>
+</div>
 </section>
-
-<footer class="contact-footer" id="contact"><h2>⚡ PS POWER SERVICE</h2><h3>MR SIDHU ELECTRICIAN</h3><p>📍 Dhadakuluguda</p><p>📧 sidharthhuika099@gmail.com</p>
-<div><p>📞 8144722094</p><a href="tel:8144722094" class="call-btn">CALL NOW</a><a href="https://wa.me/918144722094?text=Hello%20PS%20POWER%20SERVICE%2C%20I%20need%20electrical%20service." class="whatsapp-btn" target="_blank" rel="noopener noreferrer">WHATSAPP</a></div>
-<div><p>📞 6371889102</p><a href="tel:6371889102" class="call-btn">CALL NOW</a></div><p class="copyright">© 2026 PS POWER SERVICE | All Rights Reserved</p></footer>
-
+<footer><p>PS POWER SERVICE</p><p>Powering Your Home, Safely.</p></footer>
+<!-- PHOTO SLIDER JAVASCRIPT -->
 <script>
-const slides=document.querySelectorAll(".slide"),dots=document.querySelectorAll(".slider-dot");let currentSlide=0,sliderTimer;
-function showSlide(i){currentSlide=(i+slides.length)%slides.length;slides.forEach((s,n)=>s.classList.toggle("active",n===currentSlide));dots.forEach((d,n)=>d.classList.toggle("active",n===currentSlide))}
-function changeSlide(d){showSlide(currentSlide+d);restartSlider()}function goToSlide(i){showSlide(i);restartSlider()}
-function startSlider(){sliderTimer=setInterval(()=>showSlide(currentSlide+1),5000)}function restartSlider(){clearInterval(sliderTimer);startSlider()}startSlider();
-function toggleMenu(){const m=document.getElementById("menuDropdown"),b=document.getElementById("menuButton"),open=m.classList.toggle("show");b.setAttribute("aria-expanded",String(open))}
-function closeMenu(){document.getElementById("menuDropdown").classList.remove("show");document.getElementById("menuButton").setAttribute("aria-expanded","false")}
+const slides=document.querySelectorAll(".slide");
+const dots=document.querySelectorAll(".slider-dot");
+let currentSlide=0;
+let sliderTimer;
+function showSlide(index){
+ currentSlide=(index+slides.length)%slides.length;
+ slides.forEach((slide,i)=>slide.classList.toggle("active",i===currentSlide));
+ dots.forEach((dot,i)=>dot.classList.toggle("active",i===currentSlide));
+}
+function changeSlide(direction){showSlide(currentSlide+direction);restartSlider()}
+function goToSlide(index){showSlide(index);restartSlider()}
+function startSlider(){sliderTimer=setInterval(()=>showSlide(currentSlide+1),5000)}
+function restartSlider(){clearInterval(sliderTimer);startSlider()}
+startSlider();
 </script>
 
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,sendPasswordResetEmail,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {getFirestore,doc,setDoc,getDoc,collection,addDoc,query,where,onSnapshot,updateDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import {getFirestore,doc,setDoc,getDoc,collection,addDoc,query,where,getDocs,updateDoc,serverTimestamp,onSnapshot} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig={apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",authDomain:"ps-power-service-68007.firebaseapp.com",projectId:"ps-power-service-68007",storageBucket:"ps-power-service-68007.firebasestorage.app",messagingSenderId:"647095348680",appId:"1:647095348680:web:51b3833ce08d767e9d64fd"};
 const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 const PAYMENT_FORM_URL="https://forms.gle/7dnzHW8AopbkGpJL9";
 const PAYMENT_QR_URL="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png";
-const WHATSAPP_NUMBER="918144722094";
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
-let stopCustomerListener=null,stopAdminListener=null,stopDesignGalleryListener=null,stopDesignRequestsListener=null,lastCustomerBookings=[],registrationInProgress=false,customerDesigns=[],selectedDesignCategory="ALL";
-
-function startCustomerDesignGallery(){
- if(stopDesignGalleryListener)return;
- const grid=$("customerDesignGrid");
- stopDesignGalleryListener=onSnapshot(collection(db,"designs"),snap=>{
-  customerDesigns=snap.docs.map(d=>({id:d.id,...d.data()})).filter(d=>d.active!==false);
-  customerDesigns.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
-  renderCustomerDesignFilters();
-  renderCustomerDesigns();
- },error=>{
-  grid.innerHTML='<p class="design-empty">Design load ହୋଇପାରିଲା ନାହିଁ: '+esc(error.message)+'</p>';
- });
-}
-function renderCustomerDesignFilters(){
- const box=$("designFilters");
- const categories=[...new Set(customerDesigns.map(d=>(d.category||"OTHER").trim()).filter(Boolean))];
- if(selectedDesignCategory!=="ALL"&&!categories.includes(selectedDesignCategory))selectedDesignCategory="ALL";
- const all=["ALL",...categories];
- box.innerHTML=all.map(c=>'<button type="button" class="design-filter '+(c===selectedDesignCategory?'active':'')+'" data-category="'+esc(c)+'">'+esc(c==='ALL'?'ALL':c)+'</button>').join("");
- box.querySelectorAll("button").forEach(btn=>btn.addEventListener("click",()=>{selectedDesignCategory=btn.dataset.category;renderCustomerDesignFilters();renderCustomerDesigns()}));
-}
-function renderCustomerDesigns(){
- const grid=$("customerDesignGrid");
- const items=selectedDesignCategory==="ALL"?customerDesigns:customerDesigns.filter(d=>(d.category||"OTHER").trim()===selectedDesignCategory);
- if(!items.length){grid.innerHTML='<p class="design-empty">ବର୍ତ୍ତମାନ Admin Gallery ରେ କୌଣସି Design ନାହିଁ।</p>';return}
- grid.innerHTML=items.map(d=>{
-  const name=d.name||"Interior Design",category=d.category||"Other Design",url=d.imageUrl||"";
-  return '<article class="customer-design-card"><img src="'+esc(url)+'" alt="'+esc(name)+'" loading="lazy"><h4>'+esc(name)+'</h4><p>'+esc(category)+'</p><button class="btn" type="button" data-request-design="'+esc(d.id)+'">Request This Design</button></article>';
- }).join("");
- grid.querySelectorAll("[data-request-design]").forEach(btn=>btn.addEventListener("click",()=>{const design=customerDesigns.find(d=>d.id===btn.dataset.requestDesign);if(design)requestCustomerDesign(design,btn)}));
-}
-async function requestCustomerDesign(design,button){
- const user=auth.currentUser;
- if(!user||user.uid===ADMIN_UID){showMessage("designRequestMessage","Design Request ପଠାଇବା ପାଇଁ Customer Login କରନ୍ତୁ।");showLogin();document.getElementById("account").scrollIntoView({behavior:"smooth"});return}
- const description=prompt("ଏହି Design ବିଷୟରେ ଅଧିକ କିଛି କହିବାକୁ ଚାହୁଁଛନ୍ତି କି? (Optional)")||"";
- button.disabled=true;showMessage("designRequestMessage","Design Request ପଠାଯାଉଛି...");
- try{
-  const profile=await getDoc(doc(db,"users",user.uid));
-  const customer=profile.exists()?profile.data():{};
-  await addDoc(collection(db,"designRequests"),{
-   designName:design.name||"Our Design",imageUrl:design.imageUrl||"",category:design.category||"",
-   customerName:customer.name||user.displayName||"Customer",phone:customer.phone||"",
-   customerPhone:customer.phone||"",description:description.trim(),status:"pending",userId:user.uid,createdAt:serverTimestamp()
-  });
-  showMessage("designRequestMessage","✅ Design Request ସଫଳତାର ସହିତ ପଠାଗଲା। Admin Panel ରେ ଦେଖାଯିବ।");
- }catch(error){showMessage("designRequestMessage","Request ପଠାଇବାରେ ସମସ୍ୟା: "+error.message)}
- finally{button.disabled=false}
-}
-startCustomerDesignGallery();
+const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+const $=id=>document.getElementById(id);
+let stopCustomerListener=null,stopAdminListener=null,lastCustomerBookings=[];
+let registrationInProgress=false;
 
 function hideAllPanels(){["registerPanel","loginPanel","adminLoginPanel","dashboard","adminDashboard"].forEach(id=>$(id).classList.add("hidden"))}
-function showMessage(id,msg){$(id).textContent=msg}
-function showError(id,e){showMessage(id,e?.message||String(e))}
-function today(){const d=new Date(),off=d.getTimezoneOffset();return new Date(d.getTime()-off*60000).toISOString().slice(0,10)}
+function today(){const d=new Date(),offset=d.getTimezoneOffset();return new Date(d.getTime()-offset*60000).toISOString().slice(0,10)}
 $("bookingDate").min=today();$("waBookingDate").min=today();
-function stopListeners(){
- if(stopCustomerListener){stopCustomerListener();stopCustomerListener=null}
- if(stopAdminListener){stopAdminListener();stopAdminListener=null}
- if(stopDesignRequestsListener){stopDesignRequestsListener();stopDesignRequestsListener=null}
-}
+function stopListeners(){if(stopCustomerListener){stopCustomerListener();stopCustomerListener=null}if(stopAdminListener){stopAdminListener();stopAdminListener=null}}
+function showError(el,error){$(el).textContent=error?.message||String(error)}
 window.showRegister=()=>{if(auth.currentUser)return;hideAllPanels();$("registerPanel").classList.remove("hidden")};
 window.showLogin=()=>{if(auth.currentUser)return;hideAllPanels();$("loginPanel").classList.remove("hidden")};
 window.showAdminLogin=()=>{if(auth.currentUser)return;hideAllPanels();$("adminLoginPanel").classList.remove("hidden")};
 
 window.registerCustomer=async()=>{
  const name=$("regName").value.trim(),phone=$("regPhone").value.trim(),email=$("regEmail").value.trim(),password=$("regPassword").value;
- showMessage("regMessage","");
- if(!name||!phone||!email||!password){showMessage("regMessage","Please fill all fields.");return}
- if(!/^[0-9]{10}$/.test(phone)){showMessage("regMessage","Enter a valid 10-digit mobile number.");return}
- if(password.length<6){showMessage("regMessage","Password must be at least 6 characters.");return}
+ $("regMessage").textContent="";
+ if(!name||!phone||!email||!password){$("regMessage").textContent="Please fill all fields.";return}
+ if(!/^[0-9]{10}$/.test(phone)){$("regMessage").textContent="Enter a valid 10-digit mobile number.";return}
+ if(password.length<6){$("regMessage").textContent="Password must be at least 6 characters.";return}
  registrationInProgress=true;
- try{const result=await createUserWithEmailAndPassword(auth,email,password);await updateProfile(result.user,{displayName:name});
- await setDoc(doc(db,"users",result.user.uid),{name,phone,email,role:"customer",createdAt:serverTimestamp()});registrationInProgress=false;showCustomerDashboard(result.user)}
- catch(e){registrationInProgress=false;showError("regMessage",e)}
+ try{
+  const result=await createUserWithEmailAndPassword(auth,email,password);
+  await updateProfile(result.user,{displayName:name});
+  await setDoc(doc(db,"users",result.user.uid),{name,phone,email,role:"customer",createdAt:serverTimestamp()});
+  registrationInProgress=false;
+  location.replace("customer.html");
+ }
+ catch(error){
+  registrationInProgress=false;
+  showError("regMessage",error);
+ }
 };
-window.loginCustomer=async()=>{showMessage("loginMessage","");try{const r=await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),$("loginPassword").value);if(r.user.uid===ADMIN_UID){await signOut(auth);showMessage("loginMessage","Please use Admin Login.");}}catch(e){showError("loginMessage",e)}};
-window.loginAdmin=async()=>{showMessage("adminLoginMessage","");const email=$("adminEmail").value.trim(),password=$("adminPassword").value;if(!email||!password){showMessage("adminLoginMessage","Enter Admin email and password.");return}
- try{const r=await signInWithEmailAndPassword(auth,email,password);if(r.user.uid!==ADMIN_UID){await signOut(auth);showMessage("adminLoginMessage","Not authorized as Admin.")}}catch(e){showError("adminLoginMessage",e)}};
-window.resetPassword=async()=>{const email=$("loginEmail").value.trim();if(!email){showMessage("loginMessage","Enter your email address first.");return}try{await sendPasswordResetEmail(auth,email);showMessage("loginMessage","Password reset email sent. Check your inbox.")}catch(e){showError("loginMessage",e)}};
-window.logoutUser=async()=>{stopListeners();try{await signOut(auth)}catch(e){alert(e.message)}};
+window.loginCustomer=async()=>{ $("loginMessage").textContent="";try{await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),$("loginPassword").value)}catch(error){showError("loginMessage",error)}};
+window.loginAdmin=async()=>{
+ $("adminLoginMessage").textContent="";const email=$("adminEmail").value.trim(),password=$("adminPassword").value;
+ if(!email||!password){$("adminLoginMessage").textContent="Enter Admin email and password.";return}
+ try{const result=await signInWithEmailAndPassword(auth,email,password);if(result.user.uid!==ADMIN_UID){await signOut(auth);$("adminLoginMessage").textContent="Not authorized as Admin."}}
+ catch(error){showError("adminLoginMessage",error)}
+};
+window.resetPassword=async()=>{const email=$("loginEmail").value.trim();if(!email){$("loginMessage").textContent="Enter your email address first.";return}try{await sendPasswordResetEmail(auth,email);$("loginMessage").textContent="Password reset email sent."}catch(error){showError("loginMessage",error)}};
+window.logoutUser=async()=>{try{stopListeners();await signOut(auth)}catch(error){alert(error.message)}};
 
-function showCustomerDashboard(user){
- hideAllPanels();$("dashboard").classList.remove("hidden");
- $("customerName").textContent=user.displayName||"Customer";$("customerEmail").textContent=user.email||"";
- getDoc(doc(db,"users",user.uid)).then(s=>{const d=s.exists()?s.data():{};$("customerName").textContent=d.name||user.displayName||"Customer";$("customerPhone").textContent=d.phone||"Not provided"}).catch(e=>showMessage("bookingMessage",e.message));
- startCustomerListener(user.uid);
-}
-function showAdminDashboard(){hideAllPanels();$("adminDashboard").classList.remove("hidden");startAdminListener();startAdminDesignRequestsListener()}
-onAuthStateChanged(auth,user=>{
- if(registrationInProgress)return;
- stopListeners();
- if(!user){hideAllPanels();$("registerPanel").classList.remove("hidden");return}
- if(user.uid===ADMIN_UID)showAdminDashboard();else showCustomerDashboard(user);
+window.sendBookingWhatsApp=async()=>{
+ const user=auth.currentUser;if(!user||user.uid===ADMIN_UID){alert("Please login as a customer first.");return}
+ const service=$("serviceName").value.trim(),address=$("bookingAddress").value.trim(),date=$("bookingDate").value;
+ if(!service||!address||!date){alert("Please fill Service, Address and Booking Date.");return}
+ if(date<today()){alert("Please choose today or a future date.");return}
+ try{const profile=await getDoc(doc(db,"users",user.uid)),data=profile.exists()?profile.data():{},name=data.name||user.displayName||"Customer",mobile=data.phone||"";
+ if(!mobile){alert("Mobile number not found. Please check your customer profile.");return}
+ const message=`Hello PS POWER SERVICE, I want to book a service.\n\nName: ${name}\nMobile: ${mobile}\nService: ${service}\nAddress: ${address}\nBooking Date: ${date}\n\nBooking Fee: Rs.20\nPayment QR: ${PAYMENT_QR_URL}\n\nPayment will be verified by Admin.`;
+ window.open("https://wa.me/918144722094?text="+encodeURIComponent(message),"_blank","noopener,noreferrer");
+ }catch(error){alert("Could not load customer details: "+error.message)}
+};
+
+$("whatsappBookingForm").addEventListener("submit",async event=>{
+ event.preventDefault();const user=auth.currentUser;if(!user||user.uid!==ADMIN_UID){$("adminMessage").textContent="Admin access required.";return}
+ const customerName=$("waCustomerName").value.trim(),customerPhone=$("waCustomerPhone").value.trim(),service=$("waService").value,address=$("waAddress").value.trim(),bookingDate=$("waBookingDate").value,button=$("waSaveButton");
+ if(!/^[0-9]{10}$/.test(customerPhone)){$("adminMessage").textContent="Enter a valid 10-digit mobile number.";return}
+ if(!customerName||!service||!address||!bookingDate){$("adminMessage").textContent="Please fill all fields.";return}
+ if(bookingDate<today()){$("adminMessage").textContent="Choose today or a future date.";return}
+ button.disabled=true;$("adminMessage").textContent="Saving WhatsApp booking...";
+ try{const ref=await addDoc(collection(db,"bookings"),{userId:user.uid,customerName,customerPhone,customerEmail:"",service,address,bookingDate,bookingFee:20,bookingSource:"whatsapp",paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});$("whatsappBookingForm").reset();$("waBookingDate").min=today();$("adminMessage").textContent="WhatsApp booking saved. ID: "+ref.id}
+ catch(error){showError("adminMessage",error)}finally{button.disabled=false}
 });
 
-function getBookingInput(){return {service:$("serviceName").value.trim(),address:$("bookingAddress").value.trim(),bookingDate:$("bookingDate").value}}
-function validateBooking(x){if(!x.service||!x.address||!x.bookingDate)return "Please complete Service, Address and Booking Date.";if(x.bookingDate<today())return "Choose today or a future date.";return ""}
-async function createCustomerBooking(source){
- const user=auth.currentUser;if(!user||user.uid===ADMIN_UID)throw new Error("Please login as a customer first.");
- const x=getBookingInput(),problem=validateBooking(x);if(problem)throw new Error(problem);
- const profile=await getDoc(doc(db,"users",user.uid)),p=profile.exists()?profile.data():{};
- const ref=await addDoc(collection(db,"bookings"),{userId:user.uid,customerName:p.name||user.displayName||"Customer",customerPhone:p.phone||"",customerEmail:user.email||"",service:x.service,address:x.address,bookingDate:x.bookingDate,bookingFee:20,bookingSource:source,paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});
- $("latestBookingId").textContent=ref.id;$("paymentProofPanel").classList.remove("hidden");return {id:ref.id,...x,name:p.name||user.displayName||"Customer",phone:p.phone||""};
-}
-$("bookingForm").addEventListener("submit",async e=>{e.preventDefault();const btn=$("bookingButton");btn.disabled=true;showMessage("bookingMessage","Submitting booking...");
- try{const b=await createCustomerBooking("website");showMessage("bookingMessage","Booking submitted. Booking ID: "+b.id+" • Pay ₹20 and upload proof.");}
- catch(err){showError("bookingMessage",err)}finally{btn.disabled=false}});
-window.sendBookingWhatsApp=async()=>{
- const btn=document.querySelector('#bookingForm button[type="button"]');btn.disabled=true;showMessage("bookingMessage","Saving WhatsApp booking...");
- try{const b=await createCustomerBooking("whatsapp");const msg=`Hello PS POWER SERVICE, my booking is submitted.\\nBooking ID: ${b.id}\\nName: ${b.name}\\nMobile: ${b.phone}\\nService: ${b.service}\\nAddress: ${b.address}\\nDate: ${b.bookingDate}\\nBooking Fee: Rs.20\\nPlease verify my payment after I pay using this QR: ${PAYMENT_QR_URL}\\nPayment status: Pending until Admin verifies.\\nPayment proof form: ${PAYMENT_FORM_URL}`;
- showMessage("bookingMessage","WhatsApp booking saved. Booking ID: "+b.id+". Complete ₹20 payment and upload proof.");window.open("https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(msg),"_blank","noopener,noreferrer");
- }catch(e){showError("bookingMessage",e)}finally{btn.disabled=false}
-};
-
-$("whatsappBookingForm").addEventListener("submit",async e=>{
- e.preventDefault();const user=auth.currentUser;if(!user||user.uid!==ADMIN_UID){showMessage("adminMessage","Admin access required.");return}
- const name=$("waCustomerName").value.trim(),phone=$("waCustomerPhone").value.trim(),service=$("waService").value,address=$("waAddress").value.trim(),date=$("waBookingDate").value,btn=$("waSaveButton");
- if(!/^[0-9]{10}$/.test(phone)){showMessage("adminMessage","Enter a valid 10-digit mobile number.");return}
- if(!name||!service||!address||!date){showMessage("adminMessage","Please fill all fields.");return}if(date<today()){showMessage("adminMessage","Choose today or a future date.");return}
- btn.disabled=true;showMessage("adminMessage","Saving WhatsApp booking...");
- try{const ref=await addDoc(collection(db,"bookings"),{userId:null,customerName:name,customerPhone:phone,customerEmail:"",service,address,bookingDate:date,bookingFee:20,bookingSource:"whatsapp-admin",paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});
- $("whatsappBookingForm").reset();$("waBookingDate").min=today();showMessage("adminMessage","WhatsApp booking saved. ID: "+ref.id+". Payment is Pending until verified.");}
- catch(err){showError("adminMessage",err)}finally{btn.disabled=false}
+$("bookingForm").addEventListener("submit",async event=>{
+ event.preventDefault();const user=auth.currentUser;if(!user||user.uid===ADMIN_UID)return;
+ const service=$("serviceName").value,address=$("bookingAddress").value.trim(),date=$("bookingDate").value,button=$("bookingButton");
+ if(!service||!address||!date){$("bookingMessage").textContent="Please complete all booking details.";return}
+ if(date<today()){$("bookingMessage").textContent="Choose today or a future date.";return}
+ button.disabled=true;$("bookingMessage").textContent="Submitting booking...";$("paymentProofPanel").classList.add("hidden");
+ try{const profile=await getDoc(doc(db,"users",user.uid)),data=profile.exists()?profile.data():{};
+ const ref=await addDoc(collection(db,"bookings"),{userId:user.uid,customerName:data.name||user.displayName||"Customer",customerPhone:data.phone||"",customerEmail:user.email||"",service,address,bookingDate:date,bookingFee:20,paymentStatus:"pending",bookingStatus:"pending",createdAt:serverTimestamp()});
+ $("bookingMessage").textContent="Booking submitted successfully."; $("latestBookingId").textContent=ref.id;$("paymentProofPanel").classList.remove("hidden");
+ }catch(error){showError("bookingMessage",error)}finally{button.disabled=false}
 });
 
 function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-window.printReceipt=(id,b)=>{if(!b||b.paymentStatus!=="paid"){alert("Receipt is available after payment is verified by Admin.");return}
+window.printReceipt=(id,b)=>{
+ if(!b||b.paymentStatus!=="paid"){alert("Receipt is available after payment is verified by Admin.");return}
+ const fields={customer:esc(b.customerName||"Customer"),email:esc(b.customerEmail||""),service:esc(b.service||"Service"),address:esc(b.address||""),date:esc(b.bookingDate||""),id:esc(id),receiptDate:esc(new Date().toLocaleDateString("en-IN"))};
  const w=window.open("","_blank","width=760,height=850");if(!w){alert("Please allow pop-ups for this website.");return}
- w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>PS POWER SERVICE Receipt</title><style>body{font-family:Arial;padding:25px;max-width:760px;margin:auto}.receipt{border:2px solid #171717;padding:22px;border-radius:10px}header{text-align:center;border-bottom:3px solid #ffd500;padding-bottom:12px}table{width:100%;border-collapse:collapse;margin-top:20px}td{padding:11px;border-bottom:1px solid #ddd}td:first-child{font-weight:bold;width:38%}.total{text-align:right;font-size:21px;font-weight:bold;margin-top:20px}.actions{text-align:center;margin:18px}button{padding:12px;background:#171717;color:#ffd500;border:0}@media print{.actions{display:none}}</style></head><body><div class="actions"><button onclick="window.print()">Save / Print PDF</button></div><div class="receipt"><header><h1>⚡ PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p><h2>PAYMENT RECEIPT</h2><b>PAYMENT PAID</b></header><table><tr><td>Receipt Date</td><td>${esc(new Date().toLocaleDateString("en-IN"))}</td></tr><tr><td>Booking ID</td><td>${esc(id)}</td></tr><tr><td>Customer</td><td>${esc(b.customerName)}</td></tr><tr><td>Email</td><td>${esc(b.customerEmail||"—")}</td></tr><tr><td>Mobile</td><td>${esc(b.customerPhone||"—")}</td></tr><tr><td>Service</td><td>${esc(b.service)}</td></tr><tr><td>Address</td><td>${esc(b.address)}</td></tr><tr><td>Booking Date</td><td>${esc(b.bookingDate)}</td></tr><tr><td>Payment</td><td>PAID</td></tr></table><div class="total">Amount Received: ₹${Number(b.bookingFee||20)}</div><p>Admin verified this booking payment.</p></div></body></html>`);w.document.close();w.focus()};
+ w.document.open();w.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>PS POWER SERVICE Receipt</title><style>body{font-family:Arial;padding:25px;max-width:760px;margin:auto}.receipt{border:2px solid #171717;padding:22px;border-radius:10px}header{text-align:center;border-bottom:3px solid #ffd500;padding-bottom:12px}table{width:100%;border-collapse:collapse;margin-top:20px}td{padding:11px;border-bottom:1px solid #ddd}td:first-child{font-weight:bold;width:38%}.total{text-align:right;font-size:21px;font-weight:bold;margin-top:20px}.actions{text-align:center;margin:18px}button{padding:12px;background:#171717;color:#ffd500;border:0}@media print{.actions{display:none}}</style></head><body><div class="actions"><button onclick="window.print()">Save / Print PDF</button></div><div class="receipt"><header><h1>⚡ PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p><h2>PAYMENT RECEIPT</h2><b>PAYMENT PAID</b></header><table><tr><td>Receipt Date</td><td>${fields.receiptDate}</td></tr><tr><td>Booking ID</td><td>${fields.id}</td></tr><tr><td>Customer</td><td>${fields.customer}</td></tr><tr><td>Email</td><td>${fields.email||"—"}</td></tr><tr><td>Service</td><td>${fields.service}</td></tr><tr><td>Address</td><td>${fields.address}</td></tr><tr><td>Booking Date</td><td>${fields.date}</td></tr><tr><td>Payment</td><td>PAID</td></tr></table><div class="total">Amount Received: ₹20</div><p>This receipt confirms that Admin marked the booking fee as paid.</p></div></body></html>`);w.document.close();w.focus();
+};
 
+/* Customer notification read-state is stored only in this browser. */
 function readKey(uid){return "psps_read_notifications_"+uid}
 function getReadIds(uid){try{return new Set(JSON.parse(localStorage.getItem(readKey(uid))||"[]"))}catch{return new Set()}}
 function saveReadIds(uid,ids){try{localStorage.setItem(readKey(uid),JSON.stringify([...ids]))}catch(e){console.warn(e)}}
 window.markNotificationRead=id=>{const u=auth.currentUser;if(!u)return;const ids=getReadIds(u.uid);ids.add(id);saveReadIds(u.uid,ids);renderCustomerBookings(lastCustomerBookings,u.uid)};
 window.markAllNotificationsRead=()=>{const u=auth.currentUser;if(!u)return;const ids=getReadIds(u.uid);lastCustomerBookings.forEach(x=>ids.add(x.id));saveReadIds(u.uid,ids);renderCustomerBookings(lastCustomerBookings,u.uid)};
+
 function addCell(row,value){const td=document.createElement("td");td.textContent=String(value??"—");row.append(td);return td}
 function renderCustomerBookings(items,uid){
  lastCustomerBookings=items;const tbody=$("customerBookingRows"),notices=$("customerNotifications");tbody.replaceChildren();notices.replaceChildren();
- if(!items.length){const tr=document.createElement("tr"),td=addCell(tr,"No bookings yet.");td.colSpan=8;tbody.append(tr);notices.textContent="No booking notifications yet.";$("unreadNotificationCount").textContent="(0 unread)";return}
+ if(!items.length){const tr=document.createElement("tr");const td=addCell(tr,"No bookings yet.");td.colSpan=8;tbody.append(tr);notices.textContent="No booking notifications yet.";$("unreadNotificationCount").textContent="(0 unread)";return}
  const readIds=getReadIds(uid);let unread=0;
- items.forEach(({id,b})=>{const tr=document.createElement("tr");addCell(tr,id);addCell(tr,b.service);addCell(tr,b.bookingDate);addCell(tr,b.address);addCell(tr,"₹"+(b.bookingFee??20));addCell(tr,b.paymentStatus||"pending");addCell(tr,b.bookingStatus||"pending");
- const cell=document.createElement("td");if(b.paymentStatus==="paid"){const btn=document.createElement("button");btn.className="btn";btn.textContent="Receipt PDF";btn.onclick=()=>window.printReceipt(id,b);cell.append(btn)}else cell.textContent="After payment verification";tr.append(cell);tbody.append(tr);
- const state=(b.bookingStatus||"pending").toLowerCase(),info={pending:["Booking received","Your booking is waiting for Admin confirmation."],confirmed:["Booking confirmed","Your service booking has been confirmed."],completed:["Work completed","Your service booking has been marked completed."],cancelled:["Booking cancelled","Please contact PS POWER SERVICE if you need help."]}[state];
- if(info){const isRead=readIds.has(id);if(!isRead)unread++;const box=document.createElement("div");box.className="notification"+(isRead?" read":"");const h=document.createElement("strong");h.textContent=info[0];const p=document.createElement("p");p.textContent=info[1];const sm=document.createElement("small");sm.textContent="Booking ID: "+id+" • "+(isRead?"Read":"Unread");box.append(h,p,sm);if(!isRead){const btn=document.createElement("button");btn.className="btn";btn.textContent="Mark as Read";btn.onclick=()=>window.markNotificationRead(id);box.append(btn)}notices.append(box)}
- });$("unreadNotificationCount").textContent="("+unread+" unread)";if(!notices.childElementCount)notices.textContent="No booking notifications yet.";
+ items.forEach(({id,b})=>{
+  const tr=document.createElement("tr");addCell(tr,id);addCell(tr,b.service||"Service");addCell(tr,b.bookingDate||"");addCell(tr,b.address||"");addCell(tr,"₹"+(b.bookingFee??20));addCell(tr,b.paymentStatus||"pending");addCell(tr,b.bookingStatus||"pending");
+  const receiptCell=document.createElement("td");if(b.paymentStatus==="paid"){const btn=document.createElement("button");btn.className="btn";btn.textContent="Receipt PDF";btn.onclick=()=>window.printReceipt(id,b);receiptCell.append(btn)}else receiptCell.textContent="After payment verification";tr.append(receiptCell);tbody.append(tr);
+  const state=(b.bookingStatus||"pending").toLowerCase(),messages={pending:["Booking received","Your booking is waiting for Admin confirmation."],confirmed:["Booking confirmed","Your service booking has been confirmed."],completed:["Work completed","Your service booking has been marked completed."],cancelled:["Booking cancelled","Please contact PS POWER SERVICE if you need help."]};
+  const info=messages[state];if(info){const isRead=readIds.has(id);if(!isRead)unread++;const box=document.createElement("div");box.className="notification"+(isRead?" read":"");const h=document.createElement("strong");h.textContent=info[0];const p=document.createElement("p");p.textContent=info[1];const small=document.createElement("small");small.textContent="Booking ID: "+id+" • "+(isRead?"Read":"Unread");box.append(h,p,small);if(!isRead){const btn=document.createElement("button");btn.className="btn";btn.textContent="Mark as Read";btn.onclick=()=>window.markNotificationRead(id);box.append(btn)}notices.append(box)}
+ });
+ $("unreadNotificationCount").textContent="("+unread+" unread)";
+ if(!notices.childElementCount)notices.textContent="No booking notifications yet.";
 }
-function startCustomerListener(uid){if(stopCustomerListener)stopCustomerListener();$("customerBookingRows").innerHTML='<tr><td colspan="8">Loading bookings...</td></tr>';
- const q=query(collection(db,"bookings"),where("userId","==",uid));stopCustomerListener=onSnapshot(q,snap=>{const items=snap.docs.map(d=>({id:d.id,b:d.data()})).sort((a,b)=>(b.b.createdAt?.seconds||0)-(a.b.createdAt?.seconds||0));renderCustomerBookings(items,uid)},e=>showMessage("bookingMessage","Could not load bookings: "+e.message))}
+function startCustomerListener(uid){
+ if(stopCustomerListener)stopCustomerListener();
+ $("customerBookingRows").innerHTML='<tr><td colspan="8">Loading bookings...</td></tr>';
+ const q=query(collection(db,"bookings"),where("userId","==",uid));
+ stopCustomerListener=onSnapshot(q,snap=>{
+  const items=snap.docs.map(d=>({id:d.id,b:d.data()})).sort((a,b)=>(b.b.createdAt?.seconds||0)-(a.b.createdAt?.seconds||0));
+  renderCustomerBookings(items,uid);
+ },error=>{$("bookingMessage").textContent="Could not load live bookings: "+error.message});
+}
 window.loadBookings=()=>{const u=auth.currentUser;if(u&&u.uid!==ADMIN_UID)startCustomerListener(u.uid)};
 
-function renderAdminBookings(snap){const tbody=$("adminBookingRows");tbody.replaceChildren();if(snap.empty){const tr=document.createElement("tr"),td=addCell(tr,"No bookings found.");td.colSpan=12;tbody.append(tr);showMessage("adminMessage","Total bookings: 0");return}
- const docs=snap.docs.slice().sort((a,b)=>(b.data().createdAt?.seconds||0)-(a.data().createdAt?.seconds||0));showMessage("adminMessage","Total bookings: "+docs.length+" • Live updates active");
- docs.forEach(item=>{const b=item.data(),tr=document.createElement("tr");addCell(tr,item.id);addCell(tr,b.customerName||"N/A");addCell(tr,b.customerPhone||"N/A");addCell(tr,b.customerEmail||"N/A");addCell(tr,b.service||"N/A");addCell(tr,b.address||"N/A");addCell(tr,b.bookingDate||"N/A");addCell(tr,b.bookingSource||"website");addCell(tr,"₹"+(b.bookingFee??20));addCell(tr,b.paymentStatus||"pending");addCell(tr,b.bookingStatus||"pending");
- const actions=document.createElement("td");[["Confirm",{bookingStatus:"confirmed"}],["Cancel",{bookingStatus:"cancelled"}],["Complete",{bookingStatus:"completed"}]].forEach(([label,change])=>{const btn=document.createElement("button");btn.className="btn";btn.textContent=label;btn.onclick=()=>updateBooking(item.id,change);actions.append(btn)});
- const paid=document.createElement("button");paid.className="btn dark";paid.textContent="Mark Paid";paid.disabled=b.paymentStatus==="paid";paid.onclick=()=>{if(confirm("Have you checked the actual PhonePe payment and confirmed ₹20 was received?"))updateBooking(item.id,{paymentStatus:"paid"})};actions.append(paid);
- if(b.paymentStatus==="paid"){const receipt=document.createElement("button");receipt.className="btn";receipt.textContent="Receipt";receipt.onclick=()=>window.printReceipt(item.id,b);actions.append(receipt)}tr.append(actions);tbody.append(tr)
- })}
-function startAdminListener(){if(stopAdminListener)stopAdminListener();$("adminBookingRows").innerHTML='<tr><td colspan="12">Loading bookings...</td></tr>';stopAdminListener=onSnapshot(collection(db,"bookings"),renderAdminBookings,e=>showMessage("adminMessage","Error loading bookings: "+e.message))}
-function startAdminDesignRequestsListener(){
- if(auth.currentUser?.uid!==ADMIN_UID)return;
- if(stopDesignRequestsListener)stopDesignRequestsListener();
- const box=$("adminDesignRequests");
- if(!box)return;
- box.innerHTML='<p class="design-empty">Loading design requests...</p>';
- stopDesignRequestsListener=onSnapshot(collection(db,"designRequests"),snap=>{
-  const docs=snap.docs.slice().sort((a,b)=>(b.data().createdAt?.seconds||0)-(a.data().createdAt?.seconds||0));
-  if(!docs.length){box.innerHTML='<p class="design-empty">No customer design requests yet.</p>';return}
-  box.innerHTML=docs.map(item=>{
-   const d=item.data(),status=(d.status||"pending").toLowerCase();
-   return `<article class="customer-design-card">
-    ${d.imageUrl?`<img src="${esc(d.imageUrl)}" alt="${esc(d.designName||"Design")}" loading="lazy">`:""}
-    <h4>${esc(d.designName||"Design Request")}</h4>
-    <p><b>Category:</b> ${esc(d.category||"—")}</p>
-    <p><b>Customer:</b> ${esc(d.customerName||"—")}</p>
-    <p><b>Mobile:</b> ${esc(d.customerPhone||d.phone||"—")}</p>
-    <p><b>Description:</b> ${esc(d.description||"No description")}</p>
-    <p><b>Status:</b> ${esc(status.toUpperCase())}</p>
-    <button class="btn" type="button" data-design-status="contacted" data-id="${esc(item.id)}" ${status==="contacted"?"disabled":""}>Mark Contacted</button>
-    <button class="btn dark" type="button" data-design-status="completed" data-id="${esc(item.id)}" ${status==="completed"?"disabled":""}>Mark Completed</button>
-   </article>`;
-  }).join("");
-  box.querySelectorAll("[data-design-status]").forEach(btn=>btn.addEventListener("click",()=>updateDesignRequestStatus(btn.dataset.id,btn.dataset.designStatus)));
- },error=>{box.innerHTML='<p class="design-empty">Could not load requests: '+esc(error.message)+'</p>'});
+function renderAdminBookings(snapshot){
+ const tbody=$("adminBookingRows");tbody.replaceChildren();
+ if(snapshot.empty){const tr=document.createElement("tr"),td=addCell(tr,"No bookings found.");td.colSpan=12;tbody.append(tr);$("adminMessage").textContent="Total bookings: 0";return}
+ const docs=snapshot.docs.slice().sort((a,b)=>(b.data().createdAt?.seconds||0)-(a.data().createdAt?.seconds||0));
+ $("adminMessage").textContent="Total bookings: "+docs.length+" • Live updates active";
+ docs.forEach(item=>{
+  const b=item.data(),tr=document.createElement("tr");addCell(tr,item.id);addCell(tr,b.customerName||"N/A");addCell(tr,b.customerPhone||"N/A");addCell(tr,b.customerEmail||"N/A");addCell(tr,b.service||"N/A");addCell(tr,b.address||"N/A");addCell(tr,b.bookingDate||"N/A");addCell(tr,b.bookingSource==="whatsapp"?"WhatsApp":"Website");addCell(tr,"₹"+(b.bookingFee??20));addCell(tr,b.paymentStatus||"pending");addCell(tr,b.bookingStatus||"pending");
+  const actions=document.createElement("td");
+  [["Confirm",{bookingStatus:"confirmed"}],["Cancel",{bookingStatus:"cancelled"}],["Complete",{bookingStatus:"completed"}]].forEach(([label,change])=>{const btn=document.createElement("button");btn.className="btn";btn.textContent=label;btn.onclick=()=>updateBooking(item.id,change);actions.append(btn)});
+  const paid=document.createElement("button");paid.className="btn dark";paid.textContent="Mark Paid";paid.disabled=b.paymentStatus==="paid";paid.onclick=()=>{if(confirm("Have you checked the actual PhonePe payment and confirmed ₹20 was received?"))updateBooking(item.id,{paymentStatus:"paid"})};actions.append(paid);
+  if(b.paymentStatus==="paid"){const receipt=document.createElement("button");receipt.className="btn";receipt.textContent="Receipt";receipt.onclick=()=>window.printReceipt(item.id,b);actions.append(receipt)}
+  tr.append(actions);tbody.append(tr);
+ });
 }
-async function updateDesignRequestStatus(id,status){
- if(auth.currentUser?.uid!==ADMIN_UID){showMessage("adminMessage","Admin access required.");return}
- if(!["contacted","completed"].includes(status))return;
- try{await updateDoc(doc(db,"designRequests",id),{status});showMessage("adminMessage","Design request status updated: "+status)}
- catch(e){showMessage("adminMessage","Design request update failed: "+e.message)}
+function startAdminListener(){
+ if(stopAdminListener)stopAdminListener();
+ $("adminBookingRows").innerHTML='<tr><td colspan="12">Loading bookings...</td></tr>';
+ stopAdminListener=onSnapshot(collection(db,"bookings"),renderAdminBookings,error=>{$("adminMessage").textContent="Error loading bookings: "+error.message});
 }
 window.loadAdminBookings=()=>{if(auth.currentUser?.uid===ADMIN_UID)startAdminListener()};
-async function updateBooking(id,changes){if(auth.currentUser?.uid!==ADMIN_UID){showMessage("adminMessage","Admin access required.");return}try{await updateDoc(doc(db,"bookings",id),changes);showMessage("adminMessage","Booking update saved.")}catch(e){showMessage("adminMessage","Update failed: "+e.message)}}
+async function updateBooking(id,changes){
+ if(auth.currentUser?.uid!==ADMIN_UID)return;
+ try{await updateDoc(doc(db,"bookings",id),changes);$("adminMessage").textContent="Booking update saved. Live table is refreshing."}
+ catch(error){$("adminMessage").textContent="Update failed: "+error.message}
+}
+
+onAuthStateChanged(auth,user=>{
+ if(registrationInProgress)return;
+ stopListeners();
+ if(!user){
+  hideAllPanels();
+  $("registerPanel").classList.remove("hidden");
+  return;
+ }
+ if(user.uid===ADMIN_UID){
+  location.replace("admin.html");
+  return;
+ }
+ location.replace("customer.html");
+});
 </script>
 </body>
 </html>
