@@ -525,13 +525,19 @@ onAuthStateChanged(auth,user=>{
 
   <div class="contact-number">
     <p>📞 8144722094</p>
-    <a href="tel:8144722094" class="call-btn">CALL NOW</a>
+    <a href="#" class="call-btn"
+onclick="callNumber('8144722094'); return false;">
+CALL NOW
+</a>
     <a href="https://wa.me/918144722094" class="whatsapp-btn">WHATSAPP</a>
   </div>
 
   <div class="contact-number">
     <p>📞 6371889102</p>
-    <a href="tel:6371889102" class="call-btn">CALL NOW</a>
+    <a href="#" class="call-btn"
+onclick="callNumber('6371889102'); return false;">
+CALL NOW
+</a>
   </div>
 
   <p class="copyright">
@@ -552,6 +558,12 @@ function closeMenu() {
   document.getElementById("menuButton").setAttribute("aria-expanded", "false");
 }
 </script>
-
+<script>
+function callNumber(number) {
+  if (window.AppInventor) {
+    window.AppInventor.setWebViewString("CALL:" + number);
+  }
+}
+</script>
 </body>
 </html>
