@@ -494,5 +494,40 @@ onAuthStateChanged(auth,user=>{
  location.replace("customer.html");
 });
 </script>
+<div class="contact-buttons">
+  <a href="https://wa.me/918144722094" class="whatsapp">
+    WhatsApp
+  </a>
+
+  <a href="tel:+916371889102" class="call">
+    Call 1
+  </a>
+
+  <a href="tel:+918144722094" class="call">
+    Call 2
+  </a>
+</div>
+
+<style>
+.contact-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 20px;
+}
+
+.contact-buttons a {
+  padding: 13px 20px;
+  border-radius: 8px;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.whatsapp { background: #25D366; }
+.call { background: #007BFF; }
+</style>
+
 </body>
 </html>
