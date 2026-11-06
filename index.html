@@ -50,6 +50,17 @@ th{background:var(--ink);color:var(--yellow);position:sticky;top:0}tr:nth-child(
 .call-btn{background:var(--yellow);color:var(--ink)}.whatsapp-btn{background:#25D366;color:#fff}.copyright{border-top:1px solid #555;padding-top:15px;font-size:13px}
 @media(max-width:600px){header{justify-content:space-between}.photo-slider{height:440px}.slide-content{left:13%;right:13%}.slide-content p{font-size:15px}.slider-arrow{width:36px;height:36px;font-size:19px}section{padding:22px 12px}.panel{padding:14px}.service-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.gallery-item img{height:135px}.gallery-item figcaption{padding:9px;font-size:13px}}
 @media(prefers-reduced-motion:reduce){.welcome-marquee span{animation:none;padding-left:0}.slide{transition:none}}
+
+.customer-design-wrap{max-width:1100px;margin:18px auto 0;padding:20px;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 12px #00000010}
+.design-filters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.design-filter{border:1px solid var(--ink);background:#fff;color:var(--ink);padding:9px 13px;border-radius:20px;font-weight:bold;cursor:pointer}
+.design-filter.active{background:var(--yellow);border-color:var(--yellow)}
+.customer-design-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;text-align:left}
+.customer-design-card{border:1px solid var(--line);border-radius:10px;padding:10px;overflow:hidden;background:#fff}
+.customer-design-card img{display:block;width:100%;height:175px;object-fit:cover;border-radius:7px;background:#f3f3f3}
+.customer-design-card h4{margin:10px 0 4px}.customer-design-card p{font-size:12px;color:#666;margin:4px 0 9px}
+.design-empty{grid-column:1/-1;padding:18px;background:#fff9dc;border-radius:8px;text-align:center;color:#555}
+@media(max-width:600px){.customer-design-wrap{padding:13px}.customer-design-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.customer-design-card{padding:7px}.customer-design-card img{height:125px}.customer-design-card h4{font-size:14px}}
 </style>
 </head>
 <body>
@@ -59,7 +70,7 @@ th{background:var(--ink);color:var(--yellow);position:sticky;top:0}tr:nth-child(
   <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open menu" aria-expanded="false" id="menuButton">☰</button>
   <nav class="menu-dropdown" id="menuDropdown">
     <a href="#home" onclick="closeMenu()">🏠 Home</a><a href="#services" onclick="closeMenu()">⚡ Services</a>
-    <a href="#gallery" onclick="closeMenu()">🖼️ Our Work Gallery</a><a href="#account" onclick="showLogin();closeMenu()">👤 Customer Login</a>
+    <a href="#gallery" onclick="closeMenu()">🖼️ Our Work Gallery</a><a href="#customerDesignGallery" onclick="closeMenu()">🏠 Customer Design Gallery</a><a href="#account" onclick="showLogin();closeMenu()">👤 Customer Login</a>
     <a href="#account" onclick="showRegister();closeMenu()">📝 Customer Register</a><a href="#account" onclick="showAdminLogin();closeMenu()">🔐 Admin Login</a>
     <a href="#contact" onclick="closeMenu()">📞 Contact Us</a>
   </nav>
@@ -88,6 +99,14 @@ th{background:var(--ink);color:var(--yellow);position:sticky;top:0}tr:nth-child(
 <figure class="gallery-item"><img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting" loading="lazy"><figcaption>Switch Board Fitting<span>Switch board installation</span></figcaption></figure>
 <figure class="gallery-item"><img src="images/wall-cutting.jpg" alt="Wall Cutting" loading="lazy"><figcaption>Wall Cutting<span>Electrical fitting preparation</span></figcaption></figure>
 </div></section>
+
+<section id="customerDesignGallery" class="customer-design-wrap">
+<h2>🏠 Customer Design Gallery</h2>
+<p class="small-note">Admin Gallery ରେ ଯୋଡ଼ାଯାଇଥିବା Design ଏଠାରେ Live ଦେଖନ୍ତୁ। ପସନ୍ଦର Design ବାଛି Request ପଠାନ୍ତୁ।</p>
+<div id="designFilters" class="design-filters"><button class="design-filter active" type="button" data-category="ALL">ALL</button></div>
+<div id="customerDesignGrid" class="customer-design-grid"><p class="design-empty">Design Loading...</p></div>
+<p id="designRequestMessage" class="message" aria-live="polite"></p>
+</section>
 
 <section id="account"><h2>Account</h2>
 <div class="panel auth-panel" id="registerPanel"><h3>Customer Registration</h3>
@@ -150,7 +169,56 @@ const PAYMENT_FORM_URL="https://forms.gle/7dnzHW8AopbkGpJL9";
 const PAYMENT_QR_URL="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png";
 const WHATSAPP_NUMBER="918144722094";
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
-let stopCustomerListener=null,stopAdminListener=null,lastCustomerBookings=[],registrationInProgress=false;
+let stopCustomerListener=null,stopAdminListener=null,stopDesignGalleryListener=null,lastCustomerBookings=[],registrationInProgress=false,customerDesigns=[],selectedDesignCategory="ALL";
+
+function startCustomerDesignGallery(){
+ if(stopDesignGalleryListener)return;
+ const grid=$("customerDesignGrid");
+ stopDesignGalleryListener=onSnapshot(collection(db,"designs"),snap=>{
+  customerDesigns=snap.docs.map(d=>({id:d.id,...d.data()})).filter(d=>d.active!==false);
+  customerDesigns.sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
+  renderCustomerDesignFilters();
+  renderCustomerDesigns();
+ },error=>{
+  grid.innerHTML='<p class="design-empty">Design load ହୋଇପାରିଲା ନାହିଁ: '+esc(error.message)+'</p>';
+ });
+}
+function renderCustomerDesignFilters(){
+ const box=$("designFilters");
+ const categories=[...new Set(customerDesigns.map(d=>(d.category||"OTHER").trim()).filter(Boolean))];
+ if(selectedDesignCategory!=="ALL"&&!categories.includes(selectedDesignCategory))selectedDesignCategory="ALL";
+ const all=["ALL",...categories];
+ box.innerHTML=all.map(c=>'<button type="button" class="design-filter '+(c===selectedDesignCategory?'active':'')+'" data-category="'+esc(c)+'">'+esc(c==='ALL'?'ALL':c)+'</button>').join("");
+ box.querySelectorAll("button").forEach(btn=>btn.addEventListener("click",()=>{selectedDesignCategory=btn.dataset.category;renderCustomerDesignFilters();renderCustomerDesigns()}));
+}
+function renderCustomerDesigns(){
+ const grid=$("customerDesignGrid");
+ const items=selectedDesignCategory==="ALL"?customerDesigns:customerDesigns.filter(d=>(d.category||"OTHER").trim()===selectedDesignCategory);
+ if(!items.length){grid.innerHTML='<p class="design-empty">ବର୍ତ୍ତମାନ Admin Gallery ରେ କୌଣସି Design ନାହିଁ।</p>';return}
+ grid.innerHTML=items.map(d=>{
+  const name=d.name||"Interior Design",category=d.category||"Other Design",url=d.imageUrl||"";
+  return '<article class="customer-design-card"><img src="'+esc(url)+'" alt="'+esc(name)+'" loading="lazy"><h4>'+esc(name)+'</h4><p>'+esc(category)+'</p><button class="btn" type="button" data-request-design="'+esc(d.id)+'">Request This Design</button></article>';
+ }).join("");
+ grid.querySelectorAll("[data-request-design]").forEach(btn=>btn.addEventListener("click",()=>{const design=customerDesigns.find(d=>d.id===btn.dataset.requestDesign);if(design)requestCustomerDesign(design,btn)}));
+}
+async function requestCustomerDesign(design,button){
+ const user=auth.currentUser;
+ if(!user||user.uid===ADMIN_UID){showMessage("designRequestMessage","Design Request ପଠାଇବା ପାଇଁ Customer Login କରନ୍ତୁ।");showLogin();document.getElementById("account").scrollIntoView({behavior:"smooth"});return}
+ const description=prompt("ଏହି Design ବିଷୟରେ ଅଧିକ କିଛି କହିବାକୁ ଚାହୁଁଛନ୍ତି କି? (Optional)")||"";
+ button.disabled=true;showMessage("designRequestMessage","Design Request ପଠାଯାଉଛି...");
+ try{
+  const profile=await getDoc(doc(db,"users",user.uid));
+  const customer=profile.exists()?profile.data():{};
+  await addDoc(collection(db,"designRequests"),{
+   designName:design.name||"Our Design",imageUrl:design.imageUrl||"",category:design.category||"",
+   customerName:customer.name||user.displayName||"Customer",phone:customer.phone||"",
+   customerPhone:customer.phone||"",description:description.trim(),status:"pending",userId:user.uid,createdAt:serverTimestamp()
+  });
+  showMessage("designRequestMessage","✅ Design Request ସଫଳତାର ସହିତ ପଠାଗଲା। Admin Panel ରେ ଦେଖାଯିବ।");
+ }catch(error){showMessage("designRequestMessage","Request ପଠାଇବାରେ ସମସ୍ୟା: "+error.message)}
+ finally{button.disabled=false}
+}
+startCustomerDesignGallery();
 
 function hideAllPanels(){["registerPanel","loginPanel","adminLoginPanel","dashboard","adminDashboard"].forEach(id=>$(id).classList.add("hidden"))}
 function showMessage(id,msg){$(id).textContent=msg}
