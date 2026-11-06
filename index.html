@@ -4,7 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PS POWER SERVICE</title>
-<style>
+<style>/* WELCOME SCROLLING TEXT */
+.welcome-bar {
+  background: #ffd500;
+  color: #171717;
+  padding: 14px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.welcome-text {
+  display: inline-block;
+  padding-left: 100%;
+  animation: welcomeScroll 18s linear infinite;
+}
+
+@keyframes welcomeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .welcome-text { animation: none; padding-left: 10px; }
+}
 :root{--yellow:#ffd500;--ink:#171717;--paper:#fff;--soft:#fff9dc;--line:#e5e5e5}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth;scroll-padding-top:90px}
@@ -101,7 +125,17 @@ footer{background:var(--ink);color:white;text-align:center;padding:20px}
     <a href="#account" onclick="showLogin();closeMenu()">Customer Login</a>
     <a href="#account" onclick="showAdminLogin();closeMenu()">Admin Login</a>
   </nav>
-</header>
+</header><!-- WELCOME SCROLLING BAR -->
+<div class="welcome-bar">
+  <div class="welcome-text">
+    ⚡ WELCOME TO MY ELECTRICAL WEBSITE
+    • MR SIDHU ELECTRICIAN
+    • BOOK YOUR SERVICE NOW
+    ⚡ WELCOME TO MY ELECTRICAL WEBSITE
+    • MR SIDHU ELECTRICIAN
+    • BOOK YOUR SERVICE NOW
+  </div>
+</div>
 
 <!-- HOME PHOTO SLIDER -->
 <div class="photo-slider" id="home">
