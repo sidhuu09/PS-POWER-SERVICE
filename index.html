@@ -141,6 +141,8 @@ th{background:var(--ink);color:var(--yellow);position:sticky;top:0}tr:nth-child(
 <select id="waService" required><option value="">Select Service</option><option>Electrical Work</option><option>Home Wiring</option><option>Lenter Piping</option><option>Repair & Maintenance</option></select>
 <textarea id="waAddress" placeholder="Customer Full Address" required></textarea><input id="waBookingDate" type="date" required><p class="price">Booking Fee: ₹20</p><p class="payment-note">Payment remains Pending until Admin verifies the payment.</p>
 <button class="btn" type="submit" id="waSaveButton">Save WhatsApp Booking</button></form></div>
+<h3>🎨 Customer Design Requests</h3><p class="small-note">Customer Design Gallery ରୁ ଆସିଥିବା Request ଏଠାରେ Live ଦେଖାଯିବ।</p>
+<div id="adminDesignRequests" class="customer-design-grid"><p class="design-empty">Loading design requests...</p></div>
 <h3>All Customer Bookings</h3><p class="small-note">Live table: new bookings and status changes appear automatically.</p><button class="btn" onclick="loadAdminBookings()">Refresh All Bookings</button><div id="adminMessage" class="message" aria-live="polite"></div>
 <div class="table-wrap"><table><thead><tr><th>Booking ID</th><th>Customer</th><th>Mobile</th><th>Email</th><th>Service</th><th>Address</th><th>Date</th><th>Source</th><th>Fee</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead><tbody id="adminBookingRows"><tr><td colspan="12">Loading bookings...</td></tr></tbody></table></div><button class="btn dark" onclick="logoutUser()">Admin Logout</button></div>
 </section>
@@ -169,7 +171,7 @@ const PAYMENT_FORM_URL="https://forms.gle/7dnzHW8AopbkGpJL9";
 const PAYMENT_QR_URL="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png";
 const WHATSAPP_NUMBER="918144722094";
 const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app),$=id=>document.getElementById(id);
-let stopCustomerListener=null,stopAdminListener=null,stopDesignGalleryListener=null,lastCustomerBookings=[],registrationInProgress=false,customerDesigns=[],selectedDesignCategory="ALL";
+let stopCustomerListener=null,stopAdminListener=null,stopDesignGalleryListener=null,stopDesignRequestsListener=null,lastCustomerBookings=[],registrationInProgress=false,customerDesigns=[],selectedDesignCategory="ALL";
 
 function startCustomerDesignGallery(){
  if(stopDesignGalleryListener)return;
@@ -225,7 +227,11 @@ function showMessage(id,msg){$(id).textContent=msg}
 function showError(id,e){showMessage(id,e?.message||String(e))}
 function today(){const d=new Date(),off=d.getTimezoneOffset();return new Date(d.getTime()-off*60000).toISOString().slice(0,10)}
 $("bookingDate").min=today();$("waBookingDate").min=today();
-function stopListeners(){if(stopCustomerListener){stopCustomerListener();stopCustomerListener=null}if(stopAdminListener){stopAdminListener();stopAdminListener=null}}
+function stopListeners(){
+ if(stopCustomerListener){stopCustomerListener();stopCustomerListener=null}
+ if(stopAdminListener){stopAdminListener();stopAdminListener=null}
+ if(stopDesignRequestsListener){stopDesignRequestsListener();stopDesignRequestsListener=null}
+}
 window.showRegister=()=>{if(auth.currentUser)return;hideAllPanels();$("registerPanel").classList.remove("hidden")};
 window.showLogin=()=>{if(auth.currentUser)return;hideAllPanels();$("loginPanel").classList.remove("hidden")};
 window.showAdminLogin=()=>{if(auth.currentUser)return;hideAllPanels();$("adminLoginPanel").classList.remove("hidden")};
@@ -253,7 +259,7 @@ function showCustomerDashboard(user){
  getDoc(doc(db,"users",user.uid)).then(s=>{const d=s.exists()?s.data():{};$("customerName").textContent=d.name||user.displayName||"Customer";$("customerPhone").textContent=d.phone||"Not provided"}).catch(e=>showMessage("bookingMessage",e.message));
  startCustomerListener(user.uid);
 }
-function showAdminDashboard(){hideAllPanels();$("adminDashboard").classList.remove("hidden");startAdminListener()}
+function showAdminDashboard(){hideAllPanels();$("adminDashboard").classList.remove("hidden");startAdminListener();startAdminDesignRequestsListener()}
 onAuthStateChanged(auth,user=>{
  if(registrationInProgress)return;
  stopListeners();
@@ -324,6 +330,38 @@ function renderAdminBookings(snap){const tbody=$("adminBookingRows");tbody.repla
  if(b.paymentStatus==="paid"){const receipt=document.createElement("button");receipt.className="btn";receipt.textContent="Receipt";receipt.onclick=()=>window.printReceipt(item.id,b);actions.append(receipt)}tr.append(actions);tbody.append(tr)
  })}
 function startAdminListener(){if(stopAdminListener)stopAdminListener();$("adminBookingRows").innerHTML='<tr><td colspan="12">Loading bookings...</td></tr>';stopAdminListener=onSnapshot(collection(db,"bookings"),renderAdminBookings,e=>showMessage("adminMessage","Error loading bookings: "+e.message))}
+function startAdminDesignRequestsListener(){
+ if(auth.currentUser?.uid!==ADMIN_UID)return;
+ if(stopDesignRequestsListener)stopDesignRequestsListener();
+ const box=$("adminDesignRequests");
+ if(!box)return;
+ box.innerHTML='<p class="design-empty">Loading design requests...</p>';
+ stopDesignRequestsListener=onSnapshot(collection(db,"designRequests"),snap=>{
+  const docs=snap.docs.slice().sort((a,b)=>(b.data().createdAt?.seconds||0)-(a.data().createdAt?.seconds||0));
+  if(!docs.length){box.innerHTML='<p class="design-empty">No customer design requests yet.</p>';return}
+  box.innerHTML=docs.map(item=>{
+   const d=item.data(),status=(d.status||"pending").toLowerCase();
+   return `<article class="customer-design-card">
+    ${d.imageUrl?`<img src="${esc(d.imageUrl)}" alt="${esc(d.designName||"Design")}" loading="lazy">`:""}
+    <h4>${esc(d.designName||"Design Request")}</h4>
+    <p><b>Category:</b> ${esc(d.category||"—")}</p>
+    <p><b>Customer:</b> ${esc(d.customerName||"—")}</p>
+    <p><b>Mobile:</b> ${esc(d.customerPhone||d.phone||"—")}</p>
+    <p><b>Description:</b> ${esc(d.description||"No description")}</p>
+    <p><b>Status:</b> ${esc(status.toUpperCase())}</p>
+    <button class="btn" type="button" data-design-status="contacted" data-id="${esc(item.id)}" ${status==="contacted"?"disabled":""}>Mark Contacted</button>
+    <button class="btn dark" type="button" data-design-status="completed" data-id="${esc(item.id)}" ${status==="completed"?"disabled":""}>Mark Completed</button>
+   </article>`;
+  }).join("");
+  box.querySelectorAll("[data-design-status]").forEach(btn=>btn.addEventListener("click",()=>updateDesignRequestStatus(btn.dataset.id,btn.dataset.designStatus)));
+ },error=>{box.innerHTML='<p class="design-empty">Could not load requests: '+esc(error.message)+'</p>'});
+}
+async function updateDesignRequestStatus(id,status){
+ if(auth.currentUser?.uid!==ADMIN_UID){showMessage("adminMessage","Admin access required.");return}
+ if(!["contacted","completed"].includes(status))return;
+ try{await updateDoc(doc(db,"designRequests",id),{status});showMessage("adminMessage","Design request status updated: "+status)}
+ catch(e){showMessage("adminMessage","Design request update failed: "+e.message)}
+}
 window.loadAdminBookings=()=>{if(auth.currentUser?.uid===ADMIN_UID)startAdminListener()};
 async function updateBooking(id,changes){if(auth.currentUser?.uid!==ADMIN_UID){showMessage("adminMessage","Admin access required.");return}try{await updateDoc(doc(db,"bookings",id),changes);showMessage("adminMessage","Booking update saved.")}catch(e){showMessage("adminMessage","Update failed: "+e.message)}}
 </script>
