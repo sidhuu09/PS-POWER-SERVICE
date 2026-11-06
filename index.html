@@ -509,24 +509,34 @@ onAuthStateChanged(auth,user=>{
 </div>
 
 <style>
+
 .contact-buttons {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  z-index: 9999;
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 20px;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .contact-buttons a {
   padding: 13px 20px;
-  border-radius: 8px;
+  border-radius: 30px;
   color: white;
   text-decoration: none;
   font-weight: bold;
+  text-align: center;
 }
 
-.whatsapp { background: #25D366; }
-.call { background: #007BFF; }
+.whatsapp {
+  background: #25D366;
+}
+
+.call {
+  background: #007BFF;
+}
+
 </style>
 
 </body>
