@@ -132,6 +132,29 @@ label{font-weight:bold;font-size:14px}
 .receipt-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .receipt-actions button{flex:1;background:#b89442;color:#111}
 
+
+.booking-success{
+ display:none;
+ margin:16px 0;
+ padding:18px;
+ border:2px solid #168a45;
+ border-radius:10px;
+ background:#effaf2;
+ color:#174b2b;
+}
+.booking-success h3{color:#168a45;margin:0 0 10px}
+.booking-success p{line-height:1.55;margin:8px 0}
+.booking-success .call-btn{
+ display:inline-block;
+ margin-top:8px;
+ padding:12px 18px;
+ border-radius:7px;
+ background:#168a45;
+ color:#fff;
+ font-weight:bold;
+ text-decoration:none;
+}
+
 @media(max-width:500px){
  header h2{font-size:16px}
  header{padding:13px}
@@ -183,6 +206,15 @@ label{font-weight:bold;font-size:14px}
 <input type="date" id="date" required>
 <button id="bookingSubmit" type="submit">Submit Booking</button>
 </form>
+<div id="bookingSuccess" class="booking-success" role="status" aria-live="polite">
+ <h3>✓ Booking Successful!</h3>
+ <p>Thank you for choosing PS POWER SERVICE.</p>
+ <p>Your booking has been submitted successfully.</p>
+ <p><b>Important Notice:</b><br>
+ Your booking status will be verified by our Admin within <b>1–2 hours</b>.</p>
+ <p>If you do not receive any confirmation message from Admin within 2 hours, please contact us by phone.</p>
+ <a class="call-btn" href="tel:8144722094">☎ Call Now: 8144722094</a>
+</div>
 <p class="muted">ପ୍ରତ୍ୟେକ Booking ପାଇଁ ₹20 Booking Fee ଦେବାକୁ ପଡ଼ିବ। Admin Payment Verify କରିବେ।</p>
 </section>
 
@@ -519,6 +551,7 @@ $("bookingForm").addEventListener("submit",async event=>{
   return alert("ପୁରୁଣା ତାରିଖ ବାଛିପାରିବ ନାହିଁ।");
 
  const button=$("bookingSubmit");
+ $("bookingSuccess").style.display="none";
  button.disabled=true;
  button.textContent="Submitting...";
 
@@ -539,8 +572,10 @@ $("bookingForm").addEventListener("submit",async event=>{
    createdAt:serverTimestamp()
   });
 
-  alert("Booking submit ହୋଇଗଲା। ₹20 Payment କରି UTR Number Submit କର।");
   $("bookingForm").reset();
+  const successBox=$("bookingSuccess");
+  successBox.style.display="block";
+  successBox.scrollIntoView({behavior:"smooth",block:"center"});
 
  }catch(error){
   alert("Booking failed: "+error.message);
