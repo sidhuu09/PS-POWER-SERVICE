@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,10 +54,50 @@ input{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:6
 .gallery-item:hover img{transform:scale(1.04)}
 .gallery-item figcaption{padding:12px 14px;font-weight:bold;color:var(--ink)}
 .gallery-item figcaption span{display:block;margin-top:4px;font-size:12px;font-weight:normal;color:#666}
-.contact-buttons{position:fixed;bottom:15px;right:15px;z-index:9999;display:flex;flex-direction:column;gap:9px}
-.contact-buttons a{padding:12px 17px;border-radius:30px;color:#fff;text-decoration:none;font-weight:bold;text-align:center;box-shadow:0 2px 8px #0003}
-.whatsapp{background:#25d366}.call{background:#007bff}
+
+/* CONTACT BUTTONS */
+.contact-action-buttons{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-wrap:wrap;
+  gap:10px;
+  margin:18px 0;
+}
+.contact-action-buttons a{
+  display:inline-block;
+  text-decoration:none;
+}
+.contact-number{
+  font-weight:bold;
+  margin:18px 0 8px;
+}
+
+/* FLOATING BUTTONS */
+.contact-buttons{
+  position:fixed;
+  bottom:15px;
+  right:15px;
+  z-index:9999;
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+}
+.contact-buttons a{
+  padding:12px 17px;
+  border-radius:30px;
+  color:#fff;
+  text-decoration:none;
+  font-weight:bold;
+  text-align:center;
+  box-shadow:0 2px 8px #0003;
+  font-size:13px;
+}
+.whatsapp{background:#25d366}
+.call{background:#007bff}
+
 footer{background:var(--ink);color:#fff;text-align:center;padding:20px}
+
 @media(max-width:900px){
  .main-header{flex-wrap:wrap}
  .menu-toggle{display:block}
@@ -65,146 +106,399 @@ footer{background:var(--ink);color:#fff;text-align:center;padding:20px}
  .main-header nav a{padding:12px;border-bottom:1px solid #444}
 }
 @media(max-width:600px){
- .hero{padding:38px 12px}section{padding:22px 12px}.panel{padding:14px}
- .photo-slider{height:440px}.slide-content{left:13%;right:13%}
- .slide-content p{font-size:15px}.slider-arrow{width:36px;height:36px;font-size:19px}
+ .hero{padding:38px 12px}
+ section{padding:22px 12px}
+ .panel{padding:14px}
+ .photo-slider{height:440px}
+ .slide-content{left:13%;right:13%}
+ .slide-content p{font-size:15px}
+ .slider-arrow{width:36px;height:36px;font-size:19px}
  .service-gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
- .gallery-item img{height:135px}.gallery-item figcaption{padding:9px;font-size:13px}
+ .gallery-item img{height:135px}
+ .gallery-item figcaption{padding:9px;font-size:13px}
  .welcome-bar{font-size:16px}
+ .contact-action-buttons{gap:7px}
+ .contact-action-buttons a{font-size:13px;padding:10px 12px}
+ .contact-buttons{right:10px;bottom:12px}
+ .contact-buttons a{padding:11px 14px;font-size:12px}
 }
 @media(prefers-reduced-motion:reduce){
- html{scroll-behavior:auto}.welcome-text{animation:none;padding-left:10px}
+ html{scroll-behavior:auto}
+ .welcome-text{animation:none;padding-left:10px}
  .slide,.gallery-item img{transition:none}
 }
 </style>
 </head>
 <body>
+
 <header class="main-header">
   <div class="logo">⚡ PS POWER SERVICE</div>
   <button class="menu-toggle" id="menuToggle" type="button" aria-label="Open navigation menu" aria-expanded="false">☰</button>
   <nav id="mainNav">
-    <a href="#home">Home</a><a href="#about">About Us</a><a href="#services">Services</a>
-    <a href="#gallery">Gallery</a><a href="#account" data-panel="login">Online Booking</a>
-    <a href="#contact">Contact Us</a><a href="#account" data-panel="register">Customer Registration</a>
-    <a href="#account" data-panel="login">Customer Login</a><a href="#account" data-panel="admin">Admin Login</a>
+    <a href="#home">Home</a>
+    <a href="#about">About Us</a>
+    <a href="#services">Services</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#account" data-panel="login">Online Booking</a>
+    <a href="#contact">Contact Us</a>
+    <a href="#account" data-panel="register">Customer Registration</a>
+    <a href="#account" data-panel="login">Customer Login</a>
+    <a href="#account" data-panel="admin">Admin Login</a>
   </nav>
 </header>
 
-<div class="welcome-bar"><div class="welcome-text">⚡🛠️ WELCOME TO MY ELECTRICAL WEBSITE • BOOK YOUR SERVICE NOW • MR SIDHU ELECTRICIAN ⚒️⚡</div></div>
+<div class="welcome-bar">
+  <div class="welcome-text">⚡🛠️ WELCOME TO MY ELECTRICAL WEBSITE • BOOK YOUR SERVICE NOW • MR SIDHU ELECTRICIAN ⚒️⚡</div>
+</div>
 
 <div class="photo-slider" id="home" aria-label="Electrical service photos">
-  <div class="slide active"><img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring"><div class="slide-content"><h1>PS POWER SERVICE</h1><p>Powering Your Home, Safely.</p><p>Electrical Work • Home Wiring • Lenter Piping • Repair</p><button class="btn" data-open="login">Customer Login</button><button class="btn" data-open="register">Customer Register</button><button class="btn dark" data-open="admin">Admin Login</button></div></div>
-  <div class="slide"><img src="images/electrical-panel-testing.jpg" alt="Electrical Panel Testing"><div class="slide-content"><h1>Professional Service</h1><p>Reliable Electrical Solutions for Your Home.</p><button class="btn" data-open="login">Book a Service</button></div></div>
-  <div class="slide"><img src="images/fan-fitting.jpg" alt="Fan Fitting"><div class="slide-content"><h1>Fan Fitting Service</h1><p>Professional Fan Installation.</p><button class="btn" data-open="register">Get Started</button></div></div>
-  <div class="slide"><img src="images/house-wiring.jpg" alt="House Wiring"><div class="slide-content"><h1>House Wiring</h1><p>Safe and Reliable Home Wiring.</p></div></div>
-  <div class="slide"><img src="images/lenter-pipe-fitting.jpg" alt="Lenter Pipe Fitting"><div class="slide-content"><h1>Lenter Piping</h1><p>Quality Lenter Pipe Fitting Service.</p></div></div>
-  <div class="slide"><img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting"><div class="slide-content"><h1>Switch Board Fitting</h1><p>Electrical Installation and Repair.</p></div></div>
-  <div class="slide"><img src="images/wall-cutting.jpg" alt="Wall Cutting"><div class="slide-content"><h1>Wall Cutting Service</h1><p>Professional Electrical Work.</p></div></div>
+
+  <div class="slide active">
+    <img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring">
+    <div class="slide-content">
+      <h1>PS POWER SERVICE</h1>
+      <p>Powering Your Home, Safely.</p>
+      <p>Electrical Work • Home Wiring • Lenter Piping • Repair</p>
+      <button class="btn" data-open="login">Customer Login</button>
+      <button class="btn" data-open="register">Customer Register</button>
+      <button class="btn dark" data-open="admin">Admin Login</button>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="images/electrical-panel-testing.jpg" alt="Electrical Panel Testing">
+    <div class="slide-content">
+      <h1>Professional Service</h1>
+      <p>Reliable Electrical Solutions for Your Home.</p>
+      <button class="btn" data-open="login">Book a Service</button>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="images/fan-fitting.jpg" alt="Fan Fitting">
+    <div class="slide-content">
+      <h1>Fan Fitting Service</h1>
+      <p>Professional Fan Installation.</p>
+      <button class="btn" data-open="register">Get Started</button>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="images/house-wiring.jpg" alt="House Wiring">
+    <div class="slide-content">
+      <h1>House Wiring</h1>
+      <p>Safe and Reliable Home Wiring.</p>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="images/lenter-pipe-fitting.jpg" alt="Lenter Pipe Fitting">
+    <div class="slide-content">
+      <h1>Lenter Piping</h1>
+      <p>Quality Lenter Pipe Fitting Service.</p>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting">
+    <div class="slide-content">
+      <h1>Switch Board Fitting</h1>
+      <p>Electrical Installation and Repair.</p>
+    </div>
+  </div>
+
+  <div class="slide">
+    <img src="images/wall-cutting.jpg" alt="Wall Cutting">
+    <div class="slide-content">
+      <h1>Wall Cutting Service</h1>
+      <p>Professional Electrical Work.</p>
+    </div>
+  </div>
+
   <button class="slider-arrow slider-prev" id="prevSlide" type="button" aria-label="Previous photo">❮</button>
   <button class="slider-arrow slider-next" id="nextSlide" type="button" aria-label="Next photo">❯</button>
+
   <div class="slider-dots" id="sliderDots">
-    <button class="slider-dot active" type="button" aria-label="Slide 1"></button><button class="slider-dot" type="button" aria-label="Slide 2"></button><button class="slider-dot" type="button" aria-label="Slide 3"></button><button class="slider-dot" type="button" aria-label="Slide 4"></button><button class="slider-dot" type="button" aria-label="Slide 5"></button><button class="slider-dot" type="button" aria-label="Slide 6"></button><button class="slider-dot" type="button" aria-label="Slide 7"></button>
+    <button class="slider-dot active" type="button" aria-label="Slide 1"></button>
+    <button class="slider-dot" type="button" aria-label="Slide 2"></button>
+    <button class="slider-dot" type="button" aria-label="Slide 3"></button>
+    <button class="slider-dot" type="button" aria-label="Slide 4"></button>
+    <button class="slider-dot" type="button" aria-label="Slide 5"></button>
+    <button class="slider-dot" type="button" aria-label="Slide 6"></button>
+    <button class="slider-dot" type="button" aria-label="Slide 7"></button>
   </div>
 </div>
 
-<section id="about"><h2>About Us</h2><div class="panel">
-  <h3>Welcome to PS POWER SERVICE</h3>
-  <p>PS POWER SERVICE provides electrical installation, home wiring, fan fitting, switch board fitting, repair and maintenance services.</p>
-  <p>Our aim is to provide reliable electrical solutions with a focus on quality, careful workmanship and safety.</p>
-  <p><strong>Location:</strong> KONDHADAKULUGUDA, ODISHA - INDIA</p>
-</div></section>
-
-<section id="services"><h2>Our Services</h2><div class="services">
-  <div class="service">⚡ Electrical Work</div><div class="service">🏠 Home Wiring</div>
-  <div class="service">🔧 Repair &amp; Maintenance</div><div class="service">💡 Lenter Piping</div>
-  <div class="service">🌀 Fan Fitting</div><div class="service">🔌 Switch Board Fitting</div>
-</div>
-<h2 class="gallery-title" id="gallery">Our Work Gallery</h2><p class="small-note">A look at our electrical and installation work.</p>
-<div class="service-gallery">
-  <figure class="gallery-item"><img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring" loading="lazy"><figcaption>Distribution Board Wiring<span>Electrical installation</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/electrical-panel-testing.jpg" alt="Electrical Panel Testing" loading="lazy"><figcaption>Electrical Panel Testing<span>Panel inspection and testing</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/fan-fitting.jpg" alt="Fan Fitting" loading="lazy"><figcaption>Fan Fitting<span>Fan installation service</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/house-wiring.jpg" alt="House Wiring" loading="lazy"><figcaption>House Wiring<span>Home electrical wiring</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/lenter-pipe-fitting.jpg" alt="Lenter Pipe Fitting" loading="lazy"><figcaption>Lenter Pipe Fitting<span>Conduit pipe installation</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting" loading="lazy"><figcaption>Switch Board Fitting<span>Switch board installation</span></figcaption></figure>
-  <figure class="gallery-item"><img src="images/wall-cutting.jpg" alt="Wall Cutting" loading="lazy"><figcaption>Wall Cutting<span>Electrical fitting preparation</span></figcaption></figure>
-</div></section>
-
-<section id="account"><h2>Customer Account &amp; Online Booking</h2>
-<div class="panel auth-panel" id="registerPanel">
-  <h3>Customer Registration</h3>
-  <input id="regName" placeholder="Full Name" autocomplete="name">
-  <input id="regPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric" maxlength="10" autocomplete="tel">
-  <input id="regEmail" type="email" placeholder="Email Address" autocomplete="email">
-  <input id="regPassword" type="password" placeholder="Create Password (minimum 6 characters)" autocomplete="new-password">
-  <button class="btn" id="registerButton" type="button">Register</button>
-  <p>Already have an account?</p><button class="btn dark" type="button" data-open="login">Login</button>
-  <div class="message" id="regMessage" aria-live="polite"></div>
-</div>
-<div class="panel auth-panel hidden" id="loginPanel">
-  <h3>Customer Login</h3>
-  <input id="loginEmail" type="email" placeholder="Email Address" autocomplete="email">
-  <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password">
-  <button class="btn" id="loginButton" type="button">Login</button>
-  <button class="btn dark" id="resetButton" type="button">Forgot Password?</button>
-  <button class="btn" type="button" data-open="register">Create Account</button>
-  <div class="message" id="loginMessage" aria-live="polite"></div>
-</div>
-<div class="panel auth-panel hidden" id="adminLoginPanel">
-  <h3>🔐 Admin Login</h3>
-  <input id="adminEmail" type="email" placeholder="Admin Email" autocomplete="username">
-  <input id="adminPassword" type="password" placeholder="Admin Password" autocomplete="current-password">
-  <button class="btn" id="adminLoginButton" type="button">Admin Login</button>
-  <button class="btn dark" type="button" data-open="login">Back to Customer Login</button>
-  <div class="message" id="adminLoginMessage" aria-live="polite"></div>
-</div>
-<p class="small-note">After successful login, customers are sent to Customer Dashboard and the administrator is sent to Admin Dashboard.</p>
+<section id="about">
+  <h2>About Us</h2>
+  <div class="panel">
+    <h3>Welcome to PS POWER SERVICE</h3>
+    <p>PS POWER SERVICE provides electrical installation, home wiring, fan fitting, switch board fitting, repair and maintenance services.</p>
+    <p>Our aim is to provide reliable electrical solutions with a focus on quality, careful workmanship and safety.</p>
+    <p><strong>Location:</strong> KONDHADAKULUGUDA, ODISHA - INDIA</p>
+  </div>
 </section>
 
-<section id="contact"><h2>Contact Us</h2><div class="panel">
-  <h3>PS POWER SERVICE</h3><p>📍 KONDHADAKULUGUDA, ODISHA - INDIA</p><p>📞 8144722094</p>
-  <a class="btn dark" href="https://wa.me/918144722094" target="_blank" rel="noopener noreferrer">Contact on WhatsApp</a>
-</div></section>
-<footer><p>⚡ PS POWER SERVICE</p><p>Powering Your Home, Safely.</p><p>KONDHADAKULUGUDA, ODISHA - INDIA | 8144722094</p></footer>
+<section id="services">
+  <h2>Our Services</h2>
+  <div class="services">
+    <div class="service">⚡ Electrical Work</div>
+    <div class="service">🏠 Home Wiring</div>
+    <div class="service">🔧 Repair &amp; Maintenance</div>
+    <div class="service">💡 Lenter Piping</div>
+    <div class="service">🌀 Fan Fitting</div>
+    <div class="service">🔌 Switch Board Fitting</div>
+  </div>
 
+  <h2 class="gallery-title" id="gallery">Our Work Gallery</h2>
+  <p class="small-note">A look at our electrical and installation work.</p>
+
+  <div class="service-gallery">
+    <figure class="gallery-item">
+      <img src="images/distribution-board-wiring.jpg" alt="Distribution Board Wiring" loading="lazy">
+      <figcaption>Distribution Board Wiring<span>Electrical installation</span></figcaption>
+    </figure>
+
+    <figure class="gallery-item">
+      <img src="images/electrical-panel-testing.jpg" alt="Electrical Panel Testing" loading="lazy">
+      <figcaption>Electrical Panel Testing<span>Panel inspection and testing</span></figcaption>
+    </figure>
+
+    <figure class="gallery-item">
+      <img src="images/fan-fitting.jpg" alt="Fan Fitting" loading="lazy">
+      <figcaption>Fan Fitting<span>Fan installation service</span></figcaption>
+    </figure>
+
+    <figure class="gallery-item">
+      <img src="images/house-wiring.jpg" alt="House Wiring" loading="lazy">
+      <figcaption>House Wiring<span>Home electrical wiring</span></figcaption>
+    </figure>
+
+    <figure class="gallery-item">
+      <img src="images/lenter-pipe-fitting.jpg" alt="Lenter Pipe Fitting" loading="lazy">
+      <figcaption>Lenter Pipe Fitting<span>Conduit pipe installation</span></figcaption>
+    </figure>
+
+    <figure class="gallery-item">
+      <img src="images/switch-board-fitting.jpg" alt="Switch Board Fitting" loading="lazy">
+      <figcaption>Switch Board Fitting<span>Switch board installation</span></figcaption>
+    </figure>
+
+    <figure class="gallery-item">
+      <img src="images/wall-cutting.jpg" alt="Wall Cutting" loading="lazy">
+      <figcaption>Wall Cutting<span>Electrical fitting preparation</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<section id="account">
+  <h2>Customer Account &amp; Online Booking</h2>
+
+  <div class="panel auth-panel" id="registerPanel">
+    <h3>Customer Registration</h3>
+    <input id="regName" placeholder="Full Name" autocomplete="name">
+    <input id="regPhone" type="tel" placeholder="10-digit Mobile Number" inputmode="numeric" maxlength="10" autocomplete="tel">
+    <input id="regEmail" type="email" placeholder="Email Address" autocomplete="email">
+    <input id="regPassword" type="password" placeholder="Create Password (minimum 6 characters)" autocomplete="new-password">
+    <button class="btn" id="registerButton" type="button">Register</button>
+    <p>Already have an account?</p>
+    <button class="btn dark" type="button" data-open="login">Login</button>
+    <div class="message" id="regMessage" aria-live="polite"></div>
+  </div>
+
+  <div class="panel auth-panel hidden" id="loginPanel">
+    <h3>Customer Login</h3>
+    <input id="loginEmail" type="email" placeholder="Email Address" autocomplete="email">
+    <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password">
+    <button class="btn" id="loginButton" type="button">Login</button>
+    <button class="btn dark" id="resetButton" type="button">Forgot Password?</button>
+    <button class="btn" type="button" data-open="register">Create Account</button>
+    <div class="message" id="loginMessage" aria-live="polite"></div>
+  </div>
+
+  <div class="panel auth-panel hidden" id="adminLoginPanel">
+    <h3>🔐 Admin Login</h3>
+    <input id="adminEmail" type="email" placeholder="Admin Email" autocomplete="username">
+    <input id="adminPassword" type="password" placeholder="Admin Password" autocomplete="current-password">
+    <button class="btn" id="adminLoginButton" type="button">Admin Login</button>
+    <button class="btn dark" type="button" data-open="login">Back to Customer Login</button>
+    <div class="message" id="adminLoginMessage" aria-live="polite"></div>
+  </div>
+
+  <p class="small-note">After successful login, customers are sent to Customer Dashboard and the administrator is sent to Admin Dashboard.</p>
+</section>
+
+<!-- UPDATED CONTACT SECTION -->
+<section id="contact">
+  <h2>Contact Us</h2>
+
+  <div class="panel">
+    <h3>PS POWER SERVICE</h3>
+
+    <p>📍 KONDHADAKULUGUDA, ODISHA - INDIA</p>
+
+    <div class="contact-number">
+      📞 8144722094
+    </div>
+
+    <div class="contact-action-buttons">
+      <a class="btn dark" href="tel:+918144722094">
+        📞 Call Now
+      </a>
+
+      <a class="btn" href="https://wa.me/918144722094" target="_blank" rel="noopener noreferrer">
+        WhatsApp
+      </a>
+    </div>
+
+    <hr>
+
+    <div class="contact-number">
+      📞 6371889102
+    </div>
+
+    <div class="contact-action-buttons">
+      <a class="btn dark" href="tel:+916371889102">
+        📞 Call Now
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <p>⚡ PS POWER SERVICE</p>
+  <p>Powering Your Home, Safely.</p>
+  <p>KONDHADAKULUGUDA, ODISHA - INDIA</p>
+  <p>8144722094 | 6371889102</p>
+</footer>
+
+<!-- UPDATED FLOATING BUTTONS -->
 <div class="contact-buttons">
-  <a href="https://wa.me/918144722094" class="whatsapp" target="_blank" rel="noopener noreferrer">WhatsApp</a>
-  <a href="tel:+918144722094" class="call">Call Now</a>
+
+  <a href="https://wa.me/918144722094"
+     class="whatsapp"
+     target="_blank"
+     rel="noopener noreferrer">
+     WhatsApp - 8144722094
+  </a>
+
+  <a href="tel:+918144722094" class="call">
+     Call - 8144722094
+  </a>
+
+  <a href="tel:+916371889102" class="call">
+     Call - 6371889102
+  </a>
+
 </div>
 
 <script>
 (() => {
-  const nav=document.getElementById("mainNav"),menuButton=document.getElementById("menuToggle");
-  function closeMenu(){nav.classList.remove("show");menuButton.setAttribute("aria-expanded","false");menuButton.textContent="☰";}
-  menuButton.addEventListener("click",()=>{const open=nav.classList.toggle("show");menuButton.setAttribute("aria-expanded",String(open));menuButton.textContent=open?"✕":"☰";});
-  nav.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>closeMenu()));
+  const nav=document.getElementById("mainNav");
+  const menuButton=document.getElementById("menuToggle");
 
-  const slides=[...document.querySelectorAll(".slide")],dots=[...document.querySelectorAll(".slider-dot")];
+  function closeMenu(){
+    nav.classList.remove("show");
+    menuButton.setAttribute("aria-expanded","false");
+    menuButton.textContent="☰";
+  }
+
+  menuButton.addEventListener("click",()=>{
+    const open=nav.classList.toggle("show");
+    menuButton.setAttribute("aria-expanded",String(open));
+    menuButton.textContent=open?"✕":"☰";
+  });
+
+  nav.querySelectorAll("a").forEach(a=>
+    a.addEventListener("click",()=>closeMenu())
+  );
+
+  const slides=[...document.querySelectorAll(".slide")];
+  const dots=[...document.querySelectorAll(".slider-dot")];
+
   let current=0,timer=null;
-  function showSlide(index){current=(index+slides.length)%slides.length;slides.forEach((s,i)=>s.classList.toggle("active",i===current));dots.forEach((d,i)=>d.classList.toggle("active",i===current));}
-  function restart(){clearInterval(timer);if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches)timer=setInterval(()=>showSlide(current+1),5000);}
-  document.getElementById("prevSlide").addEventListener("click",()=>{showSlide(current-1);restart();});
-  document.getElementById("nextSlide").addEventListener("click",()=>{showSlide(current+1);restart();});
-  dots.forEach((d,i)=>d.addEventListener("click",()=>{showSlide(i);restart();}));
+
+  function showSlide(index){
+    current=(index+slides.length)%slides.length;
+    slides.forEach((s,i)=>s.classList.toggle("active",i===current));
+    dots.forEach((d,i)=>d.classList.toggle("active",i===current));
+  }
+
+  function restart(){
+    clearInterval(timer);
+    if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+      timer=setInterval(()=>showSlide(current+1),5000);
+    }
+  }
+
+  document.getElementById("prevSlide").addEventListener("click",()=>{
+    showSlide(current-1);
+    restart();
+  });
+
+  document.getElementById("nextSlide").addEventListener("click",()=>{
+    showSlide(current+1);
+    restart();
+  });
+
+  dots.forEach((d,i)=>d.addEventListener("click",()=>{
+    showSlide(i);
+    restart();
+  }));
+
   restart();
 
   window.openAccountPanel=function(which){
-    if(window.psAuthReady && window.psCurrentUser){return;}
-    ["registerPanel","loginPanel","adminLoginPanel"].forEach(id=>document.getElementById(id).classList.add("hidden"));
-    const target={register:"registerPanel",login:"loginPanel",admin:"adminLoginPanel"}[which]||"loginPanel";
+    if(window.psAuthReady && window.psCurrentUser)return;
+
+    ["registerPanel","loginPanel","adminLoginPanel"].forEach(id=>
+      document.getElementById(id).classList.add("hidden")
+    );
+
+    const target={
+      register:"registerPanel",
+      login:"loginPanel",
+      admin:"adminLoginPanel"
+    }[which]||"loginPanel";
+
     document.getElementById(target).classList.remove("hidden");
     document.getElementById("account").scrollIntoView({behavior:"smooth"});
     closeMenu();
   };
-  document.querySelectorAll("[data-open]").forEach(el=>el.addEventListener("click",()=>window.openAccountPanel(el.dataset.open)));
-  document.querySelectorAll("[data-panel]").forEach(el=>el.addEventListener("click",()=>window.openAccountPanel(el.dataset.panel)));
+
+  document.querySelectorAll("[data-open]").forEach(el=>
+    el.addEventListener("click",()=>window.openAccountPanel(el.dataset.open))
+  );
+
+  document.querySelectorAll("[data-panel]").forEach(el=>
+    el.addEventListener("click",()=>window.openAccountPanel(el.dataset.panel))
+  );
+
 })();
 </script>
 
 <script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import {getAuth,createUserWithEmailAndPassword,signInWithEmailAndPassword,updateProfile,onAuthStateChanged,sendPasswordResetEmail,signOut} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {getFirestore,doc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  signOut
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  setDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig={
   apiKey:"AIzaSyBx8j_W3h49Ypj0VakLSPqut3OXNa5HuxI",
@@ -214,14 +508,24 @@ const firebaseConfig={
   messagingSenderId:"647095348680",
   appId:"1:647095348680:web:51b3833ce08d767e9d64fd"
 };
+
 const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
-const app=initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
 const $=id=>document.getElementById(id);
+
 let busy=false;
+
 window.psAuthReady=false;
 window.psCurrentUser=null;
 
-function message(id,text){$(id).textContent=text;}
+function message(id,text){
+  $(id).textContent=text;
+}
+
 function firebaseError(error){
   const map={
     "auth/email-already-in-use":"This email is already registered.",
@@ -233,69 +537,176 @@ function firebaseError(error){
     "auth/too-many-requests":"Too many attempts. Please try again later.",
     "auth/network-request-failed":"Network error. Check your internet connection."
   };
+
   return map[error?.code]||error?.message||"Something went wrong. Please try again.";
 }
+
 function setBusy(buttonId,value,label){
-  const b=$(buttonId);b.disabled=value;if(label)b.textContent=value?"Please wait...":label;
+  const b=$(buttonId);
+  b.disabled=value;
+  if(label)b.textContent=value?"Please wait...":label;
 }
 
 $("registerButton").addEventListener("click",async()=>{
   if(busy)return;
-  const name=$("regName").value.trim(),phone=$("regPhone").value.trim(),email=$("regEmail").value.trim(),password=$("regPassword").value;
+
+  const name=$("regName").value.trim();
+  const phone=$("regPhone").value.trim();
+  const email=$("regEmail").value.trim();
+  const password=$("regPassword").value;
+
   message("regMessage","");
-  if(!name||!phone||!email||!password){message("regMessage","Please fill all fields.");return;}
-  if(!/^[0-9]{10}$/.test(phone)){message("regMessage","Enter a valid 10-digit mobile number.");return;}
-  if(password.length<6){message("regMessage","Password must be at least 6 characters.");return;}
-  busy=true;setBusy("registerButton",true);
+
+  if(!name||!phone||!email||!password){
+    message("regMessage","Please fill all fields.");
+    return;
+  }
+
+  if(!/^[0-9]{10}$/.test(phone)){
+    message("regMessage","Enter a valid 10-digit mobile number.");
+    return;
+  }
+
+  if(password.length<6){
+    message("regMessage","Password must be at least 6 characters.");
+    return;
+  }
+
+  busy=true;
+  setBusy("registerButton",true);
+
   let createdUser=null;
+
   try{
-    const result=await createUserWithEmailAndPassword(auth,email,password);createdUser=result.user;
+    const result=await createUserWithEmailAndPassword(auth,email,password);
+    createdUser=result.user;
+
     await updateProfile(createdUser,{displayName:name});
-    await setDoc(doc(db,"users",createdUser.uid),{name,phone,email,role:"customer",createdAt:serverTimestamp()});
+
+    await setDoc(doc(db,"users",createdUser.uid),{
+      name,
+      phone,
+      email,
+      role:"customer",
+      createdAt:serverTimestamp()
+    });
+
     location.replace("customer.html");
+
   }catch(error){
-    if(createdUser){try{await signOut(auth);}catch(_){}}
+    if(createdUser){
+      try{await signOut(auth);}catch(_){}
+    }
+
     message("regMessage",firebaseError(error));
-  }finally{busy=false;setBusy("registerButton",false,"Register");}
+
+  }finally{
+    busy=false;
+    setBusy("registerButton",false,"Register");
+  }
 });
 
 $("loginButton").addEventListener("click",async()=>{
-  if(busy)return;message("loginMessage","");
-  const email=$("loginEmail").value.trim(),password=$("loginPassword").value;
-  if(!email||!password){message("loginMessage","Enter your email and password.");return;}
-  busy=true;setBusy("loginButton",true);
-  try{const result=await signInWithEmailAndPassword(auth,email,password);
-    if(result.user.uid===ADMIN_UID){await signOut(auth);message("loginMessage","Please use Admin Login.");}
-    else{location.replace("customer.html");}
-  }catch(error){message("loginMessage",firebaseError(error));}
-  finally{busy=false;setBusy("loginButton",false,"Login");}
+  if(busy)return;
+
+  message("loginMessage","");
+
+  const email=$("loginEmail").value.trim();
+  const password=$("loginPassword").value;
+
+  if(!email||!password){
+    message("loginMessage","Enter your email and password.");
+    return;
+  }
+
+  busy=true;
+  setBusy("loginButton",true);
+
+  try{
+    const result=await signInWithEmailAndPassword(auth,email,password);
+
+    if(result.user.uid===ADMIN_UID){
+      await signOut(auth);
+      message("loginMessage","Please use Admin Login.");
+    }else{
+      location.replace("customer.html");
+    }
+
+  }catch(error){
+    message("loginMessage",firebaseError(error));
+
+  }finally{
+    busy=false;
+    setBusy("loginButton",false,"Login");
+  }
 });
 
 $("adminLoginButton").addEventListener("click",async()=>{
-  if(busy)return;message("adminLoginMessage","");
-  const email=$("adminEmail").value.trim(),password=$("adminPassword").value;
-  if(!email||!password){message("adminLoginMessage","Enter Admin email and password.");return;}
-  busy=true;setBusy("adminLoginButton",true);
-  try{const result=await signInWithEmailAndPassword(auth,email,password);
-    if(result.user.uid!==ADMIN_UID){await signOut(auth);message("adminLoginMessage","Not authorized as Admin.");}
-    else{location.replace("admin.html");}
-  }catch(error){message("adminLoginMessage",firebaseError(error));}
-  finally{busy=false;setBusy("adminLoginButton",false,"Admin Login");}
+  if(busy)return;
+
+  message("adminLoginMessage","");
+
+  const email=$("adminEmail").value.trim();
+  const password=$("adminPassword").value;
+
+  if(!email||!password){
+    message("adminLoginMessage","Enter Admin email and password.");
+    return;
+  }
+
+  busy=true;
+  setBusy("adminLoginButton",true);
+
+  try{
+    const result=await signInWithEmailAndPassword(auth,email,password);
+
+    if(result.user.uid!==ADMIN_UID){
+      await signOut(auth);
+      message("adminLoginMessage","Not authorized as Admin.");
+    }else{
+      location.replace("admin.html");
+    }
+
+  }catch(error){
+    message("adminLoginMessage",firebaseError(error));
+
+  }finally{
+    busy=false;
+    setBusy("adminLoginButton",false,"Admin Login");
+  }
 });
 
 $("resetButton").addEventListener("click",async()=>{
   const email=$("loginEmail").value.trim();
-  if(!email){message("loginMessage","Enter your email address first.");return;}
-  try{await sendPasswordResetEmail(auth,email);message("loginMessage","Password reset email sent. Please check your inbox.");}
-  catch(error){message("loginMessage",firebaseError(error));}
+
+  if(!email){
+    message("loginMessage","Enter your email address first.");
+    return;
+  }
+
+  try{
+    await sendPasswordResetEmail(auth,email);
+    message("loginMessage","Password reset email sent. Please check your inbox.");
+
+  }catch(error){
+    message("loginMessage",firebaseError(error));
+  }
 });
 
 onAuthStateChanged(auth,user=>{
-  window.psAuthReady=true;window.psCurrentUser=user;
+  window.psAuthReady=true;
+  window.psCurrentUser=user;
+
   if(!user)return;
-  if(user.uid===ADMIN_UID)location.replace("admin.html");
-  else location.replace("customer.html");
+
+  if(user.uid===ADMIN_UID){
+    location.replace("admin.html");
+  }else{
+    location.replace("customer.html");
+  }
 });
+
 </script>
+
 </body>
 </html>
