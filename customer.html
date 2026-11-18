@@ -1,8 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="or">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#171717">
 <title>Customer Dashboard | PS POWER SERVICE</title>
 
 <style>
@@ -11,7 +13,7 @@ body{margin:0;font-family:Arial,sans-serif;background:#f4f6fa;color:#222}
 header{background:#171717;color:white;padding:18px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 header h2{margin:0;color:#ffca28;font-size:20px}
 button{border:0;border-radius:7px;padding:11px 16px;background:#ffca28;color:#171717;font-weight:bold;cursor:pointer}
-button:disabled{opacity:.6;cursor:not-allowed}
+button:disabled{opacity:.5;cursor:not-allowed}
 .logout{background:#e53935;color:white}
 .green{background:#168a45;color:white}
 .blue{background:#1769aa;color:white}
@@ -33,125 +35,39 @@ label{font-weight:bold;font-size:14px}
 .verified{color:#168a45;font-weight:bold}
 .utr-box{border:1px solid #ddd;border-radius:9px;padding:14px;margin:12px 0}
 .push-status{padding:12px;border-radius:8px;background:#f4f6fa;margin-top:10px;font-size:14px;overflow-wrap:anywhere}
+.design-counter{background:#f0fff4;border:1px solid #168a45;padding:13px;border-radius:8px;margin:12px 0;color:#168a45;font-weight:bold}
+.selected-design-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:12px 0}
+.selected-design-item{border:1px solid #ddd;padding:8px;border-radius:8px;font-size:13px}
+.selected-design-item img{width:100%;height:100px;object-fit:cover;border-radius:5px}
 
-/* BLACK + GOLD PREMIUM RECEIPT */
+/* PREMIUM RECEIPT */
 .receipt-card{
- background:#101010;
- color:#f5f5f5;
- border:2px solid #b89442;
- border-radius:14px;
- padding:20px;
- margin-top:15px;
+ background:#101010;color:#f5f5f5;
+ border:2px solid #b89442;border-radius:14px;
+ padding:20px;margin-top:15px;
  box-shadow:0 5px 18px #00000025;
 }
-.receipt-header{
- text-align:center;
- padding:12px 5px 18px;
- border-bottom:1px solid #b89442;
-}
-.receipt-header h2{
- color:#d6b45c;
- font-size:23px;
- margin:5px 0;
- letter-spacing:1px;
-}
-.receipt-header p{
- color:#ddd0a8;
- font-size:12px;
- margin:5px 0;
-}
-.receipt-title{
- text-align:center;
- color:#d6b45c;
- font-size:19px;
- font-weight:bold;
- margin:18px 0;
- letter-spacing:1px;
-}
-.receipt-section{
- color:#d6b45c;
- font-weight:bold;
- margin:16px 0 5px;
-}
-.receipt-row{
- display:flex;
- justify-content:space-between;
- gap:12px;
- padding:10px 0;
- border-bottom:1px dashed #65552f;
- overflow-wrap:anywhere;
- font-size:14px;
-}
+.receipt-header{text-align:center;padding:12px 5px 18px;border-bottom:1px solid #b89442}
+.receipt-header h2{color:#d6b45c;font-size:23px;margin:5px 0;letter-spacing:1px}
+.receipt-header p{color:#ddd0a8;font-size:12px;margin:5px 0}
+.receipt-title{text-align:center;color:#d6b45c;font-size:19px;font-weight:bold;margin:18px 0}
+.receipt-section{color:#d6b45c;font-weight:bold;margin:16px 0 5px}
+.receipt-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed #65552f;overflow-wrap:anywhere;font-size:14px}
 .receipt-row span{color:#c8c8c8}
 .receipt-row b{color:#fff;text-align:right}
-.receipt-amount{
- background:#282116;
- border:1px solid #b89442;
- border-radius:10px;
- padding:15px;
- text-align:center;
- margin:15px 0;
-}
-.receipt-amount span{
- display:block;
- color:#e8d8ad;
- font-size:12px;
-}
-.receipt-amount strong{
- display:block;
- color:#d6b45c;
- font-size:30px;
- margin-top:5px;
-}
-.receipt-verified{
- background:#173b29;
- color:#6ee7a0;
- border:1px solid #42a56b;
- border-radius:9px;
- padding:13px;
- text-align:center;
- font-weight:bold;
- margin-top:15px;
-}
-.receipt-pending{
- background:#382b12;
- color:#facc15;
- border:1px solid #b89442;
- border-radius:9px;
- padding:12px;
- font-weight:bold;
- text-align:center;
-}
-.receipt-note{
- text-align:center;
- font-size:12px;
- color:#c8c8c8;
- margin-top:15px;
-}
+.receipt-amount{background:#282116;border:1px solid #b89442;border-radius:10px;padding:15px;text-align:center;margin:15px 0}
+.receipt-amount span{display:block;color:#e8d8ad;font-size:12px}
+.receipt-amount strong{display:block;color:#d6b45c;font-size:30px;margin-top:5px}
+.receipt-verified{background:#173b29;color:#6ee7a0;border:1px solid #42a56b;border-radius:9px;padding:13px;text-align:center;font-weight:bold;margin-top:15px}
+.receipt-pending{background:#382b12;color:#facc15;border:1px solid #b89442;border-radius:9px;padding:12px;font-weight:bold;text-align:center}
+.receipt-note{text-align:center;font-size:12px;color:#c8c8c8;margin-top:15px}
 .receipt-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .receipt-actions button{flex:1;background:#b89442;color:#111}
 
-.booking-success{
- display:none;
- margin:16px 0;
- padding:18px;
- border:2px solid #168a45;
- border-radius:10px;
- background:#effaf2;
- color:#174b2b;
-}
+.booking-success{display:none;margin:16px 0;padding:18px;border:2px solid #168a45;border-radius:10px;background:#effaf2;color:#174b2b}
 .booking-success h3{color:#168a45;margin:0 0 10px}
 .booking-success p{line-height:1.55;margin:8px 0}
-.booking-success .call-btn{
- display:inline-block;
- margin-top:8px;
- padding:12px 18px;
- border-radius:7px;
- background:#168a45;
- color:#fff;
- font-weight:bold;
- text-decoration:none;
-}
+.booking-success .call-btn{display:inline-block;margin-top:8px;padding:12px 18px;border-radius:7px;background:#168a45;color:#fff;font-weight:bold;text-decoration:none}
 
 @media(max-width:500px){
  header h2{font-size:16px}
@@ -165,6 +81,7 @@ label{font-weight:bold;font-size:14px}
 </head>
 
 <body>
+
 <header>
 <h2>PS POWER SERVICE</h2>
 <button class="logout" id="logoutBtn">Logout</button>
@@ -188,6 +105,7 @@ label{font-weight:bold;font-size:14px}
 <section class="card">
 <h3>1. Book a Service</h3>
 <form id="bookingForm">
+
 <label>Service Select କର</label>
 <select id="service" required>
 <option value="">Select Service</option>
@@ -198,28 +116,37 @@ label{font-weight:bold;font-size:14px}
 <option>Motor Repair</option>
 <option>Other Electrical Service</option>
 </select>
+
 <label>Full Address</label>
 <textarea id="address" rows="3" required placeholder="ତୁମର ସମ୍ପୂର୍ଣ୍ଣ ଠିକଣା"></textarea>
+
 <label>Service Date</label>
 <input type="date" id="date" required>
+
 <button id="bookingSubmit" type="submit">Submit Booking</button>
 </form>
-<div id="bookingSuccess" class="booking-success" role="status" aria-live="polite">
- <h3>✓ Booking Successful!</h3>
- <p>Thank you for choosing PS POWER SERVICE.</p>
- <p>Your booking has been submitted successfully.</p>
- <p><b>Important Notice:</b><br>
- Your booking status will be verified by our Admin within <b>1–2 hours</b>.</p>
- <p>If you do not receive any confirmation message from Admin within 2 hours, please contact us by phone.</p>
- <a class="call-btn" href="tel:8144722094">☎ Call Now: 8144722094</a>
+
+<div id="bookingSuccess" class="booking-success" role="status">
+<h3>✓ Booking Successful!</h3>
+<p>Thank you for choosing PS POWER SERVICE.</p>
+<p>Your booking has been submitted successfully.</p>
+<p><b>Important Notice:</b><br>
+Your booking status will be verified by our Admin within <b>1–2 hours</b>.</p>
+<p>If you do not receive any confirmation message from Admin within 2 hours, please contact us by phone.</p>
+<a class="call-btn" href="tel:8144722094">☎ Call Now: 8144722094</a>
 </div>
+
 <p class="muted">ପ୍ରତ୍ୟେକ Booking ପାଇଁ ₹20 Booking Fee ଦେବାକୁ ପଡ଼ିବ। Admin Payment Verify କରିବେ।</p>
 </section>
 
 <section class="card" id="paymentSection" style="display:none">
 <h3>2. ₹20 Booking Fee Payment</h3>
 <p>UPI App ଦ୍ୱାରା ₹20 Payment କର।</p>
-<img class="qr" src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png" alt="PS POWER SERVICE Booking Payment QR Code">
+
+<img class="qr"
+src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png"
+alt="PS POWER SERVICE Booking Payment QR Code">
+
 <p style="text-align:center"><b>Booking Fee: ₹20</b></p>
 <p class="muted">Payment କରିବା ପରେ UTR Submission Section ରେ UTR Number ଓ Payment App ର ନାମ Submit କର।</p>
 <p class="muted">କେବଳ UTR Submit କଲେ Payment Paid ହେବ ନାହିଁ। Admin Transaction ଯାଞ୍ଚ କରିବା ପରେ Paid କରିବେ।</p>
@@ -231,18 +158,50 @@ label{font-weight:bold;font-size:14px}
 <div id="utrSubmissionList">Loading your bookings...</div>
 </section>
 
+<!-- MULTIPLE DESIGN GALLERY -->
 <section class="card">
+
 <h3>4. Our Design Gallery</h3>
-<p class="muted">ପସନ୍ଦର Design ବାଛି Request ପଠାଅ।</p>
-<div id="designGallery" class="gallery">Loading designs...</div>
+
+<p class="muted">
+ପସନ୍ଦର ସର୍ବାଧିକ 10ଟି Design Select କରି Request ପଠାଅ।
+</p>
+
+<div class="design-counter" id="designCount">
+Selected Designs: 0 / 10
+</div>
+
+<div id="designGallery" class="gallery">
+Loading designs...
+</div>
+
+<div class="card" style="margin-top:20px;background:#f9fafb">
+
+<h3>Selected Designs</h3>
+<div id="selectedDesignPreview" class="selected-design-list">
+<p class="muted">କୌଣସି Design Select ହୋଇନାହିଁ।</p>
+</div>
+
+</div>
+
 <form id="designRequestForm" style="margin-top:18px">
+
 <h3>Submit Design Request</h3>
-<p id="selectedDesignText" class="muted">ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।</p>
+
+<p id="selectedDesignText" class="muted">
+ପ୍ରଥମେ Gallery ରୁ Design Select କର।
+</p>
+
 <label>Your Phone Number</label>
 <input id="designPhone" type="tel" maxlength="15" required placeholder="Phone number">
+
 <label>Additional Message (Optional)</label>
 <textarea id="designMessage" rows="3" maxlength="500" placeholder="କେଉଁ ପ୍ରକାର କାମ ଚାହୁଁଛ, ଲେଖ।"></textarea>
-<button class="green" id="designRequestSubmit" type="submit" disabled>Submit Design Request</button>
+
+<button class="green" id="designRequestSubmit" type="submit" disabled>
+Submit Design Request
+</button>
+
 </form>
 </section>
 
@@ -271,6 +230,7 @@ label{font-weight:bold;font-size:14px}
 </main>
 
 <script type="module">
+
 import {initializeApp}
 from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
@@ -307,7 +267,9 @@ const db=getFirestore(app);
 const $=id=>document.getElementById(id);
 
 let currentCustomer=null;
-let selectedDesign=null;
+let selectedDesigns=[];
+const MAX_DESIGNS=10;
+let availableDesigns=[];
 let customerProfile={};
 let customerBookings=[];
 let messagingInstance=null;
@@ -363,8 +325,10 @@ onAuthStateChanged(auth,async user=>{
 
   if(userDoc.exists()){
    customerProfile=userDoc.data();
+
    $("customerName").textContent=
     customerProfile.name||user.displayName||"Customer";
+
    $("designPhone").value=customerProfile.phone||"";
   }
  }catch(error){
@@ -409,7 +373,7 @@ function checkNotificationStatus(){
  }
 }
 
-// FOREGROUND NOTIFICATION LISTENER
+// FOREGROUND NOTIFICATIONS
 async function startForegroundNotifications(){
 
  if(foregroundMessageStarted||!messagingInstance)return;
@@ -417,12 +381,10 @@ async function startForegroundNotifications(){
  onMessage(messagingInstance,payload=>{
 
   const title=payload.notification?.title||
-   payload.data?.title||
-   "PS POWER SERVICE";
+   payload.data?.title||"PS POWER SERVICE";
 
   const body=payload.notification?.body||
-   payload.data?.body||
-   "You have a new notification.";
+   payload.data?.body||"You have a new notification.";
 
   setPushStatus(title+": "+body);
 
@@ -433,7 +395,7 @@ async function startForegroundNotifications(){
      icon:"/PS-POWER-SERVICE/favicon.ico"
     });
    }catch(error){
-    console.warn("Foreground notification display:",error);
+    console.warn(error);
    }
   }
  });
@@ -446,10 +408,7 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
 
  const button=$("enableNotificationsBtn");
 
- if(!currentCustomer){
-  alert("Please login first.");
-  return;
- }
+ if(!currentCustomer)return alert("Please login first.");
 
  if(!("Notification" in window)){
   setPushStatus("ଏହି Browser Notification Support କରୁନାହିଁ।");
@@ -501,7 +460,7 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
   await setDoc(
    doc(db,"users",currentCustomer.uid,"fcmTokens",token),
    {
-    token:token,
+    token,
     platform:"web",
     userAgent:navigator.userAgent,
     updatedAt:serverTimestamp()
@@ -514,11 +473,9 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
   button.textContent="Notifications Enabled";
 
  }catch(error){
-
-  console.error("FCM setup error:",error);
+  console.error(error);
   setPushStatus("Notification Error: "+error.message);
   button.textContent="Try Again";
-
  }finally{
   button.disabled=false;
  }
@@ -539,6 +496,7 @@ $("bookingForm").addEventListener("submit",async event=>{
   return alert("ସମସ୍ତ ତଥ୍ୟ ପୂରଣ କର।");
 
  const today=new Date();
+
  const localToday=[
   today.getFullYear(),
   String(today.getMonth()+1).padStart(2,"0"),
@@ -549,6 +507,7 @@ $("bookingForm").addEventListener("submit",async event=>{
   return alert("ପୁରୁଣା ତାରିଖ ବାଛିପାରିବ ନାହିଁ।");
 
  const button=$("bookingSubmit");
+
  $("bookingSuccess").style.display="none";
  button.disabled=true;
  button.textContent="Submitting...";
@@ -572,13 +531,10 @@ $("bookingForm").addEventListener("submit",async event=>{
 
   $("bookingForm").reset();
 
-  const successBox=$("bookingSuccess");
-  const paymentSection=$("paymentSection");
+  $("bookingSuccess").style.display="block";
+  $("paymentSection").style.display="block";
 
-  successBox.style.display="block";
-  paymentSection.style.display="block";
-
-  paymentSection.scrollIntoView({
+  $("paymentSection").scrollIntoView({
    behavior:"smooth",
    block:"center"
   });
@@ -615,14 +571,14 @@ function loadBookings(uid){
  });
 }
 
-// UTR SUBMISSION LIST
+// UTR SUBMISSION
 function renderUTRSubmission(){
 
  const list=$("utrSubmissionList");
 
  const unpaid=customerBookings.filter(b=>
-  b.paymentStatus!=="paid" &&
-  b.paymentProofStatus!=="submitted" &&
+  b.paymentStatus!=="paid"&&
+  b.paymentProofStatus!=="submitted"&&
   b.paymentProofStatus!=="verified"
  );
 
@@ -638,7 +594,9 @@ function renderUTRSubmission(){
 
  list.innerHTML=unpaid.map(b=>`
   <div class="utr-box">
+
    <b>${escapeHTML(b.service||"Service")}</b>
+
    <p class="muted">Booking ID: ${escapeHTML(b.id)}</p>
    <p class="muted">Booking Date: ${escapeHTML(b.bookingDate||"-")}</p>
    <p class="muted">Booking Fee: ₹${Number(b.bookingFee??20)}</p>
@@ -657,7 +615,7 @@ function renderUTRSubmission(){
    <div id="other-wrap-${escapeHTML(b.id)}" style="display:none">
     <label>Other UPI App Name</label>
     <input type="text" id="other-${escapeHTML(b.id)}"
-     maxlength="50" placeholder="ନିଜ Payment App ର ନାମ ଲେଖ">
+     maxlength="50" placeholder="Payment App Name">
    </div>
 
    <label>UTR / Transaction Number</label>
@@ -666,11 +624,12 @@ function renderUTRSubmission(){
 
    <button type="button" class="green"
     data-submit-utr="${escapeHTML(b.id)}">Submit UTR</button>
+
   </div>
  `).join("");
 }
 
-// SHOW / HIDE OTHER APP INPUT
+// SHOW / HIDE OTHER APP
 $("utrSubmissionList").addEventListener("change",event=>{
 
  const select=event.target.closest("select[id^='app-']");
@@ -699,8 +658,7 @@ $("utrSubmissionList").addEventListener("click",async event=>{
  if(!currentCustomer)return alert("Please login first.");
 
  const bookingId=button.dataset.submitUtr;
- const input=$("utr-"+bookingId);
- const utr=input?.value.trim();
+ const utr=$("utr-"+bookingId)?.value.trim();
  const appSelect=$("app-"+bookingId);
 
  if(!appSelect?.value)
@@ -745,7 +703,7 @@ $("utrSubmissionList").addEventListener("click",async event=>{
 
   await updateDoc(bookingRef,{
    paymentReference:utr,
-   paymentAppName:paymentAppName,
+   paymentAppName,
    paymentProofStatus:"submitted",
    paymentSubmittedAt:serverTimestamp()
   });
@@ -753,7 +711,6 @@ $("utrSubmissionList").addEventListener("click",async event=>{
   alert("UTR ଓ Payment App Name Submit ହୋଇଗଲା। Admin Verification ପରେ Final Receipt ମିଳିବ।");
 
  }catch(error){
-  console.error("UTR submission error:",error);
   alert("UTR Submit Error: "+error.message);
  }finally{
   button.disabled=false;
@@ -761,7 +718,7 @@ $("utrSubmissionList").addEventListener("click",async event=>{
  }
 });
 
-// BOOKING HISTORY + PREMIUM RECEIPTS
+// BOOKING HISTORY
 function renderBookingHistory(){
 
  const list=$("bookingList");
@@ -848,19 +805,13 @@ function renderBookingHistory(){
      </p>
     </div>
 
-    <p class="receipt-note">
-     Thank You for Choosing PS POWER SERVICE!
-    </p>
-
-    <p class="receipt-note">
-     This receipt confirms payment verification.
-    </p>
+    <p class="receipt-note">Thank You for Choosing PS POWER SERVICE!</p>
+    <p class="receipt-note">This receipt confirms payment verification.</p>
 
    </div>
 
    <div class="receipt-actions">
-    <button type="button"
-     data-print-receipt="${escapeHTML(b.id)}">
+    <button type="button" data-print-receipt="${escapeHTML(b.id)}">
      Print / Save PDF
     </button>
    </div>
@@ -868,42 +819,81 @@ function renderBookingHistory(){
 
   const pendingReceipt=b.paymentProofStatus==="submitted"&&!paid?`
    <div class="receipt-card" id="pending-${escapeHTML(b.id)}">
+
     <div class="receipt-header">
      <h2>PS POWER SERVICE</h2>
      <p>ELECTRICAL SERVICE & REPAIR</p>
      <p>Dakuluguda</p>
      <p>WhatsApp: +91 81447 22094</p>
     </div>
+
     <div class="receipt-title">UTR SUBMISSION ACKNOWLEDGEMENT</div>
+
     <p class="receipt-pending">PENDING VERIFICATION</p>
-    <div class="receipt-row"><span>Booking ID</span><b>${escapeHTML(b.id)}</b></div>
-    <div class="receipt-row"><span>Service</span><b>${escapeHTML(b.service||"-")}</b></div>
-    <div class="receipt-row"><span>Payment App</span><b>${escapeHTML(b.paymentAppName||"Not recorded")}</b></div>
-    <div class="receipt-row"><span>Submitted UTR</span><b>${escapeHTML(b.paymentReference||"-")}</b></div>
-    <div class="receipt-row"><span>Amount Submitted</span><b>₹${Number(b.bookingFee??20).toFixed(2)}</b></div>
+
+    <div class="receipt-row">
+     <span>Booking ID</span>
+     <b>${escapeHTML(b.id)}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Service</span>
+     <b>${escapeHTML(b.service||"-")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Payment App</span>
+     <b>${escapeHTML(b.paymentAppName||"Not recorded")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Submitted UTR</span>
+     <b>${escapeHTML(b.paymentReference||"-")}</b>
+    </div>
+
+    <div class="receipt-row">
+     <span>Amount Submitted</span>
+     <b>₹${Number(b.bookingFee??20).toFixed(2)}</b>
+    </div>
+
     <p class="receipt-pending">Admin ଙ୍କ Payment Verification ଅପେକ୍ଷାରେ ଅଛି।</p>
-    <p class="receipt-note">ଏହା UTR Submission Acknowledgement ମାତ୍ର; Verified Payment Receipt ନୁହେଁ।</p>
+
+    <p class="receipt-note">
+     ଏହା UTR Submission Acknowledgement ମାତ୍ର; Verified Payment Receipt ନୁହେଁ।
+    </p>
    </div>
   `:"";
 
   return `
    <div class="booking">
+
     <b>${escapeHTML(b.service||"Service")}</b>
+
     <p>Booking ID: ${escapeHTML(b.id)}</p>
     <p>Date: ${escapeHTML(b.bookingDate||"-")}</p>
     <p>Address: ${escapeHTML(b.address||"-")}</p>
-    <p>Booking Status: <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span></p>
-    <p>Payment: <span class="${paid?"verified":"status"}">${paid?"PAID":"PENDING"}</span></p>
+
+    <p>Booking Status:
+     <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span>
+    </p>
+
+    <p>Payment:
+     <span class="${paid?"verified":"status"}">${paid?"PAID":"PENDING"}</span>
+    </p>
+
     <p>Booking Fee: ₹${Number(b.bookingFee??20)}</p>
+
     ${paid?receipt:pendingReceipt}
+
     ${!paid&&b.paymentProofStatus!=="submitted"
      ? `<p class="muted">UTR Number ଏପର୍ଯ୍ୟନ୍ତ Submit ହୋଇନାହିଁ।</p>`:""}
+
    </div>
   `;
  }).join("");
 }
 
-// PRINT / SAVE PREMIUM RECEIPT AS PDF
+// PRINT RECEIPT
 $("bookingList").addEventListener("click",event=>{
 
  const button=event.target.closest("[data-print-receipt]");
@@ -935,83 +925,22 @@ $("bookingList").addEventListener("click",event=>{
    <meta name="viewport" content="width=device-width,initial-scale=1">
    <style>
     *{box-sizing:border-box}
-    body{
-     font-family:Arial,sans-serif;
-     padding:20px;
-     background:#fff;
-     color:#fff;
-    }
-    .receipt-card{
-     max-width:600px;
-     margin:auto;
-     padding:22px;
-     background:#101010 !important;
-     color:#fff !important;
-     border:2px solid #b89442;
-     border-radius:14px;
-     -webkit-print-color-adjust:exact;
-     print-color-adjust:exact;
-    }
-    .receipt-header{
-     text-align:center;
-     border-bottom:1px solid #b89442;
-     padding-bottom:15px;
-    }
-    .receipt-header h2{color:#d6b45c !important}
-    .receipt-header p{color:#ddd0a8 !important;font-size:12px}
-    .receipt-title{
-     color:#d6b45c !important;
-     text-align:center;
-     font-weight:bold;
-     margin:18px 0;
-    }
-    .receipt-section{
-     color:#d6b45c !important;
-     font-weight:bold;
-     margin:15px 0 5px;
-    }
-    .receipt-row{
-     display:flex;
-     justify-content:space-between;
-     gap:12px;
-     padding:10px 0;
-     border-bottom:1px dashed #65552f;
-     font-size:13px;
-    }
-    .receipt-row span{color:#ccc !important}
-    .receipt-row b{color:#fff !important;text-align:right}
-    .receipt-amount{
-     background:#282116 !important;
-     border:1px solid #b89442;
-     padding:15px;
-     text-align:center;
-     margin:15px 0;
-    }
-    .receipt-amount span{color:#e8d8ad !important}
-    .receipt-amount strong{
-     color:#d6b45c !important;
-     font-size:28px;
-    }
-    .receipt-verified{
-     background:#173b29 !important;
-     color:#6ee7a0 !important;
-     border:1px solid #42a56b;
-     text-align:center;
-     padding:13px;
-     font-weight:bold;
-    }
-    .receipt-note{
-     color:#ccc !important;
-     text-align:center;
-     font-size:12px;
-    }
-    @media print{
-     body{padding:0}
-     .receipt-card{
-      -webkit-print-color-adjust:exact;
-      print-color-adjust:exact;
-     }
-    }
+    body{font-family:Arial,sans-serif;padding:20px;background:#fff;color:#fff}
+    .receipt-card{max-width:600px;margin:auto;padding:22px;background:#101010!important;color:#fff!important;border:2px solid #b89442;border-radius:14px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    .receipt-header{text-align:center;border-bottom:1px solid #b89442;padding-bottom:15px}
+    .receipt-header h2{color:#d6b45c!important}
+    .receipt-header p{color:#ddd0a8!important;font-size:12px}
+    .receipt-title{color:#d6b45c!important;text-align:center;font-weight:bold;margin:18px 0}
+    .receipt-section{color:#d6b45c!important;font-weight:bold;margin:15px 0 5px}
+    .receipt-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px dashed #65552f;font-size:13px}
+    .receipt-row span{color:#ccc!important}
+    .receipt-row b{color:#fff!important;text-align:right}
+    .receipt-amount{background:#282116!important;border:1px solid #b89442;padding:15px;text-align:center;margin:15px 0}
+    .receipt-amount span{color:#e8d8ad!important}
+    .receipt-amount strong{color:#d6b45c!important;font-size:28px}
+    .receipt-verified{background:#173b29!important;color:#6ee7a0!important;border:1px solid #42a56b;text-align:center;padding:13px;font-weight:bold}
+    .receipt-note{color:#ccc!important;text-align:center;font-size:12px}
+    @media print{body{padding:0}.receipt-card{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
    </style>
   </head>
   <body>
@@ -1026,81 +955,162 @@ $("bookingList").addEventListener("click",event=>{
  printWindow.document.close();
 });
 
-// LOAD DESIGN GALLERY
+// ==================================
+// MULTIPLE DESIGN GALLERY - MAX 10
+// ==================================
+
+// LOAD DESIGNS
 function loadDesignGallery(){
 
  onSnapshot(collection(db,"designs"),snapshot=>{
 
-  const gallery=$("designGallery");
-
-  const activeDesigns=snapshot.docs
+  availableDesigns=snapshot.docs
    .map(d=>({id:d.id,...d.data()}))
    .filter(d=>d.active!==false);
 
-  if(!activeDesigns.length){
-   gallery.innerHTML="<p>ଏପର୍ଯ୍ୟନ୍ତ Design ଯୋଡ଼ାଯାଇନାହିଁ। ପରେ ଆସ।</p>";
-   return;
-  }
+  // Remove designs which are no longer active
+  selectedDesigns=selectedDesigns.filter(item=>
+   availableDesigns.some(d=>d.id===item.id)
+  );
 
-  gallery.innerHTML=activeDesigns.map(d=>{
-
-   const image=safeImageUrl(d.imageUrl);
-
-   return `
-    <div class="design-card ${selectedDesign?.id===d.id?"selected":""}">
-     ${image
-      ? `<img src="${escapeHTML(image)}" alt="${escapeHTML(d.name)}" loading="lazy">`
-      : "<p>Image unavailable</p>"}
-     <h4>${escapeHTML(d.name||"Design")}</h4>
-     <p class="muted">${escapeHTML(d.category||"Other")}</p>
-     <button type="button" data-select-design="${escapeHTML(d.id)}">
-      ${selectedDesign?.id===d.id?"Selected ✓":"Select Design"}
-     </button>
-    </div>
-   `;
-  }).join("");
+  renderDesignGallery();
 
  },error=>{
   $("designGallery").textContent="Design load error: "+error.message;
  });
 }
 
-// SELECT DESIGN
+// RENDER GALLERY
+function renderDesignGallery(){
+
+ const gallery=$("designGallery");
+
+ if(!availableDesigns.length){
+  gallery.innerHTML="<p>ଏପର୍ଯ୍ୟନ୍ତ Design ଯୋଡ଼ାଯାଇନାହିଁ। ପରେ ଆସ।</p>";
+  updateDesignSelection();
+  return;
+ }
+
+ gallery.innerHTML=availableDesigns.map(d=>{
+
+  const selected=selectedDesigns.some(item=>item.id===d.id);
+  const image=safeImageUrl(d.imageUrl);
+
+  return `
+   <div class="design-card ${selected?"selected":""}">
+
+    ${image
+     ? `<img src="${escapeHTML(image)}"
+        alt="${escapeHTML(d.name||"Design")}"
+        loading="lazy">`
+     : "<p>Image unavailable</p>"}
+
+    <h4>${escapeHTML(d.name||"Design")}</h4>
+
+    <p class="muted">${escapeHTML(d.category||"Other")}</p>
+
+    <button type="button"
+     data-select-design="${escapeHTML(d.id)}"
+     ${!selected&&selectedDesigns.length>=MAX_DESIGNS?"disabled":""}>
+     ${selected?"Remove ✓":"Select Design"}
+    </button>
+
+   </div>
+  `;
+ }).join("");
+
+ updateDesignSelection();
+}
+
+// UPDATE COUNTER AND PREVIEW
+function updateDesignSelection(){
+
+ const count=selectedDesigns.length;
+
+ $("designCount").textContent=
+  "Selected Designs: "+count+" / "+MAX_DESIGNS;
+
+ $("selectedDesignText").textContent=count
+  ? count+"ଟି Design Select ହୋଇଛି।"
+  : "ପ୍ରଥମେ Gallery ରୁ Design Select କର।";
+
+ $("designRequestSubmit").disabled=count===0;
+
+ const preview=$("selectedDesignPreview");
+
+ if(!count){
+  preview.innerHTML="<p class='muted'>କୌଣସି Design Select ହୋଇନାହିଁ।</p>";
+ }else{
+
+  preview.innerHTML=selectedDesigns.map((d,index)=>`
+   <div class="selected-design-item">
+    ${d.imageUrl
+     ? `<img src="${escapeHTML(d.imageUrl)}" alt="${escapeHTML(d.name)}">`
+     : ""}
+    <b>${index+1}. ${escapeHTML(d.name)}</b>
+   </div>
+  `).join("");
+ }
+}
+
+// SELECT / REMOVE DESIGN
 $("designGallery").addEventListener("click",event=>{
 
  const button=event.target.closest("button[data-select-design]");
  if(!button)return;
 
  const designId=button.dataset.selectDesign;
- const card=button.closest(".design-card");
 
- const name=card?.querySelector("h4")?.textContent||"Selected Design";
- const category=card?.querySelector(".muted")?.textContent||"Other";
- const image=card?.querySelector("img")?.src||"";
+ const existingIndex=selectedDesigns.findIndex(
+  item=>item.id===designId
+ );
 
- selectedDesign={id:designId,name,category,imageUrl:image};
+ // REMOVE SELECTED DESIGN
+ if(existingIndex!==-1){
 
- $("selectedDesignText").textContent="Selected: "+name;
- $("designRequestSubmit").disabled=false;
+  selectedDesigns.splice(existingIndex,1);
 
- document.querySelectorAll(".design-card")
-  .forEach(item=>item.classList.remove("selected"));
+ }else{
 
- card?.classList.add("selected");
+  // MAXIMUM 10
+  if(selectedDesigns.length>=MAX_DESIGNS){
+   alert("ସର୍ବାଧିକ 10ଟି Design Select କରିପାରିବ।");
+   return;
+  }
+
+  const design=availableDesigns.find(d=>d.id===designId);
+  if(!design)return;
+
+  selectedDesigns.push({
+   id:design.id,
+   name:design.name||"Design",
+   category:design.category||"Other",
+   imageUrl:safeImageUrl(design.imageUrl)
+  });
+ }
+
+ renderDesignGallery();
 });
 
-// SUBMIT DESIGN REQUEST
+// SUBMIT MULTIPLE DESIGN REQUEST
 $("designRequestForm").addEventListener("submit",async event=>{
 
  event.preventDefault();
 
- if(!currentCustomer)return alert("Please login first.");
- if(!selectedDesign)return alert("ପ୍ରଥମେ Design Select କର।");
+ if(!currentCustomer)
+  return alert("Please login first.");
+
+ if(selectedDesigns.length===0)
+  return alert("ପ୍ରଥମେ Design Select କର।");
+
+ if(selectedDesigns.length>MAX_DESIGNS)
+  return alert("ସର୍ବାଧିକ 10ଟି Design Select କରିପାରିବ।");
 
  const phone=$("designPhone").value.trim();
  const description=$("designMessage").value.trim();
 
- if(!phone)return alert("Phone number ଦିଅ।");
+ if(!phone)
+  return alert("Phone number ଦିଅ।");
 
  const button=$("designRequestSubmit");
  button.disabled=true;
@@ -1108,38 +1118,68 @@ $("designRequestForm").addEventListener("submit",async event=>{
 
  try{
 
+  const designsToSubmit=selectedDesigns.map(d=>({
+   id:d.id,
+   name:d.name,
+   category:d.category,
+   imageUrl:d.imageUrl
+  }));
+
+  // One Firestore document for all selected designs
   await addDoc(collection(db,"designRequests"),{
+
    userId:currentCustomer.uid,
-   customerName:customerProfile.name||currentCustomer.displayName||"Customer",
+
+   customerName:
+    customerProfile.name||
+    currentCustomer.displayName||
+    "Customer",
+
    phone,
-   designId:selectedDesign.id,
-   designName:selectedDesign.name,
-   category:selectedDesign.category,
-   imageUrl:selectedDesign.imageUrl,
+
+   // NEW MULTIPLE DESIGN DATA
+   designCount:designsToSubmit.length,
+   designIds:designsToSubmit.map(d=>d.id),
+   designs:designsToSubmit,
+
+   // OLD FIELDS KEPT FOR BASIC ADMIN COMPATIBILITY
+   designId:designsToSubmit[0].id,
+   designName:designsToSubmit[0].name,
+   category:designsToSubmit[0].category,
+   imageUrl:designsToSubmit[0].imageUrl,
+
    description,
    status:"pending",
    createdAt:serverTimestamp()
   });
 
-  alert("Design Request submit ହୋଇଗଲା। Admin ଯାଞ୍ଚ କରିବେ।");
+  alert(
+   "✓ "+designsToSubmit.length+
+   "ଟି Design Request Submit ହୋଇଗଲା। Admin ଯାଞ୍ଚ କରିବେ।"
+  );
+
+  selectedDesigns=[];
 
   $("designMessage").value="";
-  selectedDesign=null;
-  $("selectedDesignText").textContent="ପ୍ରଥମେ Gallery ରୁ ଗୋଟିଏ Design Select କର।";
-  $("designRequestSubmit").disabled=true;
 
-  document.querySelectorAll(".design-card")
-   .forEach(item=>item.classList.remove("selected"));
+  renderDesignGallery();
 
  }catch(error){
+
+  console.error("Design request error:",error);
   alert("Design request error: "+error.message);
+
  }finally{
-  button.disabled=false;
+
   button.textContent="Submit Design Request";
+  button.disabled=selectedDesigns.length===0;
  }
 });
 
+// ==================================
 // MY DESIGN REQUESTS
+// ==================================
+
 function loadMyDesignRequests(uid){
 
  const q=query(
@@ -1156,25 +1196,80 @@ function loadMyDesignRequests(uid){
    return;
   }
 
-  const items=sortNewest(snapshot.docs.map(d=>d.data()));
+  const items=sortNewest(snapshot.docs.map(d=>({
+   id:d.id,
+   ...d.data()
+  })));
 
-  list.innerHTML=items.map(r=>`
-   <div class="design-request">
-    <b>${escapeHTML(r.designName||"Selected Design")}</b>
-    ${safeImageUrl(r.imageUrl)
-     ? `<p><img src="${escapeHTML(safeImageUrl(r.imageUrl))}" alt="Selected design" style="width:100%;max-width:220px;border-radius:8px"></p>`:""}
-    <p>Category: ${escapeHTML(r.category||"-")}</p>
-    <p>Message: ${escapeHTML(r.description||"-")}</p>
-    <p>Request Status: <span class="status">${escapeHTML(r.status||"pending")}</span></p>
-   </div>
-  `).join("");
+  list.innerHTML=items.map(r=>{
+
+   // NEW MULTIPLE DESIGN REQUEST
+   const designs=Array.isArray(r.designs)&&r.designs.length
+    ?r.designs
+    :[{
+      id:r.designId,
+      name:r.designName||"Selected Design",
+      category:r.category||"Other",
+      imageUrl:r.imageUrl||""
+     }];
+
+   return `
+    <div class="design-request">
+
+     <b>Design Request</b>
+
+     <p class="muted">
+      Request ID: ${escapeHTML(r.id)}
+     </p>
+
+     <p>
+      Total Selected Designs:
+      <b>${designs.length}</b>
+     </p>
+
+     <div class="selected-design-list">
+
+      ${designs.map((d,index)=>`
+       <div class="selected-design-item">
+
+        ${safeImageUrl(d.imageUrl)
+         ? `<img src="${escapeHTML(safeImageUrl(d.imageUrl))}"
+             alt="${escapeHTML(d.name||"Design")}">`
+         : ""}
+
+        <b>${index+1}. ${escapeHTML(d.name||"Design")}</b>
+
+        <p class="muted">
+         ${escapeHTML(d.category||"Other")}
+        </p>
+
+       </div>
+      `).join("")}
+
+     </div>
+
+     <p>Phone: ${escapeHTML(r.phone||"-")}</p>
+
+     <p>Message: ${escapeHTML(r.description||"-")}</p>
+
+     <p>
+      Request Status:
+      <span class="status">${escapeHTML(r.status||"pending")}</span>
+     </p>
+
+    </div>
+   `;
+  }).join("");
 
  },error=>{
   $("myDesignRequests").textContent="Request load error: "+error.message;
  });
 }
 
+// ==================================
 // IN-APP NOTIFICATIONS
+// ==================================
+
 function loadNotifications(uid){
 
  const q=query(
@@ -1211,7 +1306,10 @@ $("whatsappBtn").addEventListener("click",()=>{
  const message=
  "Hello PS POWER SERVICE, I want to book a service. Please guide me for the ₹20 booking fee and payment verification. A WhatsApp message alone is not proof of payment.";
 
- const url="https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);
+ const url=
+  "https://wa.me/"+WHATSAPP_NUMBER+
+  "?text="+encodeURIComponent(message);
+
  window.open(url,"_blank");
 });
 
@@ -1223,6 +1321,7 @@ $("date").min=[
  String(now.getMonth()+1).padStart(2,"0"),
  String(now.getDate()).padStart(2,"0")
 ].join("-");
+
 </script>
 </body>
 </html>
