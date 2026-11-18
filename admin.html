@@ -4,6 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#171717">
 <title>Admin Dashboard | PS POWER SERVICE</title>
 
 <style>
@@ -42,33 +43,20 @@ td select{min-width:110px}
 .request-image{width:100%;max-width:280px;max-height:220px;object-fit:contain;border-radius:8px;background:#eee}
 .filter-summary{font-size:13px;color:#666;margin:0 0 12px}
 .push-status{background:#f5f8ff;padding:12px;border-radius:8px;overflow-wrap:anywhere}
-
-/* PAYMENT RECEIPT */
-.receipt{
- max-width:650px;
- margin:15px auto;
- padding:22px;
- border:2px solid #ffca28;
- border-radius:12px;
- background:white;
- color:#222;
-}
+.request-count{display:inline-block;background:#eaf8ee;color:#168a45;padding:7px 12px;border-radius:7px;font-weight:bold}
+.request-status{font-weight:bold;color:#168a45}
+.receipt{max-width:650px;margin:15px auto;padding:22px;border:2px solid #ffca28;border-radius:12px;background:white;color:#222}
 .receipt h2{text-align:center;color:#171717;margin-bottom:5px}
 .receipt-subtitle{text-align:center;color:#168a45;font-weight:bold}
-.receipt-row{
- display:flex;
- justify-content:space-between;
- gap:12px;
- padding:10px 0;
- border-bottom:1px solid #eee;
- overflow-wrap:anywhere;
-}
+.receipt-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #eee;overflow-wrap:anywhere}
 .receipt-row span:last-child{text-align:right}
 .receipt-actions{text-align:center;margin-top:15px}
 .verified-label{color:#168a45;font-weight:bold}
 @media(max-width:500px){
  .receipt{padding:14px}
  .receipt-row{font-size:13px}
+ header h2{font-size:16px}
+ .card{padding:14px}
 }
 @media print{
  body{background:white}
@@ -101,7 +89,7 @@ td select{min-width:110px}
 
 <section class="card">
 <h3>Admin Phone Notifications</h3>
-<p class="small">Admin ଫୋନ୍‌ରେ Notification ପାଇବା ପାଇଁ ଏହି Button ଦବାଅ।</p>
+<p class="small">Admin ଫୋନ୍‌ରେ Notification ପାଇବା ପାଇଁ Button ଦବାଅ।</p>
 <button class="green" id="enableAdminPush">Enable Phone Notifications</button>
 <p id="adminPushStatus" class="small push-status">Phone Notification Not Registered</p>
 </section>
@@ -138,7 +126,6 @@ Customer UTR ନମ୍ବର ଓ Payment App Name ନିଜ UPI transaction hist
 </div>
 </section>
 
-<!-- ADMIN PAYMENT RECEIPT -->
 <section class="card">
 <h3>Admin Payment Receipt</h3>
 <p class="small">Payment verified ହୋଇଥିବା Booking ର receipt ଏଠାରେ ଦେଖାଯିବ।</p>
@@ -152,6 +139,7 @@ Customer UTR ନମ୍ବର ଓ Payment App Name ନିଜ UPI transaction hist
 <p class="small">Customer WhatsApp ରେ କଥା ହେବା ପରେ details ଦିଅ। ₹20 payment pending ରହିବ।</p>
 
 <form id="whatsappForm">
+
 <label>Customer Name</label>
 <input id="waName" required placeholder="Customer name">
 
@@ -184,6 +172,7 @@ Customer UTR ନମ୍ବର ଓ Payment App Name ନିଜ UPI transaction hist
 <p class="small">GitHub ରୁ image URL paste କରି Customer Gallery ରେ Design ଯୋଡ଼।</p>
 
 <form id="designForm">
+
 <label>Design Name</label>
 <input id="designName" required maxlength="80" placeholder="Example: Modern Interior Design">
 
@@ -221,6 +210,7 @@ Customer UTR ନମ୍ବର ଓ Payment App Name ନିଜ UPI transaction hist
 <hr>
 
 <h3>Current Designs</h3>
+
 <label for="adminDesignFilter">Filter Designs by Category</label>
 <select id="adminDesignFilter">
 <option value="ALL">ALL DESIGNS</option>
@@ -245,9 +235,10 @@ Customer UTR ନମ୍ବର ଓ Payment App Name ନିଜ UPI transaction hist
 <div id="designGallery" class="gallery">Loading designs...</div>
 </section>
 
+<!-- MULTIPLE DESIGN REQUESTS -->
 <section class="card">
 <h3>Customer Design Requests</h3>
-<p class="small">Customer ବାଛିଥିବା Design ଓ Request ଏଠାରେ ଦେଖାଯିବ।</p>
+<p class="small">Customer ବାଛିଥିବା ସର୍ବାଧିକ 10ଟି Design ଏଠାରେ ଦେଖାଯିବ।</p>
 <div id="designList">Loading design requests...</div>
 </section>
 
@@ -310,8 +301,9 @@ function safe(v){
 }
 
 function validImageUrl(v){
- try{return new URL(v).protocol==="https:"}
- catch{return false}
+ try{
+  return new URL(v).protocol==="https:";
+ }catch{return false;}
 }
 
 function setAdminPushStatus(message){
@@ -320,6 +312,7 @@ function setAdminPushStatus(message){
 
 // AUTHENTICATION
 onAuthStateChanged(auth,user=>{
+
  if(!user){
   location.replace("index.html");
   return;
@@ -339,8 +332,9 @@ onAuthStateChanged(auth,user=>{
  loadAdminNotifications();
 });
 
-// ADMIN PHONE NOTIFICATION REGISTRATION
+// ADMIN PHONE NOTIFICATIONS
 $("enableAdminPush").addEventListener("click",async()=>{
+
  const btn=$("enableAdminPush");
 
  if(!isAdmin||!auth.currentUser||auth.currentUser.uid!==ADMIN_UID){
@@ -349,18 +343,21 @@ $("enableAdminPush").addEventListener("click",async()=>{
  }
 
  btn.disabled=true;
- setAdminPushStatus("Checking notification support...");
 
  try{
+
   if(!window.isSecureContext)throw new Error("HTTPS connection is required.");
+
   if(!("Notification" in window)||!("serviceWorker" in navigator)){
    throw new Error("This browser does not support notifications.");
   }
 
   const supported=await isSupported();
-  if(!supported)throw new Error("Firebase Messaging is not supported in this browser.");
+
+  if(!supported)throw new Error("Firebase Messaging is not supported.");
 
   const permission=await Notification.requestPermission();
+
   if(permission!=="granted")throw new Error("Notification permission was not granted.");
 
   setAdminPushStatus("Registering service worker...");
@@ -373,9 +370,8 @@ $("enableAdminPush").addEventListener("click",async()=>{
   );
 
   await navigator.serviceWorker.ready;
-  messagingInstance=getMessaging(app);
 
-  setAdminPushStatus("Generating FCM token...");
+  messagingInstance=getMessaging(app);
 
   const token=await getToken(messagingInstance,{
    vapidKey:VAPID_PUBLIC_KEY,
@@ -385,18 +381,24 @@ $("enableAdminPush").addEventListener("click",async()=>{
   if(!token)throw new Error("FCM token was not generated.");
 
   await setDoc(doc(db,"users",ADMIN_UID,"fcmTokens",token),{
-   token:token,platform:"web",registeredAt:serverTimestamp()
+   token,
+   platform:"web",
+   registeredAt:serverTimestamp()
   });
 
   if(!foregroundListenerStarted){
+
    onMessage(messagingInstance,payload=>{
+
     const title=payload.notification?.title||"PS POWER SERVICE";
     const body=payload.notification?.body||"You have a new notification.";
 
     if(Notification.permission==="granted"){
      new Notification(title,{body});
     }
+
    });
+
    foregroundListenerStarted=true;
   }
 
@@ -404,8 +406,10 @@ $("enableAdminPush").addEventListener("click",async()=>{
   alert("Admin Phone Notification Registration Successful!");
 
  }catch(error){
+
   console.error("Admin Push Error:",error);
   setAdminPushStatus("Notification Error: "+error.message);
+
  }finally{
   btn.disabled=false;
  }
@@ -413,6 +417,7 @@ $("enableAdminPush").addEventListener("click",async()=>{
 
 // LOGOUT
 $("logoutBtn").addEventListener("click",async()=>{
+
  try{
   await signOut(auth);
   location.replace("index.html");
@@ -423,6 +428,7 @@ $("logoutBtn").addEventListener("click",async()=>{
 
 // LOAD BOOKINGS
 function loadBookings(){
+
  onSnapshot(collection(db,"bookings"),snapshot=>{
 
   bookings=snapshot.docs.map(d=>({id:d.id,...d.data()}));
@@ -432,9 +438,15 @@ function loadBookings(){
   );
 
   $("totalBookings").textContent=bookings.length;
-  $("pendingPayments").textContent=bookings.filter(b=>b.paymentStatus!=="paid").length;
-  $("paidPayments").textContent=bookings.filter(b=>b.paymentStatus==="paid").length;
-  $("utrSubmitted").textContent=bookings.filter(b=>b.paymentProofStatus==="submitted").length;
+
+  $("pendingPayments").textContent=
+   bookings.filter(b=>b.paymentStatus!=="paid").length;
+
+  $("paidPayments").textContent=
+   bookings.filter(b=>b.paymentStatus==="paid").length;
+
+  $("utrSubmitted").textContent=
+   bookings.filter(b=>b.paymentProofStatus==="submitted").length;
 
   renderBookings();
 
@@ -446,6 +458,7 @@ function loadBookings(){
 
 // RENDER BOOKINGS
 function renderBookings(){
+
  const body=$("bookingTableBody");
 
  if(!bookings.length){
@@ -471,27 +484,36 @@ function renderBookings(){
    proofHTML='<span class="proof-pending">Not Submitted</span>';
   }
 
-  const isWhatsApp=b.bookingSource==="whatsapp"||b.userId===ADMIN_UID;
+  const isWhatsApp=
+   b.bookingSource==="whatsapp"||b.userId===ADMIN_UID;
 
   return `
    <tr>
+
     <td>${i+1} ${i===0?"🆕 NEW":""}</td>
-    <td>${safe(b.customerName||"Customer")}
-    <br><span class="small">${isWhatsApp?"WhatsApp Booking":"Website Booking"}</span>
+
+    <td>
+     ${safe(b.customerName||"Customer")}
+     <br>
+     <span class="small">${isWhatsApp?"WhatsApp Booking":"Website Booking"}</span>
     </td>
+
     <td>${safe(b.customerPhone||"-")}</td>
     <td>${safe(b.service||"-")}</td>
     <td>${safe(b.bookingDate||b.date||"-")}</td>
     <td>₹${Number(b.bookingFee??b.fee??20)}</td>
     <td>${safe(paymentAppName)}</td>
+
     <td><span class="utr">${safe(utr)}</span></td>
     <td>${proofHTML}</td>
+
     <td>
      <select id="payment-${safe(b.id)}">
       <option value="pending" ${p==="pending"?"selected":""}>Pending</option>
       <option value="paid" ${p==="paid"?"selected":""}>Paid</option>
      </select>
     </td>
+
     <td>
      <select id="status-${safe(b.id)}">
       <option value="pending" ${s==="pending"?"selected":""}>Pending</option>
@@ -500,21 +522,26 @@ function renderBookings(){
       <option value="cancelled" ${s==="cancelled"?"selected":""}>Cancelled</option>
      </select>
     </td>
+
     <td>
      <button class="green" data-action="save-payment" data-id="${safe(b.id)}">
       Verify & Save Payment
      </button>
+
      <button class="dark" data-action="save-status" data-id="${safe(b.id)}">
       Update Status
      </button>
+
      ${p==="paid"&&proof==="verified"?`
       <button class="green" data-action="view-receipt" data-id="${safe(b.id)}">
        View Receipt
       </button>
      `:""}
     </td>
+
    </tr>
   `;
+
  }).join("");
 }
 
@@ -530,38 +557,28 @@ function showAdminReceipt(b){
   ?b.paymentVerifiedAt.toDate().toLocaleString("en-IN")
   :"Date not available";
 
- const receiptData={
-  id:b.id,
-  name:b.customerName||"Customer",
-  phone:b.customerPhone||"-",
-  service:b.service||"-",
-  bookingDate:b.bookingDate||b.date||"-",
-  amount:Number(b.bookingFee??b.fee??20),
-  paymentAppName:b.paymentAppName||"Not recorded",
-  utr:b.paymentReference||"Not recorded",
-  verifiedDate
- };
-
  const receiptHTML=`
   <div class="receipt" id="printReceipt">
+
    <h2>PS POWER SERVICE</h2>
    <p class="receipt-subtitle">VERIFIED PAYMENT RECEIPT</p>
    <hr>
 
-   <div class="receipt-row"><b>Booking ID</b><span>${safe(receiptData.id)}</span></div>
-   <div class="receipt-row"><b>Customer</b><span>${safe(receiptData.name)}</span></div>
-   <div class="receipt-row"><b>Phone</b><span>${safe(receiptData.phone)}</span></div>
-   <div class="receipt-row"><b>Service</b><span>${safe(receiptData.service)}</span></div>
-   <div class="receipt-row"><b>Booking Date</b><span>${safe(receiptData.bookingDate)}</span></div>
-   <div class="receipt-row"><b>Payment Amount</b><b>₹${receiptData.amount}</b></div>
-   <div class="receipt-row"><b>Payment App</b><span>${safe(receiptData.paymentAppName)}</span></div>
-   <div class="receipt-row"><b>Payment UTR</b><span>${safe(receiptData.utr)}</span></div>
+   <div class="receipt-row"><b>Booking ID</b><span>${safe(b.id)}</span></div>
+   <div class="receipt-row"><b>Customer</b><span>${safe(b.customerName||"Customer")}</span></div>
+   <div class="receipt-row"><b>Phone</b><span>${safe(b.customerPhone||"-")}</span></div>
+   <div class="receipt-row"><b>Service</b><span>${safe(b.service||"-")}</span></div>
+   <div class="receipt-row"><b>Booking Date</b><span>${safe(b.bookingDate||"-")}</span></div>
+   <div class="receipt-row"><b>Payment Amount</b><b>₹${Number(b.bookingFee??b.fee??20)}</b></div>
+   <div class="receipt-row"><b>Payment App</b><span>${safe(b.paymentAppName||"Not recorded")}</span></div>
+   <div class="receipt-row"><b>Payment UTR</b><span>${safe(b.paymentReference||"Not recorded")}</span></div>
    <div class="receipt-row"><b>Payment Status</b><span class="verified-label">VERIFIED / PAID</span></div>
-   <div class="receipt-row"><b>Verified Date</b><span>${safe(receiptData.verifiedDate)}</span></div>
+   <div class="receipt-row"><b>Verified Date</b><span>${safe(verifiedDate)}</span></div>
 
    <p style="text-align:center;margin-top:22px">
     Thank you for choosing PS POWER SERVICE.
    </p>
+
   </div>
  `;
 
@@ -575,6 +592,7 @@ function showAdminReceipt(b){
  $("adminReceipt").scrollIntoView({behavior:"smooth",block:"start"});
 
  $("printAdminReceipt").addEventListener("click",()=>{
+
   const printWindow=window.open("","_blank");
 
   if(!printWindow){
@@ -612,16 +630,20 @@ function showAdminReceipt(b){
  });
 }
 
-// CUSTOMER DASHBOARD NOTIFICATION
+// CUSTOMER NOTIFICATION
 async function notifyCustomer(b,title,message){
+
  if(!b.userId||b.userId===ADMIN_UID)return;
 
  await addDoc(collection(db,"notifications"),{
-  userId:b.userId,title,message,createdAt:serverTimestamp()
+  userId:b.userId,
+  title,
+  message,
+  createdAt:serverTimestamp()
  });
 }
 
-// SAVE PAYMENT AND BOOKING STATUS
+// BOOKING TABLE ACTIONS
 $("bookingTableBody").addEventListener("click",async e=>{
 
  const btn=e.target.closest("button[data-action]");
@@ -643,24 +665,28 @@ $("bookingTableBody").addEventListener("click",async e=>{
 
   if(p==="paid"&&b.paymentStatus!=="paid"){
 
-   const isWhatsApp=b.bookingSource==="whatsapp"||b.userId===ADMIN_UID;
+   const isWhatsApp=
+    b.bookingSource==="whatsapp"||b.userId===ADMIN_UID;
 
-   if(!isWhatsApp&&(!b.paymentReference||b.paymentProofStatus!=="submitted")){
+   if(!isWhatsApp&&
+    (!b.paymentReference||b.paymentProofStatus!=="submitted")){
     alert("Customer UTR Number Submit କରିନାହାନ୍ତି।");
     return;
    }
 
-   if(!confirm("UPI App ରେ ପ୍ରକୃତ ₹20 payment ଓ UTR ଯାଞ୍ଚ କରିଛ କି? ଯାଞ୍ଚ ହୋଇଥିଲେ ମାତ୍ର Paid କର।"))return;
+   if(!confirm("ପ୍ରକୃତ ₹20 payment ଓ UTR ଯାଞ୍ଚ କରିଛ କି?")){
+    return;
+   }
   }
 
-  // Paid status ପୁଣି Pending କଲେ verified receipt status ମଧ୍ୟ ବଦଳିବ
   if(p==="pending"&&b.paymentStatus==="paid"){
-   if(!confirm("Payment କୁ Pending କରିବାକୁ ଚାହୁଁଛ କି? Verified receipt ଆଉ ଦେଖାଯିବ ନାହିଁ।"))return;
+   if(!confirm("Payment କୁ Pending କରିବାକୁ ଚାହୁଁଛ କି?"))return;
   }
 
   btn.disabled=true;
 
   try{
+
    const updateData={paymentStatus:p};
 
    if(p==="paid"){
@@ -668,7 +694,9 @@ $("bookingTableBody").addEventListener("click",async e=>{
     updateData.paymentVerifiedAt=serverTimestamp();
    }else{
     updateData.paymentProofStatus=
-     b.paymentProofStatus==="verified"?"submitted":b.paymentProofStatus||"not_submitted";
+     b.paymentProofStatus==="verified"
+      ?"submitted"
+      :b.paymentProofStatus||"not_submitted";
    }
 
    await updateDoc(doc(db,"bookings",id),updateData);
@@ -679,7 +707,9 @@ $("bookingTableBody").addEventListener("click",async e=>{
     await notifyCustomer(
      b,
      "Payment Status Updated",
-     p==="paid"?"Your ₹20 booking payment has been verified.":"Your booking payment is pending."
+     p==="paid"
+      ?"Your ₹20 booking payment has been verified."
+      :"Your booking payment is pending."
     );
    }catch(error){
     console.error("Notification error:",error);
@@ -700,11 +730,17 @@ $("bookingTableBody").addEventListener("click",async e=>{
   btn.disabled=true;
 
   try{
+
    await updateDoc(doc(db,"bookings",id),{bookingStatus:s});
+
    alert("Booking status updated.");
 
    try{
-    await notifyCustomer(b,"Booking Status Updated","Your booking status is now: "+s);
+    await notifyCustomer(
+     b,
+     "Booking Status Updated",
+     "Your booking status is now: "+s
+    );
    }catch(error){
     console.error("Notification error:",error);
    }
@@ -717,8 +753,9 @@ $("bookingTableBody").addEventListener("click",async e=>{
  }
 });
 
-// ADD WHATSAPP BOOKING
+// WHATSAPP BOOKING
 $("whatsappForm").addEventListener("submit",async e=>{
+
  e.preventDefault();
  if(!isAdmin)return;
 
@@ -727,7 +764,9 @@ $("whatsappForm").addEventListener("submit",async e=>{
  btn.textContent="Adding...";
 
  try{
+
   await addDoc(collection(db,"bookings"),{
+
    userId:ADMIN_UID,
    customerName:$("waName").value.trim(),
    customerPhone:$("waPhone").value.trim(),
@@ -735,12 +774,15 @@ $("whatsappForm").addEventListener("submit",async e=>{
    service:$("waService").value,
    address:$("waAddress").value.trim(),
    bookingDate:$("waDate").value,
+
    bookingFee:20,
    bookingSource:"whatsapp",
    paymentStatus:"pending",
    paymentProofStatus:"not_submitted",
    bookingStatus:"pending",
+
    createdAt:serverTimestamp()
+
   });
 
   alert("WhatsApp booking added. ₹20 payment is pending until verified.");
@@ -756,6 +798,7 @@ $("whatsappForm").addEventListener("submit",async e=>{
 
 // DESIGN IMAGE PREVIEW
 $("designImageUrl").addEventListener("input",()=>{
+
  const u=$("designImageUrl").value.trim();
  const p=$("designPreview");
 
@@ -772,6 +815,7 @@ $("designImageUrl").addEventListener("input",()=>{
 
 // LOAD DESIGNS
 function loadDesigns(){
+
  onSnapshot(collection(db,"designs"),s=>{
 
   designs=s.docs.map(d=>({id:d.id,...d.data()}));
@@ -795,7 +839,9 @@ function renderDesigns(){
 
  const filtered=filter==="ALL"
   ?designs
-  :designs.filter(d=>(d.category||"").trim().toUpperCase()===filter);
+  :designs.filter(d=>
+   (d.category||"").trim().toUpperCase()===filter
+  );
 
  $("designFilterSummary").textContent=filter==="ALL"
   ?`Showing all ${filtered.length} design(s).`
@@ -807,13 +853,26 @@ function renderDesigns(){
  }
 
  g.innerHTML=filtered.map(d=>`
+
   <div class="design-card">
-   <img src="${safe(d.imageUrl)}" alt="${safe(d.name)}" loading="lazy">
+
+   <img src="${safe(validImageUrl(d.imageUrl)?d.imageUrl:"")}"
+    alt="${safe(d.name)}" loading="lazy">
+
    <h4>${safe(d.name||"Design")}</h4>
+
    <p class="small">${safe(d.category||"Other")}</p>
-   <button class="dark" data-action="edit-design" data-id="${safe(d.id)}">Edit</button>
-   <button class="red" data-action="delete-design" data-id="${safe(d.id)}">Delete</button>
+
+   <button class="dark"
+    data-action="edit-design"
+    data-id="${safe(d.id)}">Edit</button>
+
+   <button class="red"
+    data-action="delete-design"
+    data-id="${safe(d.id)}">Delete</button>
+
   </div>
+
  `).join("");
 }
 
@@ -821,6 +880,7 @@ $("adminDesignFilter").addEventListener("change",renderDesigns);
 
 // SAVE DESIGN
 $("designForm").addEventListener("submit",async e=>{
+
  e.preventDefault();
  if(!isAdmin)return;
 
@@ -840,10 +900,14 @@ $("designForm").addEventListener("submit",async e=>{
  btn.textContent=wasEditing?"Updating...":"Adding...";
 
  try{
+
   if(editingDesignId){
 
    await updateDoc(doc(db,"designs",editingDesignId),{
-    name,category,imageUrl,updatedAt:serverTimestamp()
+    name,
+    category,
+    imageUrl,
+    updatedAt:serverTimestamp()
    });
 
    alert("Design updated successfully.");
@@ -851,7 +915,11 @@ $("designForm").addEventListener("submit",async e=>{
   }else{
 
    await addDoc(collection(db,"designs"),{
-    name,category,imageUrl,active:true,createdAt:serverTimestamp()
+    name,
+    category,
+    imageUrl,
+    active:true,
+    createdAt:serverTimestamp()
    });
 
    alert("New design added successfully.");
@@ -869,11 +937,16 @@ $("designForm").addEventListener("submit",async e=>{
 
 // RESET DESIGN FORM
 function resetDesignForm(){
+
  editingDesignId=null;
  $("designForm").reset();
+
  $("designPreview").removeAttribute("src");
  $("designPreview").style.display="none";
- $("imagePreviewText").textContent="Image preview ଏଠାରେ ଦେଖାଯିବ।";
+
+ $("imagePreviewText").textContent=
+  "Image preview ଏଠାରେ ଦେଖାଯିବ।";
+
  $("designSubmit").textContent="Add Design";
  $("cancelEditBtn").style.display="none";
 }
@@ -892,13 +965,17 @@ $("designGallery").addEventListener("click",async e=>{
  if(btn.dataset.action==="edit-design"){
 
   editingDesignId=d.id;
+
   $("designName").value=d.name||"";
   $("designCategory").value=d.category||"";
   $("designImageUrl").value=d.imageUrl||"";
+
   $("designPreview").src=d.imageUrl||"";
   $("designPreview").style.display=d.imageUrl?"block":"none";
+
   $("designSubmit").textContent="Update Design";
   $("cancelEditBtn").style.display="inline-block";
+
   $("designForm").scrollIntoView({behavior:"smooth"});
  }
 
@@ -915,98 +992,237 @@ $("designGallery").addEventListener("click",async e=>{
  }
 });
 
-// LOAD DESIGN REQUESTS
+// =======================================
+// MULTIPLE CUSTOMER DESIGN REQUESTS
+// =======================================
+
 function loadDesignRequests(){
 
- onSnapshot(collection(db,"designRequests"),s=>{
+ onSnapshot(collection(db,"designRequests"),snapshot=>{
 
   const list=$("designList");
   designRequestCache.clear();
 
-  if(s.empty){
+  if(snapshot.empty){
    list.innerHTML="<p>No design requests found.</p>";
    return;
   }
 
-  const rs=s.docs.map(d=>{
-   const x=d.data();
-   designRequestCache.set(d.id,x);
-   return{id:d.id,...x};
+  const requests=snapshot.docs.map(d=>{
+
+   const data=d.data();
+   designRequestCache.set(d.id,data);
+
+   return{
+    id:d.id,
+    ...data
+   };
+
   });
 
-  rs.sort((a,b)=>
+  requests.sort((a,b)=>
    (b.createdAt?.seconds||0)-(a.createdAt?.seconds||0)
   );
 
-  list.innerHTML=rs.map(r=>`
+  list.innerHTML=requests.map(r=>{
 
-   <div class="item">
-    <h4>${safe(r.designName||"Selected Design")}</h4>
+   // NEW MULTIPLE DESIGN ARRAY
+   // OLD SINGLE DESIGN REQUEST ALSO SUPPORTED
 
-    ${r.imageUrl?`
-     <img class="request-image" src="${safe(r.imageUrl)}" alt="Selected design">
-    `:""}
+   const selectedDesigns=
+    Array.isArray(r.designs)&&r.designs.length
+    ?r.designs
+    :[{
+      id:r.designId||"",
+      name:r.designName||"Selected Design",
+      category:r.category||"Other",
+      imageUrl:r.imageUrl||""
+     }];
 
-    <p><b>Customer:</b> ${safe(r.customerName||r.name||"Customer")}</p>
-    <p><b>Phone:</b> ${safe(r.phone||r.customerPhone||"-")}</p>
-    <p><b>Message:</b> ${safe(r.description||r.request||r.message||"-")}</p>
-    <p><b>Status:</b> ${safe(r.status||"pending")}</p>
+   const currentStatus=r.status||"pending";
 
-    <label>Update Request Status</label>
-    <select id="request-status-${safe(r.id)}">
-     <option value="pending" ${(r.status||"pending")==="pending"?"selected":""}>Pending</option>
-     <option value="approved" ${r.status==="approved"?"selected":""}>Approved</option>
-     <option value="rejected" ${r.status==="rejected"?"selected":""}>Rejected</option>
-    </select>
+   return `
 
-    <button class="green" data-action="update-request" data-id="${safe(r.id)}">
-     Save Request Status
-    </button>
-   </div>
+    <div class="item">
 
-  `).join("");
+     <h3>Customer Design Request</h3>
 
- },e=>{
-  $("designList").textContent="Design request error: "+e.message;
+     <p><b>Request ID:</b> ${safe(r.id)}</p>
+
+     <p><b>Customer Name:</b>
+      ${safe(r.customerName||r.name||"Customer")}
+     </p>
+
+     <p><b>Phone Number:</b>
+      ${safe(r.phone||r.customerPhone||"-")}
+     </p>
+
+     <p class="request-count">
+      Total Selected Designs: ${selectedDesigns.length} / 10
+     </p>
+
+     <h4>Selected Designs</h4>
+
+     <div class="gallery">
+
+      ${selectedDesigns.map((d,index)=>{
+
+       const imageUrl=validImageUrl(d.imageUrl)
+        ?d.imageUrl
+        :"";
+
+       return `
+
+        <div class="design-card">
+
+         <h4>Design ${index+1}</h4>
+
+         ${imageUrl
+          ? `<img class="request-image"
+              src="${safe(imageUrl)}"
+              alt="${safe(d.name||"Design")}"
+              loading="lazy">`
+          : "<p class='small'>Image not available</p>"}
+
+         <p><b>${safe(d.name||"Design")}</b></p>
+
+         <p class="small">
+          Category: ${safe(d.category||"Other")}
+         </p>
+
+        </div>
+
+       `;
+
+      }).join("")}
+
+     </div>
+
+     <hr>
+
+     <p><b>Customer Message:</b></p>
+
+     <p>${safe(r.description||r.request||r.message||"-")}</p>
+
+     <p><b>Request Date:</b>
+      ${r.createdAt?.toDate
+       ?safe(r.createdAt.toDate().toLocaleString("en-IN"))
+       :"Date not available"}
+     </p>
+
+     <p><b>Current Status:</b>
+      <span class="request-status">
+       ${safe(currentStatus.toUpperCase())}
+      </span>
+     </p>
+
+     <label>Update Request Status</label>
+
+     <select id="request-status-${safe(r.id)}">
+
+      <option value="pending"
+       ${currentStatus==="pending"?"selected":""}>
+       Pending
+      </option>
+
+      <option value="approved"
+       ${currentStatus==="approved"?"selected":""}>
+       Approved
+      </option>
+
+      <option value="rejected"
+       ${currentStatus==="rejected"?"selected":""}>
+       Rejected
+      </option>
+
+     </select>
+
+     <button class="green"
+      data-action="update-request"
+      data-id="${safe(r.id)}">
+      Save Request Status
+     </button>
+
+    </div>
+
+   `;
+
+  }).join("");
+
+ },error=>{
+  $("designList").textContent="Design request error: "+error.message;
  });
 }
 
-// UPDATE DESIGN REQUEST
+// UPDATE DESIGN REQUEST STATUS
 $("designList").addEventListener("click",async e=>{
 
- const btn=e.target.closest("button[data-action='update-request']");
+ const btn=e.target.closest(
+  "button[data-action='update-request']"
+ );
+
  if(!btn||!isAdmin)return;
 
  const id=btn.dataset.id;
  const status=$("request-status-"+id)?.value;
+
  if(!status)return;
 
+ const request=designRequestCache.get(id);
+
+ if(!request){
+  alert("Design request not found.");
+  return;
+ }
+
  btn.disabled=true;
+ btn.textContent="Updating...";
 
  try{
-  await updateDoc(doc(db,"designRequests",id),{status});
 
-  const msg={
-   approved:"Your selected design request has been approved.",
-   rejected:"Your selected design request was not approved. Please contact us.",
-   pending:"Your design request is pending."
-  }[status];
+  await updateDoc(doc(db,"designRequests",id),{
+   status,
+   updatedAt:serverTimestamp()
+  });
 
-  const r=designRequestCache.get(id);
+  const messages={
 
-  if(r?.userId){
+   approved:
+    "Your selected design request has been approved.",
+
+   rejected:
+    "Your design request was not approved. Please contact PS POWER SERVICE.",
+
+   pending:
+    "Your design request is pending."
+
+  };
+
+  if(request.userId){
+
    await addDoc(collection(db,"notifications"),{
-    userId:r.userId,title:"Design Request Updated",message:msg,
+
+    userId:request.userId,
+    title:"Design Request Updated",
+    message:messages[status],
     createdAt:serverTimestamp()
+
    });
+
   }
 
-  alert("Design request status updated.");
+  alert("✓ Design Request Status Updated Successfully.");
 
- }catch(e){
-  alert("Request update error: "+e.message);
+ }catch(error){
+
+  console.error(error);
+  alert("Request update error: "+error.message);
+
  }finally{
+
   btn.disabled=false;
+  btn.textContent="Save Request Status";
+
  }
 });
 
@@ -1029,10 +1245,14 @@ function loadAdminNotifications(){
   );
 
   list.innerHTML=items.slice(0,30).map(n=>`
+
    <div class="item">
+
     <b>${safe(n.title||"Notification")}</b>
     <p>${safe(n.message||"")}</p>
+
    </div>
+
   `).join("");
 
  },e=>{
