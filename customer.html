@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="or">
 <head>
@@ -132,7 +131,6 @@ label{font-weight:bold;font-size:14px}
 .receipt-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .receipt-actions button{flex:1;background:#b89442;color:#111}
 
-
 .booking-success{
  display:none;
  margin:16px 0;
@@ -218,7 +216,7 @@ label{font-weight:bold;font-size:14px}
 <p class="muted">ପ୍ରତ୍ୟେକ Booking ପାଇଁ ₹20 Booking Fee ଦେବାକୁ ପଡ଼ିବ। Admin Payment Verify କରିବେ।</p>
 </section>
 
-<section class="card">
+<section class="card" id="paymentSection" style="display:none">
 <h3>2. ₹20 Booking Fee Payment</h3>
 <p>UPI App ଦ୍ୱାରା ₹20 Payment କର।</p>
 <img class="qr" src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png" alt="PS POWER SERVICE Booking Payment QR Code">
@@ -573,9 +571,17 @@ $("bookingForm").addEventListener("submit",async event=>{
   });
 
   $("bookingForm").reset();
+
   const successBox=$("bookingSuccess");
+  const paymentSection=$("paymentSection");
+
   successBox.style.display="block";
-  successBox.scrollIntoView({behavior:"smooth",block:"center"});
+  paymentSection.style.display="block";
+
+  paymentSection.scrollIntoView({
+   behavior:"smooth",
+   block:"center"
+  });
 
  }catch(error){
   alert("Booking failed: "+error.message);
