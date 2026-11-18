@@ -27,7 +27,7 @@ label{font-weight:bold;font-size:14px}
 .muted{color:#666;font-size:13px}
 .status{font-weight:bold;color:#b36b00}
 .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
-.design-card{border:1px solid #ddd;border-radius:10px;padding:10px}
+.design-card{border:1px solid #ddd;border-radius:10px;padding:10px;background:white}
 .design-card img{width:100%;height:170px;object-fit:cover;border-radius:7px;background:#eee}
 .design-card h4{margin:9px 0 5px}
 .design-card button{width:100%;margin-top:8px}
@@ -37,8 +37,30 @@ label{font-weight:bold;font-size:14px}
 .push-status{padding:12px;border-radius:8px;background:#f4f6fa;margin-top:10px;font-size:14px;overflow-wrap:anywhere}
 .design-counter{background:#f0fff4;border:1px solid #168a45;padding:13px;border-radius:8px;margin:12px 0;color:#168a45;font-weight:bold}
 .selected-design-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:12px 0}
-.selected-design-item{border:1px solid #ddd;padding:8px;border-radius:8px;font-size:13px}
+.selected-design-item{border:1px solid #ddd;padding:8px;border-radius:8px;font-size:13px;background:white}
 .selected-design-item img{width:100%;height:100px;object-fit:cover;border-radius:5px}
+
+/* CATEGORY SECTIONS */
+.gallery-section{
+ margin:22px 0;
+ padding:15px;
+ background:#f9fafb;
+ border:1px solid #e5e5e5;
+ border-radius:12px;
+}
+.gallery-section h3{
+ margin:0 0 15px;
+ padding:12px;
+ background:#171717;
+ color:#ffca28;
+ border-radius:7px;
+ font-size:17px;
+}
+.gallery-section .gallery{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(190px,1fr));
+ gap:14px;
+}
 
 /* PREMIUM RECEIPT */
 .receipt-card{
@@ -63,7 +85,6 @@ label{font-weight:bold;font-size:14px}
 .receipt-note{text-align:center;font-size:12px;color:#c8c8c8;margin-top:15px}
 .receipt-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .receipt-actions button{flex:1;background:#b89442;color:#111}
-
 .booking-success{display:none;margin:16px 0;padding:18px;border:2px solid #168a45;border-radius:10px;background:#effaf2;color:#174b2b}
 .booking-success h3{color:#168a45;margin:0 0 10px}
 .booking-success p{line-height:1.55;margin:8px 0}
@@ -76,12 +97,18 @@ label{font-weight:bold;font-size:14px}
  .receipt-card{padding:14px}
  .receipt-row{font-size:12px}
  .receipt-header h2{font-size:20px}
+ .gallery{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .gallery-section{padding:10px}
+ .gallery-section .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .design-card{padding:7px}
+ .design-card img{height:125px}
+ .design-card h4{font-size:13px}
+ .design-card button{padding:9px 5px;font-size:12px}
 }
 </style>
 </head>
 
 <body>
-
 <header>
 <h2>PS POWER SERVICE</h2>
 <button class="logout" id="logoutBtn">Logout</button>
@@ -105,7 +132,6 @@ label{font-weight:bold;font-size:14px}
 <section class="card">
 <h3>1. Book a Service</h3>
 <form id="bookingForm">
-
 <label>Service Select କର</label>
 <select id="service" required>
 <option value="">Select Service</option>
@@ -142,11 +168,7 @@ Your booking status will be verified by our Admin within <b>1–2 hours</b>.</p>
 <section class="card" id="paymentSection" style="display:none">
 <h3>2. ₹20 Booking Fee Payment</h3>
 <p>UPI App ଦ୍ୱାରା ₹20 Payment କର।</p>
-
-<img class="qr"
-src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png"
-alt="PS POWER SERVICE Booking Payment QR Code">
-
+<img class="qr" src="https://raw.githubusercontent.com/sidhuu09/PS-POWER-SERVICE/main/NaviQR_Sidhanta%20Tuika_01112026135053020.png" alt="PS POWER SERVICE Booking Payment QR Code">
 <p style="text-align:center"><b>Booking Fee: ₹20</b></p>
 <p class="muted">Payment କରିବା ପରେ UTR Submission Section ରେ UTR Number ଓ Payment App ର ନାମ Submit କର।</p>
 <p class="muted">କେବଳ UTR Submit କଲେ Payment Paid ହେବ ନାହିଁ। Admin Transaction ଯାଞ୍ଚ କରିବା ପରେ Paid କରିବେ।</p>
@@ -158,39 +180,27 @@ alt="PS POWER SERVICE Booking Payment QR Code">
 <div id="utrSubmissionList">Loading your bookings...</div>
 </section>
 
-<!-- MULTIPLE DESIGN GALLERY -->
+<!-- DESIGN GALLERY -->
 <section class="card">
-
 <h3>4. Our Design Gallery</h3>
+<p class="muted">ପସନ୍ଦର ସର୍ବାଧିକ 10ଟି Design Select କରି Request ପଠାଅ।</p>
 
-<p class="muted">
-ପସନ୍ଦର ସର୍ବାଧିକ 10ଟି Design Select କରି Request ପଠାଅ।
-</p>
+<div class="design-counter" id="designCount">Selected Designs: 0 / 10</div>
 
-<div class="design-counter" id="designCount">
-Selected Designs: 0 / 10
-</div>
-
-<div id="designGallery" class="gallery">
+<div id="designGallery">
 Loading designs...
 </div>
 
 <div class="card" style="margin-top:20px;background:#f9fafb">
-
 <h3>Selected Designs</h3>
 <div id="selectedDesignPreview" class="selected-design-list">
 <p class="muted">କୌଣସି Design Select ହୋଇନାହିଁ।</p>
 </div>
-
 </div>
 
 <form id="designRequestForm" style="margin-top:18px">
-
 <h3>Submit Design Request</h3>
-
-<p id="selectedDesignText" class="muted">
-ପ୍ରଥମେ Gallery ରୁ Design Select କର।
-</p>
+<p id="selectedDesignText" class="muted">ପ୍ରଥମେ Gallery ରୁ Design Select କର।</p>
 
 <label>Your Phone Number</label>
 <input id="designPhone" type="tel" maxlength="15" required placeholder="Phone number">
@@ -198,10 +208,7 @@ Loading designs...
 <label>Additional Message (Optional)</label>
 <textarea id="designMessage" rows="3" maxlength="500" placeholder="କେଉଁ ପ୍ରକାର କାମ ଚାହୁଁଛ, ଲେଖ।"></textarea>
 
-<button class="green" id="designRequestSubmit" type="submit" disabled>
-Submit Design Request
-</button>
-
+<button class="green" id="designRequestSubmit" type="submit" disabled>Submit Design Request</button>
 </form>
 </section>
 
@@ -231,8 +238,7 @@ Submit Design Request
 
 <script type="module">
 
-import {initializeApp}
-from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {initializeApp} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 
 import {
  getAuth,onAuthStateChanged,signOut
@@ -258,7 +264,6 @@ const firebaseConfig={
 
 const ADMIN_UID="UYYO1vO5zBOPIOvVgP3JnXuGP6C2";
 const WHATSAPP_NUMBER="918144722094";
-
 const VAPID_PUBLIC_KEY="BBJUSzxOPQF0iXr6Wz6GMQxklaeNS-CrmZQcCzMJggzopc91YJw-WoKEBH9HCZyO5ahxpyFbnEV1Sz_XiF60PYk";
 
 const app=initializeApp(firebaseConfig);
@@ -352,7 +357,7 @@ $("logoutBtn").addEventListener("click",async()=>{
  }
 });
 
-// NOTIFICATION STATUS
+// NOTIFICATIONS
 function setPushStatus(message){
  $("pushStatus").textContent=message;
 }
@@ -373,7 +378,6 @@ function checkNotificationStatus(){
  }
 }
 
-// FOREGROUND NOTIFICATIONS
 async function startForegroundNotifications(){
 
  if(foregroundMessageStarted||!messagingInstance)return;
@@ -390,10 +394,7 @@ async function startForegroundNotifications(){
 
   if(Notification.permission==="granted"){
    try{
-    new Notification(title,{
-     body,
-     icon:"/PS-POWER-SERVICE/favicon.ico"
-    });
+    new Notification(title,{body,icon:"/PS-POWER-SERVICE/favicon.ico"});
    }catch(error){
     console.warn(error);
    }
@@ -403,7 +404,6 @@ async function startForegroundNotifications(){
  foregroundMessageStarted=true;
 }
 
-// ENABLE NOTIFICATIONS
 $("enableNotificationsBtn").addEventListener("click",async()=>{
 
  const button=$("enableNotificationsBtn");
@@ -453,9 +453,7 @@ $("enableNotificationsBtn").addEventListener("click",async()=>{
    serviceWorkerRegistration:registration
   });
 
-  if(!token){
-   throw new Error("FCM Token Generate ହୋଇନାହିଁ।");
-  }
+  if(!token)throw new Error("FCM Token Generate ହୋଇନାହିଁ।");
 
   await setDoc(
    doc(db,"users",currentCustomer.uid,"fcmTokens",token),
@@ -492,22 +490,18 @@ $("bookingForm").addEventListener("submit",async event=>{
  const address=$("address").value.trim();
  const date=$("date").value;
 
- if(!service||!address||!date)
-  return alert("ସମସ୍ତ ତଥ୍ୟ ପୂରଣ କର।");
+ if(!service||!address||!date)return alert("ସମସ୍ତ ତଥ୍ୟ ପୂରଣ କର।");
 
  const today=new Date();
-
  const localToday=[
   today.getFullYear(),
   String(today.getMonth()+1).padStart(2,"0"),
   String(today.getDate()).padStart(2,"0")
  ].join("-");
 
- if(date<localToday)
-  return alert("ପୁରୁଣା ତାରିଖ ବାଛିପାରିବ ନାହିଁ।");
+ if(date<localToday)return alert("ପୁରୁଣା ତାରିଖ ବାଛିପାରିବ ନାହିଁ।");
 
  const button=$("bookingSubmit");
-
  $("bookingSuccess").style.display="none";
  button.disabled=true;
  button.textContent="Submitting...";
@@ -519,9 +513,7 @@ $("bookingForm").addEventListener("submit",async event=>{
    customerName:customerProfile.name||currentCustomer.displayName||"Customer",
    customerPhone:customerProfile.phone||"",
    customerEmail:currentCustomer.email||"",
-   service,
-   address,
-   bookingDate:date,
+   service,address,bookingDate:date,
    bookingFee:20,
    paymentStatus:"pending",
    paymentProofStatus:"not_submitted",
@@ -530,14 +522,10 @@ $("bookingForm").addEventListener("submit",async event=>{
   });
 
   $("bookingForm").reset();
-
   $("bookingSuccess").style.display="block";
   $("paymentSection").style.display="block";
 
-  $("paymentSection").scrollIntoView({
-   behavior:"smooth",
-   block:"center"
-  });
+  $("paymentSection").scrollIntoView({behavior:"smooth",block:"center"});
 
  }catch(error){
   alert("Booking failed: "+error.message);
@@ -550,16 +538,12 @@ $("bookingForm").addEventListener("submit",async event=>{
 // LOAD BOOKINGS
 function loadBookings(uid){
 
- const q=query(
-  collection(db,"bookings"),
-  where("userId","==",uid)
- );
+ const q=query(collection(db,"bookings"),where("userId","==",uid));
 
  onSnapshot(q,snapshot=>{
 
   customerBookings=sortNewest(snapshot.docs.map(d=>({
-   id:d.id,
-   ...d.data()
+   id:d.id,...d.data()
   })));
 
   renderUTRSubmission();
@@ -594,9 +578,7 @@ function renderUTRSubmission(){
 
  list.innerHTML=unpaid.map(b=>`
   <div class="utr-box">
-
    <b>${escapeHTML(b.service||"Service")}</b>
-
    <p class="muted">Booking ID: ${escapeHTML(b.id)}</p>
    <p class="muted">Booking Date: ${escapeHTML(b.bookingDate||"-")}</p>
    <p class="muted">Booking Fee: ₹${Number(b.bookingFee??20)}</p>
@@ -614,22 +596,17 @@ function renderUTRSubmission(){
 
    <div id="other-wrap-${escapeHTML(b.id)}" style="display:none">
     <label>Other UPI App Name</label>
-    <input type="text" id="other-${escapeHTML(b.id)}"
-     maxlength="50" placeholder="Payment App Name">
+    <input type="text" id="other-${escapeHTML(b.id)}" maxlength="50" placeholder="Payment App Name">
    </div>
 
    <label>UTR / Transaction Number</label>
-   <input type="text" id="utr-${escapeHTML(b.id)}"
-    maxlength="40" placeholder="Enter UTR Number">
+   <input type="text" id="utr-${escapeHTML(b.id)}" maxlength="40" placeholder="Enter UTR Number">
 
-   <button type="button" class="green"
-    data-submit-utr="${escapeHTML(b.id)}">Submit UTR</button>
-
+   <button type="button" class="green" data-submit-utr="${escapeHTML(b.id)}">Submit UTR</button>
   </div>
  `).join("");
 }
 
-// SHOW / HIDE OTHER APP
 $("utrSubmissionList").addEventListener("change",event=>{
 
  const select=event.target.closest("select[id^='app-']");
@@ -649,7 +626,6 @@ $("utrSubmissionList").addEventListener("change",event=>{
  }
 });
 
-// SUBMIT UTR
 $("utrSubmissionList").addEventListener("click",async event=>{
 
  const button=event.target.closest("button[data-submit-utr]");
@@ -661,8 +637,7 @@ $("utrSubmissionList").addEventListener("click",async event=>{
  const utr=$("utr-"+bookingId)?.value.trim();
  const appSelect=$("app-"+bookingId);
 
- if(!appSelect?.value)
-  return alert("Payment App Select କର।");
+ if(!appSelect?.value)return alert("Payment App Select କର।");
 
  let paymentAppName=appSelect.value;
 
@@ -672,12 +647,8 @@ $("utrSubmissionList").addEventListener("click",async event=>{
  }
 
  if(!utr)return alert("UTR Number ଦିଅ।");
-
- if(utr.length<6||utr.length>40)
-  return alert("ଠିକ୍ UTR Number ଦିଅ।");
-
- if(!/^[A-Za-z0-9-]+$/.test(utr))
-  return alert("UTR Number ରେ କେବଳ English letters, numbers ଓ hyphen ବ୍ୟବହାର କର।");
+ if(utr.length<6||utr.length>40)return alert("ଠିକ୍ UTR Number ଦିଅ।");
+ if(!/^[A-Za-z0-9-]+$/.test(utr))return alert("UTR Number ରେ କେବଳ English letters, numbers ଓ hyphen ବ୍ୟବହାର କର।");
 
  button.disabled=true;
  button.textContent="Submitting...";
@@ -687,19 +658,13 @@ $("utrSubmissionList").addEventListener("click",async event=>{
   const bookingRef=doc(db,"bookings",bookingId);
   const bookingSnap=await getDoc(bookingRef);
 
-  if(!bookingSnap.exists())
-   throw new Error("Booking ମିଳିଲା ନାହିଁ।");
+  if(!bookingSnap.exists())throw new Error("Booking ମିଳିଲା ନାହିଁ।");
 
   const booking=bookingSnap.data();
 
-  if(booking.userId!==currentCustomer.uid)
-   throw new Error("ଏହି Booking ତୁମର ନୁହେଁ।");
-
-  if(booking.paymentStatus==="paid")
-   throw new Error("ଏହି Booking ପୂର୍ବରୁ Paid ହୋଇଛି।");
-
-  if(booking.paymentProofStatus==="submitted")
-   throw new Error("UTR ପୂର୍ବରୁ Submit ହୋଇଛି।");
+  if(booking.userId!==currentCustomer.uid)throw new Error("ଏହି Booking ତୁମର ନୁହେଁ।");
+  if(booking.paymentStatus==="paid")throw new Error("ଏହି Booking ପୂର୍ବରୁ Paid ହୋଇଛି।");
+  if(booking.paymentProofStatus==="submitted")throw new Error("UTR ପୂର୍ବରୁ Submit ହୋଇଛି।");
 
   await updateDoc(bookingRef,{
    paymentReference:utr,
@@ -734,160 +699,71 @@ function renderBookingHistory(){
 
   const receipt=paid?`
    <div class="receipt-card" id="receipt-${escapeHTML(b.id)}">
-
     <div class="receipt-header">
      <h2>PS POWER SERVICE</h2>
      <p>ELECTRICAL SERVICE & REPAIR</p>
      <p>Dakuluguda</p>
      <p>WhatsApp: +91 81447 22094</p>
     </div>
-
     <div class="receipt-title">PAYMENT RECEIPT</div>
-
-    <div class="receipt-row">
-     <span>Receipt / Booking ID</span>
-     <b>${escapeHTML(b.id)}</b>
-    </div>
-
+    <div class="receipt-row"><span>Receipt / Booking ID</span><b>${escapeHTML(b.id)}</b></div>
     <div class="receipt-section">CUSTOMER DETAILS</div>
-
-    <div class="receipt-row">
-     <span>Customer Name</span>
-     <b>${escapeHTML(b.customerName||"Customer")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Phone Number</span>
-     <b>${escapeHTML(b.customerPhone||"-")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Service</span>
-     <b>${escapeHTML(b.service||"-")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Booking Date</span>
-     <b>${escapeHTML(b.bookingDate||"-")}</b>
-    </div>
-
+    <div class="receipt-row"><span>Customer Name</span><b>${escapeHTML(b.customerName||"Customer")}</b></div>
+    <div class="receipt-row"><span>Phone Number</span><b>${escapeHTML(b.customerPhone||"-")}</b></div>
+    <div class="receipt-row"><span>Service</span><b>${escapeHTML(b.service||"-")}</b></div>
+    <div class="receipt-row"><span>Booking Date</span><b>${escapeHTML(b.bookingDate||"-")}</b></div>
     <div class="receipt-section">PAYMENT DETAILS</div>
-
     <div class="receipt-amount">
      <span>BOOKING FEE</span>
      <strong>₹${Number(b.bookingFee??20).toFixed(2)}</strong>
     </div>
-
-    <div class="receipt-row">
-     <span>Payment Method</span>
-     <b>UPI</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Payment App</span>
-     <b>${escapeHTML(b.paymentAppName||"Not recorded")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>UTR Number</span>
-     <b>${escapeHTML(b.paymentReference||"-")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Verification Date</span>
-     <b>${escapeHTML(formatDate(b.paymentVerifiedAt))}</b>
-    </div>
-
+    <div class="receipt-row"><span>Payment Method</span><b>UPI</b></div>
+    <div class="receipt-row"><span>Payment App</span><b>${escapeHTML(b.paymentAppName||"Not recorded")}</b></div>
+    <div class="receipt-row"><span>UTR Number</span><b>${escapeHTML(b.paymentReference||"-")}</b></div>
+    <div class="receipt-row"><span>Verification Date</span><b>${escapeHTML(formatDate(b.paymentVerifiedAt))}</b></div>
     <div class="receipt-verified">
      ✓ PAYMENT VERIFIED
-     <p style="margin:6px 0 0;font-size:12px">
-      Payment successfully verified by Admin
-     </p>
+     <p style="margin:6px 0 0;font-size:12px">Payment successfully verified by Admin</p>
     </div>
-
     <p class="receipt-note">Thank You for Choosing PS POWER SERVICE!</p>
     <p class="receipt-note">This receipt confirms payment verification.</p>
-
    </div>
-
    <div class="receipt-actions">
-    <button type="button" data-print-receipt="${escapeHTML(b.id)}">
-     Print / Save PDF
-    </button>
+    <button type="button" data-print-receipt="${escapeHTML(b.id)}">Print / Save PDF</button>
    </div>
   `:"";
 
   const pendingReceipt=b.paymentProofStatus==="submitted"&&!paid?`
    <div class="receipt-card" id="pending-${escapeHTML(b.id)}">
-
     <div class="receipt-header">
      <h2>PS POWER SERVICE</h2>
      <p>ELECTRICAL SERVICE & REPAIR</p>
      <p>Dakuluguda</p>
      <p>WhatsApp: +91 81447 22094</p>
     </div>
-
     <div class="receipt-title">UTR SUBMISSION ACKNOWLEDGEMENT</div>
-
     <p class="receipt-pending">PENDING VERIFICATION</p>
-
-    <div class="receipt-row">
-     <span>Booking ID</span>
-     <b>${escapeHTML(b.id)}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Service</span>
-     <b>${escapeHTML(b.service||"-")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Payment App</span>
-     <b>${escapeHTML(b.paymentAppName||"Not recorded")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Submitted UTR</span>
-     <b>${escapeHTML(b.paymentReference||"-")}</b>
-    </div>
-
-    <div class="receipt-row">
-     <span>Amount Submitted</span>
-     <b>₹${Number(b.bookingFee??20).toFixed(2)}</b>
-    </div>
-
+    <div class="receipt-row"><span>Booking ID</span><b>${escapeHTML(b.id)}</b></div>
+    <div class="receipt-row"><span>Service</span><b>${escapeHTML(b.service||"-")}</b></div>
+    <div class="receipt-row"><span>Payment App</span><b>${escapeHTML(b.paymentAppName||"Not recorded")}</b></div>
+    <div class="receipt-row"><span>Submitted UTR</span><b>${escapeHTML(b.paymentReference||"-")}</b></div>
+    <div class="receipt-row"><span>Amount Submitted</span><b>₹${Number(b.bookingFee??20).toFixed(2)}</b></div>
     <p class="receipt-pending">Admin ଙ୍କ Payment Verification ଅପେକ୍ଷାରେ ଅଛି।</p>
-
-    <p class="receipt-note">
-     ଏହା UTR Submission Acknowledgement ମାତ୍ର; Verified Payment Receipt ନୁହେଁ।
-    </p>
+    <p class="receipt-note">ଏହା UTR Submission Acknowledgement ମାତ୍ର; Verified Payment Receipt ନୁହେଁ।</p>
    </div>
   `:"";
 
   return `
    <div class="booking">
-
     <b>${escapeHTML(b.service||"Service")}</b>
-
     <p>Booking ID: ${escapeHTML(b.id)}</p>
     <p>Date: ${escapeHTML(b.bookingDate||"-")}</p>
     <p>Address: ${escapeHTML(b.address||"-")}</p>
-
-    <p>Booking Status:
-     <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span>
-    </p>
-
-    <p>Payment:
-     <span class="${paid?"verified":"status"}">${paid?"PAID":"PENDING"}</span>
-    </p>
-
+    <p>Booking Status: <span class="status">${escapeHTML(b.bookingStatus||"pending")}</span></p>
+    <p>Payment: <span class="${paid?"verified":"status"}">${paid?"PAID":"PENDING"}</span></p>
     <p>Booking Fee: ₹${Number(b.bookingFee??20)}</p>
-
     ${paid?receipt:pendingReceipt}
-
-    ${!paid&&b.paymentProofStatus!=="submitted"
-     ? `<p class="muted">UTR Number ଏପର୍ଯ୍ୟନ୍ତ Submit ହୋଇନାହିଁ।</p>`:""}
-
+    ${!paid&&b.paymentProofStatus!=="submitted"?`<p class="muted">UTR Number ଏପର୍ଯ୍ୟନ୍ତ Submit ହୋଇନାହିଁ।</p>`:""}
    </div>
   `;
  }).join("");
@@ -919,8 +795,7 @@ $("bookingList").addEventListener("click",event=>{
 
  printWindow.document.write(`
   <!DOCTYPE html>
-  <html>
-  <head>
+  <html><head>
    <title>PS POWER SERVICE Payment Receipt</title>
    <meta name="viewport" content="width=device-width,initial-scale=1">
    <style>
@@ -945,21 +820,17 @@ $("bookingList").addEventListener("click",event=>{
   </head>
   <body>
    ${receipt.outerHTML}
-   <script>
-    window.onload=function(){window.print();};
-   <\/script>
-  </body>
-  </html>
+   <script>window.onload=function(){window.print();};<\/script>
+  </body></html>
  `);
 
  printWindow.document.close();
 });
 
-// ==================================
-// MULTIPLE DESIGN GALLERY - MAX 10
-// ==================================
+// ===================================
+// DESIGN GALLERY - CATEGORY SEPARATION
+// ===================================
 
-// LOAD DESIGNS
 function loadDesignGallery(){
 
  onSnapshot(collection(db,"designs"),snapshot=>{
@@ -968,7 +839,6 @@ function loadDesignGallery(){
    .map(d=>({id:d.id,...d.data()}))
    .filter(d=>d.active!==false);
 
-  // Remove designs which are no longer active
   selectedDesigns=selectedDesigns.filter(item=>
    availableDesigns.some(d=>d.id===item.id)
   );
@@ -980,7 +850,27 @@ function loadDesignGallery(){
  });
 }
 
-// RENDER GALLERY
+// NORMALIZE CATEGORY NAME
+function getDesignCategory(design){
+
+ const category=String(design.category||"Other").trim().toLowerCase();
+
+ if(category.includes("kitchen")){
+  return "KITCHEN DESIGNS";
+ }
+
+ if(category.includes("ceiling")){
+  return "CEILING DESIGNS";
+ }
+
+ if(category.includes("tv")||category.includes("unit")){
+  return "TV UNIT DESIGNS";
+ }
+
+ return "OTHER DESIGNS";
+}
+
+// RENDER CATEGORY-WISE GALLERY
 function renderDesignGallery(){
 
  const gallery=$("designGallery");
@@ -991,48 +881,80 @@ function renderDesignGallery(){
   return;
  }
 
- gallery.innerHTML=availableDesigns.map(d=>{
+ const groups={
+  "KITCHEN DESIGNS":[],
+  "CEILING DESIGNS":[],
+  "TV UNIT DESIGNS":[],
+  "OTHER DESIGNS":[]
+ };
 
-  const selected=selectedDesigns.some(item=>item.id===d.id);
-  const image=safeImageUrl(d.imageUrl);
+ availableDesigns.forEach(design=>{
+  const category=getDesignCategory(design);
+  groups[category].push(design);
+ });
+
+ const categoryOrder=[
+  "KITCHEN DESIGNS",
+  "CEILING DESIGNS",
+  "TV UNIT DESIGNS",
+  "OTHER DESIGNS"
+ ];
+
+ gallery.innerHTML=categoryOrder.map(category=>{
+
+  const designs=groups[category];
+
+  // Empty category will not be displayed
+  if(!designs.length)return "";
+
+  const cards=designs.map(d=>{
+
+   const selected=selectedDesigns.some(item=>item.id===d.id);
+   const image=safeImageUrl(d.imageUrl);
+
+   return `
+    <div class="design-card ${selected?"selected":""}">
+
+     ${image
+      ? `<img src="${escapeHTML(image)}" alt="${escapeHTML(d.name||"Design")}" loading="lazy">`
+      : "<p>Image unavailable</p>"}
+
+     <h4>${escapeHTML(d.name||"Design")}</h4>
+
+     <p class="muted">${escapeHTML(d.category||"Other")}</p>
+
+     <button type="button"
+      data-select-design="${escapeHTML(d.id)}"
+      ${!selected&&selectedDesigns.length>=MAX_DESIGNS?"disabled":""}>
+      ${selected?"Remove ✓":"Select Design"}
+     </button>
+
+    </div>
+   `;
+  }).join("");
 
   return `
-   <div class="design-card ${selected?"selected":""}">
-
-    ${image
-     ? `<img src="${escapeHTML(image)}"
-        alt="${escapeHTML(d.name||"Design")}"
-        loading="lazy">`
-     : "<p>Image unavailable</p>"}
-
-    <h4>${escapeHTML(d.name||"Design")}</h4>
-
-    <p class="muted">${escapeHTML(d.category||"Other")}</p>
-
-    <button type="button"
-     data-select-design="${escapeHTML(d.id)}"
-     ${!selected&&selectedDesigns.length>=MAX_DESIGNS?"disabled":""}>
-     ${selected?"Remove ✓":"Select Design"}
-    </button>
-
+   <div class="gallery-section">
+    <h3>${category} (${designs.length})</h3>
+    <div class="gallery">${cards}</div>
    </div>
   `;
+
  }).join("");
 
  updateDesignSelection();
 }
 
-// UPDATE COUNTER AND PREVIEW
+// UPDATE SELECTION
 function updateDesignSelection(){
 
  const count=selectedDesigns.length;
 
- $("designCount").textContent=
-  "Selected Designs: "+count+" / "+MAX_DESIGNS;
+ $("designCount").textContent="Selected Designs: "+count+" / "+MAX_DESIGNS;
 
  $("selectedDesignText").textContent=count
-  ? count+"ଟି Design Select ହୋଇଛି।"
-  : "ପ୍ରଥମେ Gallery ରୁ Design Select କର।";
+  ?count+"ଟି Design Select ହୋଇଛି।"
+  :"ପ୍ରଥମେ Gallery ରୁ Design Select କର।";
 
  $("designRequestSubmit").disabled=count===0;
 
@@ -1041,13 +963,11 @@ function updateDesignSelection(){
  if(!count){
   preview.innerHTML="<p class='muted'>କୌଣସି Design Select ହୋଇନାହିଁ।</p>";
  }else{
-
   preview.innerHTML=selectedDesigns.map((d,index)=>`
    <div class="selected-design-item">
-    ${d.imageUrl
-     ? `<img src="${escapeHTML(d.imageUrl)}" alt="${escapeHTML(d.name)}">`
-     : ""}
+    ${d.imageUrl?`<img src="${escapeHTML(d.imageUrl)}" alt="${escapeHTML(d.name)}">`:""}
     <b>${index+1}. ${escapeHTML(d.name)}</b>
+    <p class="muted">${escapeHTML(d.category)}</p>
    </div>
   `).join("");
  }
@@ -1061,18 +981,14 @@ $("designGallery").addEventListener("click",event=>{
 
  const designId=button.dataset.selectDesign;
 
- const existingIndex=selectedDesigns.findIndex(
-  item=>item.id===designId
- );
+ const existingIndex=selectedDesigns.findIndex(item=>item.id===designId);
 
- // REMOVE SELECTED DESIGN
  if(existingIndex!==-1){
 
   selectedDesigns.splice(existingIndex,1);
 
  }else{
 
-  // MAXIMUM 10
   if(selectedDesigns.length>=MAX_DESIGNS){
    alert("ସର୍ବାଧିକ 10ଟି Design Select କରିପାରିବ।");
    return;
@@ -1097,20 +1013,14 @@ $("designRequestForm").addEventListener("submit",async event=>{
 
  event.preventDefault();
 
- if(!currentCustomer)
-  return alert("Please login first.");
-
- if(selectedDesigns.length===0)
-  return alert("ପ୍ରଥମେ Design Select କର।");
-
- if(selectedDesigns.length>MAX_DESIGNS)
-  return alert("ସର୍ବାଧିକ 10ଟି Design Select କରିପାରିବ।");
+ if(!currentCustomer)return alert("Please login first.");
+ if(selectedDesigns.length===0)return alert("ପ୍ରଥମେ Design Select କର।");
+ if(selectedDesigns.length>MAX_DESIGNS)return alert("ସର୍ବାଧିକ 10ଟି Design Select କରିପାରିବ।");
 
  const phone=$("designPhone").value.trim();
  const description=$("designMessage").value.trim();
 
- if(!phone)
-  return alert("Phone number ଦିଅ।");
+ if(!phone)return alert("Phone number ଦିଅ।");
 
  const button=$("designRequestSubmit");
  button.disabled=true;
@@ -1125,24 +1035,16 @@ $("designRequestForm").addEventListener("submit",async event=>{
    imageUrl:d.imageUrl
   }));
 
-  // One Firestore document for all selected designs
   await addDoc(collection(db,"designRequests"),{
 
    userId:currentCustomer.uid,
-
-   customerName:
-    customerProfile.name||
-    currentCustomer.displayName||
-    "Customer",
-
+   customerName:customerProfile.name||currentCustomer.displayName||"Customer",
    phone,
 
-   // NEW MULTIPLE DESIGN DATA
    designCount:designsToSubmit.length,
    designIds:designsToSubmit.map(d=>d.id),
    designs:designsToSubmit,
 
-   // OLD FIELDS KEPT FOR BASIC ADMIN COMPATIBILITY
    designId:designsToSubmit[0].id,
    designName:designsToSubmit[0].name,
    category:designsToSubmit[0].category,
@@ -1153,15 +1055,10 @@ $("designRequestForm").addEventListener("submit",async event=>{
    createdAt:serverTimestamp()
   });
 
-  alert(
-   "✓ "+designsToSubmit.length+
-   "ଟି Design Request Submit ହୋଇଗଲା। Admin ଯାଞ୍ଚ କରିବେ।"
-  );
+  alert("✓ "+designsToSubmit.length+"ଟି Design Request Submit ହୋଇଗଲା। Admin ଯାଞ୍ଚ କରିବେ।");
 
   selectedDesigns=[];
-
   $("designMessage").value="";
-
   renderDesignGallery();
 
  }catch(error){
@@ -1176,16 +1073,10 @@ $("designRequestForm").addEventListener("submit",async event=>{
  }
 });
 
-// ==================================
 // MY DESIGN REQUESTS
-// ==================================
-
 function loadMyDesignRequests(uid){
 
- const q=query(
-  collection(db,"designRequests"),
-  where("userId","==",uid)
- );
+ const q=query(collection(db,"designRequests"),where("userId","==",uid));
 
  onSnapshot(q,snapshot=>{
 
@@ -1197,13 +1088,11 @@ function loadMyDesignRequests(uid){
   }
 
   const items=sortNewest(snapshot.docs.map(d=>({
-   id:d.id,
-   ...d.data()
+   id:d.id,...d.data()
   })));
 
   list.innerHTML=items.map(r=>{
 
-   // NEW MULTIPLE DESIGN REQUEST
    const designs=Array.isArray(r.designs)&&r.designs.length
     ?r.designs
     :[{
@@ -1215,48 +1104,23 @@ function loadMyDesignRequests(uid){
 
    return `
     <div class="design-request">
-
      <b>Design Request</b>
-
-     <p class="muted">
-      Request ID: ${escapeHTML(r.id)}
-     </p>
-
-     <p>
-      Total Selected Designs:
-      <b>${designs.length}</b>
-     </p>
+     <p class="muted">Request ID: ${escapeHTML(r.id)}</p>
+     <p>Total Selected Designs: <b>${designs.length}</b></p>
 
      <div class="selected-design-list">
-
       ${designs.map((d,index)=>`
        <div class="selected-design-item">
-
-        ${safeImageUrl(d.imageUrl)
-         ? `<img src="${escapeHTML(safeImageUrl(d.imageUrl))}"
-             alt="${escapeHTML(d.name||"Design")}">`
-         : ""}
-
+        ${safeImageUrl(d.imageUrl)?`<img src="${escapeHTML(safeImageUrl(d.imageUrl))}" alt="${escapeHTML(d.name||"Design")}">`:""}
         <b>${index+1}. ${escapeHTML(d.name||"Design")}</b>
-
-        <p class="muted">
-         ${escapeHTML(d.category||"Other")}
-        </p>
-
+        <p class="muted">${escapeHTML(d.category||"Other")}</p>
        </div>
       `).join("")}
-
      </div>
 
      <p>Phone: ${escapeHTML(r.phone||"-")}</p>
-
      <p>Message: ${escapeHTML(r.description||"-")}</p>
-
-     <p>
-      Request Status:
-      <span class="status">${escapeHTML(r.status||"pending")}</span>
-     </p>
-
+     <p>Request Status: <span class="status">${escapeHTML(r.status||"pending")}</span></p>
     </div>
    `;
   }).join("");
@@ -1266,16 +1130,10 @@ function loadMyDesignRequests(uid){
  });
 }
 
-// ==================================
 // IN-APP NOTIFICATIONS
-// ==================================
-
 function loadNotifications(uid){
 
- const q=query(
-  collection(db,"notifications"),
-  where("userId","==",uid)
- );
+ const q=query(collection(db,"notifications"),where("userId","==",uid));
 
  onSnapshot(q,snapshot=>{
 
@@ -1303,12 +1161,9 @@ function loadNotifications(uid){
 // WHATSAPP BOOKING
 $("whatsappBtn").addEventListener("click",()=>{
 
- const message=
- "Hello PS POWER SERVICE, I want to book a service. Please guide me for the ₹20 booking fee and payment verification. A WhatsApp message alone is not proof of payment.";
+ const message="Hello PS POWER SERVICE, I want to book a service. Please guide me for the ₹20 booking fee and payment verification. A WhatsApp message alone is not proof of payment.";
 
- const url=
-  "https://wa.me/"+WHATSAPP_NUMBER+
-  "?text="+encodeURIComponent(message);
+ const url="https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(message);
 
  window.open(url,"_blank");
 });
