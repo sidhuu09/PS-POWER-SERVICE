@@ -209,6 +209,30 @@ footer{background:var(--ink);color:#fff;text-align:center;padding:20px}
     <p class="electrician-experience">EXPERIENCE: 5 YEARS</p>
     <p class="electrician-tagline">Electrical Work • Quality Service • Safety First</p>
   </div>
+ <!-- MR MUKESH PROFILE -->
+<div class="electrician-profile">
+  <div class="profile-photo-wrap">
+    <img class="profile-photo"
+         src="images/mr-mukesh-profile.jpg"
+         alt="MR MUKESH Profile Photo">
+  </div>
+
+  <h3 class="electrician-name">MR MUKESH</h3>
+
+  <p class="electrician-role">Electrician Helper</p>
+
+  <p class="electrician-qualification">
+    QUALIFICATION: 12TH
+  </p>
+
+  <p class="electrician-experience">
+    EXPERIENCE: 1.5 YEARS
+  </p>
+
+  <p class="electrician-tagline">
+    Electrical Work • Team Support • Safety First
+  </p>
+</div>
 </section>
 
 <section id="services">
@@ -447,14 +471,22 @@ $("resetButton").addEventListener("click",async()=>{
   try{await sendPasswordResetEmail(auth,email);message("loginMessage","Password reset email sent. Please check your inbox.");}
   catch(error){message("loginMessage",firebaseError(error));}
 });
-
 onAuthStateChanged(auth,user=>{
   window.psAuthReady=true;
   window.psCurrentUser=user;
+
   if(!user)return;
-  if(user.uid===ADMIN_UID){location.replace("admin.html");}
-  else{location.replace("customer.html");}
+
+  // Registration/Login process ଚାଲିଥିଲେ ଅପେକ୍ଷା କର
+  if(busy)return;
+
+  if(user.uid===ADMIN_UID){
+    location.replace("admin.html");
+  }else{
+    location.replace("customer.html");
+  }
 });
+
 </script>
 </body>
 </html>
