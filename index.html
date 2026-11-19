@@ -112,6 +112,40 @@ footer{background:var(--ink);color:#fff;text-align:center;padding:20px}
  .welcome-text{animation:none;padding-left:10px}
  .slide,.gallery-item img{transition:none}
 }
+ 
+/* THREE ELECTRICIAN PROFILES SIDE BY SIDE */
+.electrician-section .electrician-profile{
+  display:inline-block;
+  vertical-align:top;
+  width:31%;
+  max-width:none;
+  margin:0 0.7%;
+}
+
+@media(max-width:600px){
+  .electrician-section .electrician-profile{
+    padding:12px 4px;
+  }
+  .electrician-section .profile-photo-wrap{
+    width:65px;
+    height:65px;
+  }
+  .electrician-section .electrician-name{
+    font-size:12px;
+  }
+  .electrician-section .electrician-role{
+    font-size:9px;
+  }
+  .electrician-section .electrician-qualification,
+  .electrician-section .electrician-experience{
+    font-size:8px;
+    padding:5px 3px;
+  }
+  .electrician-section .electrician-tagline{
+    font-size:8px;
+  }
+}
+
 </style>
 </head>
 <body>
